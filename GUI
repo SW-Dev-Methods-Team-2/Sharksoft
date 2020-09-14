@@ -1,0 +1,107 @@
+import java.sql.*;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class GUI
+{
+
+    public static void main(String[] args){
+
+        String dbURL = "jdbc:mysql://localhost:3306/sampledb";
+        String dbUsername = "root";
+        String dbPassword = "Colorado129#";
+
+
+        Scanner scan = new Scanner(System.in);
+
+        try {
+
+            Connection conn = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+
+            if (conn != null) {
+                System.out.println("Connected to database");
+
+            }
+            System.out.println("Press 'a' to add user, 's' to search, 'u' to update, 'd' to delete");
+            String answer = scan.nextLine();
+
+            if(answer.equalsIgnoreCase("a")){
+                addUser(conn);
+            }
+            else if(answer.equalsIgnoreCase("s")){
+                select(conn);
+            }
+            else if(answer.equalsIgnoreCase("u")){
+                update(conn);
+            }
+            else if(answer.equalsIgnoreCase("d")){
+                delete(conn);
+            }
+
+
+            conn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }//end main
+
+    public static void addUser(Connection conn) throws SQLException {
+        String sql = "INSERT INTO products (username, password, fullname, email) VALUES (?, ?, ?, ?)";
+
+        PreparedStatement statement = conn.prepareStatement(sql);
+
+        statement.setString(1, "bill");
+        statement.setString(2, "secretpass");
+        statement.setString(3, "Bill Gates");
+        statement.setString(4, "bill.gates@microsoft.com");
+
+        int rows = statement.executeUpdate();
+        if (rows > 0){
+            System.out.println("New USER added");
+        }
+    }
+
+    public static void select(Connection conn) throws SQLException {
+        String selectSql = "SELECT * FROM products";
+        Statement selectStatement = conn.createStatement();
+        ResultSet result = selectStatement.executeQuery(selectSql);
+
+        int count = 0;
+        while (result.next()){
+            String names = result.getString(2);
+            String passwrd = result.getString(3);
+            String fName = result.getString("fullname");
+            String emails = result.getString("email");
+
+            String output = "User #%d: %s - %s - %s - %s";
+            System.out.println(String.format(output, ++count, names, passwrd, fName, emails));
+        }
+    }
+
+    public static void update(Connection conn) throws SQLException{
+        String updateSQL = "UPDATE products SET password =?, fullname=?, email=?, username=?";
+        PreparedStatement statement3 = conn.prepareStatement(updateSQL);
+        statement3.setString(1,"12345678");
+        statement3.setString(2, "William Gates");
+        statement3.setString(3,"gates@gmail.com");
+        statement3.setString(4,"Bill");
+
+        int rowsUpdated = statement3.executeUpdate();
+        if(rowsUpdated>0){
+            System.out.println("An existing user updated successfully");
+        }
+    }
+
+    public static void delete(Connection conn) throws SQLException{
+        String deleteSql = "DELETE FROM products WHERE username=?";
+        PreparedStatement statement4 = conn.prepareStatement(deleteSql);
+        statement4.setString(1,"bill");
+        int rowsDeleted = statement4.executeUpdate();
+        if(rowsDeleted > 0 ){
+            System.out.println("User Deleted successfully");
+        }
+    }
+
+
+}// end class
