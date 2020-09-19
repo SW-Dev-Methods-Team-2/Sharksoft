@@ -7,9 +7,9 @@ public class CRUDDB
 
     public static void main(String[] args){
 
-        String dbURL = "jdbc:mysql://localhost:3306/cs3250";
-        String dbUsername = "root";
-        String dbPassword = "Colorado129#";
+        String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
+        String dbUsername = "admin";
+        String dbPassword = "cs3250db1";
 
 
         Scanner scan = new Scanner(System.in);
@@ -49,7 +49,7 @@ public class CRUDDB
     }//end main
 
     public static void addProduct(Connection conn) throws SQLException {
-        String sql = "INSERT INTO dbdb (product_id, quantity, wholesale_cost, sale_price, supplier_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cs3250main.sharktable (product_id, quantity, wholsale_cost, sale_price, suplier_id) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement statement = conn.prepareStatement(sql);
 
@@ -66,7 +66,7 @@ public class CRUDDB
     }
 
     public static void select(Connection conn) throws SQLException {
-        String selectSql = "SELECT * FROM dbdb";
+        String selectSql = "SELECT * FROM cs3250main.sharktable";
         Statement selectStatement = conn.createStatement();
         ResultSet result = selectStatement.executeQuery(selectSql);
 
@@ -74,9 +74,9 @@ public class CRUDDB
         while (result.next()){
             String pId = result.getString("product_id");
             String quan = result.getString("quantity");
-            String wCost = result.getString("wholesale_cost");
+            String wCost = result.getString("wholsale_cost");
             String sPrice = result.getString("sale_price");
-            String sId = result.getString("supplier_id");
+            String sId = result.getString("suplier_id");
 
             String output = "product #%d: %s - %s - %s - %s - %s";
             System.out.println(String.format(output, ++count, pId, quan, wCost, sPrice, sId));
@@ -84,7 +84,7 @@ public class CRUDDB
     }
 
     public static void update(Connection conn) throws SQLException{
-        String updateSQL = "UPDATE dbdb SET product_id =?, quantity=?, wholesale_cost=?, sale_price=? WHERE supplier_id=?";
+        String updateSQL = "UPDATE sharktable SET product_id =?, quantity=?, wholesale_cost=?, sale_price=? WHERE supplier_id=?";
         PreparedStatement statement3 = conn.prepareStatement(updateSQL);
         statement3.setString(1,"qwerty78");
         statement3.setString(2, "5344");
@@ -99,7 +99,7 @@ public class CRUDDB
     }
 
     public static void delete(Connection conn) throws SQLException{
-        String deleteSql = "DELETE FROM dbdb WHERE product_id=?";
+        String deleteSql = "DELETE FROM cs3250main.sharktable WHERE product_id=?";
         PreparedStatement statement4 = conn.prepareStatement(deleteSql);
         statement4.setString(1,"FDSDKE57465EWDFG");
         int rowsDeleted = statement4.executeUpdate();
