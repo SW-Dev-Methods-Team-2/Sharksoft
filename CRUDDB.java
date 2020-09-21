@@ -1,3 +1,8 @@
+//Author: Noel Corrales
+//Version 1.1
+//test commit
+
+
 import java.sql.*;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -5,48 +10,6 @@ import java.util.Scanner;
 public class CRUDDB
 {
 
-    public static void main(String[] args){
-
-        String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-        String dbUsername = "admin";
-        String dbPassword = "cs3250db1";
-
-
-        Scanner scan = new Scanner(System.in);
-
-        try {
-
-            Connection conn = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
-
-            if (conn != null) {
-                System.out.println("Connected to database");
-
-            }
-            System.out.println("Press 'c' to create product, 'r' to read, 'u' to update, 'd' to delete");
-            String answer = scan.nextLine();
-
-            if(answer.equalsIgnoreCase("c")){
-
-
-                addProduct(conn);
-            }
-            else if(answer.equalsIgnoreCase("r")){
-                select(conn);
-            }
-            else if(answer.equalsIgnoreCase("u")){
-                update(conn);
-            }
-            else if(answer.equalsIgnoreCase("d")){
-                delete(conn);
-            }
-
-
-            conn.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
-    }//end main
 
     public static void addProduct(Connection conn) throws SQLException {
         String sql = "INSERT INTO cs3250main.sharktable (product_id, quantity, wholsale_cost, sale_price, suplier_id) VALUES (?, ?, ?, ?, ?)";
@@ -78,18 +41,19 @@ public class CRUDDB
             String sPrice = result.getString("sale_price");
             String sId = result.getString("suplier_id");
 
-            String output = "product #%d: %s - %s - %s - %s - %s";
-            System.out.println(String.format(output, ++count, pId, quan, wCost, sPrice, sId));
+            String output = "product: %s- %s- %s- %s- %s";
+            System.out.println(String.format(output, count++, pId, quan, wCost, sPrice, sId));
+
         }
     }
 
     public static void update(Connection conn) throws SQLException{
-        String updateSQL = "UPDATE sharktable SET product_id =?, quantity=?, wholesale_cost=?, sale_price=? WHERE supplier_id=?";
+        String updateSQL = "UPDATE cs3250main.sharktable SET quantity=?, wholsale_cost=?, sale_price=?, suplier_id=? WHERE product_id =? ";
         PreparedStatement statement3 = conn.prepareStatement(updateSQL);
-        statement3.setString(1,"qwerty78");
-        statement3.setString(2, "5344");
+        statement3.setString(1,"5344");
+        statement3.setString(2, "54.0");
         statement3.setString(3,"55.0");
-        statement3.setString(4,"35.0");
+        statement3.setString(4,"qwerty78");
         statement3.setString(5,"FDSDKE57465EWDFG");
 
         int rowsUpdated = statement3.executeUpdate();
