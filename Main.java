@@ -19,6 +19,7 @@ public class Main{
 
     static StringStreamer simOutputStream = new StringStreamer(); //this streamer is used by simulator
     static StringStreamer crudOutputStream = new StringStreamer(); //this streamer is used by the CRUDframe
+    static String txtMainStatusBarOutput = "Status";
     static boolean simulationRunning = false;
     static int timeSeconds = 0;
     static int dayCounter = 0;
@@ -43,6 +44,7 @@ public class Main{
     static JButton btnCrudDelete = new JButton("Delete Product");
     //end  buttons...
     //labels...
+    static JLabel txtMainStatusBar = new JLabel(txtMainStatusBarOutput);
     static JLabel txtSimTime = new JLabel("Time");
     static JLabel txtSimOutput = new JLabel(simOutputStream.getStream());//this JLabel is output for the simulator
     static JLabel txtSimOutput2 = new JLabel("");
@@ -57,6 +59,7 @@ public class Main{
     static InventorySimulator simulator01 = new InventorySimulator(); //create the simulator
     static Timer timer = new Timer(1000,null); //create the render timer
     static CRUDDB db1 = new CRUDDB(); //create the crud object
+    static Connection conn; //connection object used to connect with DB
 
     //METHODS FOR PROGRAM FUNCTIONS---------------------------------------------------------------
 
@@ -66,23 +69,6 @@ public class Main{
 
         //initialize crud process
         crudRunning = true;
-
-        //Establish connection to database
-        try {
-
-            Connection conn = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
-
-            if (conn != null) {
-                crudOutputStream.pushLn("******CONNECTING******");
-                crudOutputStream.pushLn("Connected to database");
-
-                crudOutputStream.push(db1.addProduct(conn));
-                //crudOutputStream.push(db1.select(conn));
-            }
-        } catch (
-                SQLException ex) {
-            ex.printStackTrace();
-        }
     }
     static void btnMainRunSimMethod (){
         mainFrame.setVisible(false);
@@ -108,43 +94,48 @@ public class Main{
         mainFrame.setVisible(true);
         crudRunning=false;
     }
-    static void btnCrudCreateMethod(){
+    static void btnCrudCreateMethod() throws SQLException{
 
+        crudOutputStream.push(db1.addProduct(conn));
     }
-    static void btnCrudReadMethod(){
+    static void btnCrudReadMethod()throws SQLException{
+        crudOutputStream.push(db1.select(conn));
+    }
+    static void btnCrudUpdateMethod()throws SQLException{
+        crudOutputStream.push(db1.update(conn));
+    }
+    static void btnCrudDeleteMethod ()throws SQLException{
+        crudOutputStream.push(db1.delete(conn));
+    }
+    static void simRender() {
 
-    }
-    static void btnCrudUpdateMethod(){
+        txtMainStatusBar.setText(txtMainStatusBarOutput); //update the status bar of main frame
 
-    }
-    static void btnCrudDeleteMethod (){
-
-    }
-    static void simRender(){
-        if (simulationRunning==true) {
+        if (crudRunning == true) {
+            txtCrudOutput.setText(crudOutputStream.getStream());
+        }
+        if (simulationRunning == true) {
             timeSeconds++; //add time
-            txtSimTime.setText("Time="+Integer.toString(timeSeconds)); //print the time
+            txtSimTime.setText("Time=" + Integer.toString(timeSeconds)); //print the time
 
             //process the time
-            if (timeSeconds >= 86400){
+            if (timeSeconds >= 86400) {
                 simOutputStream.push("Day Over!-------------------------------------------");
                 simulator01.resetAllSuppliers();
-                timeSeconds=0;
+                timeSeconds = 0;
                 dayCounter++;
-                if (dayCounter<7) simOutputStream.push("Starting day "+dayCounter);
+                if (dayCounter < 7) simOutputStream.push("Starting day " + dayCounter);
             }
             //...advance day counter each time the seconds hits 86400, then reset the seconds
             //...if day reaches 6, then simulation is over. This program simulates a week at a time.
-            if (dayCounter > 6) simulationRunning=false;
+            if (dayCounter > 6) simulationRunning = false;
 
             //finalize and render all result at the end of the frame
             txtSimOutput.setText(simOutputStream.getStream());
             txtSimOutput2.setText(simulator01.printTotalResult());
         }
-        if(crudRunning==true){
-            txtCrudOutput.setText(crudOutputStream.getStream());
-        }
     }
+
 
     //PROGRAM ENTRY POINT----------------------------
     public static void main(String[] args) {
@@ -152,8 +143,23 @@ public class Main{
         GUIInit(); //initialize the GUI, buttons, actionListeners, labels, jpanels, etc.
 
         simulator01.initializeSimulatorData(); //initialize the simulator
+        timer.start(); //start rendering
 
-        timer.start();
+        //Establish connection to database
+        try {
+
+            conn = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+
+            if (conn != null) {
+                //report status to the status bar in the main frame
+                txtMainStatusBarOutput="Status: ******CONNECTING******";
+                txtMainStatusBarOutput="Status: Connected to database";
+            }
+        } catch (
+                SQLException ex) {
+            ex.printStackTrace();
+        }
+
     } //END PROGRAM-----------------------------------------------------------
 
     //METHOD FOR PROGRAM SETUP-----------------------------------------------
@@ -170,9 +176,14 @@ public class Main{
         pnButton.add(btnMainRunProgram);
         pnButton.add(btnMainRunSim);
 
+        //create bottom panel
+        JPanel pnMainBottom = new JPanel();
+        pnMainBottom.add(txtMainStatusBar);
+
         //add objects to the frame
         mainFrame.getContentPane().add(txtSharkSoft, BorderLayout.NORTH);
         mainFrame.getContentPane().add(pnButton, BorderLayout.CENTER);
+        mainFrame.getContentPane().add(pnMainBottom,BorderLayout.SOUTH);
         mainFrame.pack();
         //MAINFRAME DEFINITION END----------------------
 
