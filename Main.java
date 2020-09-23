@@ -25,6 +25,7 @@ public class Main{
     static int dayCounter = 0;
 
     static boolean crudRunning = false;
+    static int crudRenderTest=0;
 
     //GUI component declarations
     static JFrame mainFrame = new JFrame(); //the different frames this program is divided into
@@ -94,24 +95,50 @@ public class Main{
         mainFrame.setVisible(true);
         crudRunning=false;
     }
-    static void btnCrudCreateMethod() throws SQLException{
-
-        crudOutputStream.push(db1.addProduct(conn));
+    static void btnCrudCreateMethod(){
+        String result="Waiting access...";
+        try{
+            result=db1.addProduct(conn); //function passes result onto the string
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        crudOutputStream.push(result); //send result to stream for render later
     }
-    static void btnCrudReadMethod()throws SQLException{
-        crudOutputStream.push(db1.select(conn));
+    static void btnCrudReadMethod(){
+        String result="Waiting access...";
+        try{
+            result=db1.select(conn); //function passes result onto the string
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        crudOutputStream.push(result); //send result to stream for render later
     }
-    static void btnCrudUpdateMethod()throws SQLException{
-        crudOutputStream.push(db1.update(conn));
+    static void btnCrudUpdateMethod(){
+        String result="Waiting access...";
+        try{
+            result=db1.update(conn); //function passes result onto the string
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        crudOutputStream.push(result); //send result to stream for render later
     }
-    static void btnCrudDeleteMethod ()throws SQLException{
-        crudOutputStream.push(db1.delete(conn));
+    static void btnCrudDeleteMethod (){
+        String result="Waiting access...";
+        try{
+            result=db1.delete(conn); //function passes result onto the string
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        crudOutputStream.push(result); //send result to stream for render later
     }
-    static void simRender() {
+    static void appRender() {
 
         txtMainStatusBar.setText(txtMainStatusBarOutput); //update the status bar of main frame
 
         if (crudRunning == true) {
+            crudRenderTest++;
+            if (crudRenderTest>10) crudRenderTest=0;
+            crudOutputStream.push(Integer.toString(crudRenderTest));
             txtCrudOutput.setText(crudOutputStream.getStream());
         }
         if (simulationRunning == true) {
@@ -301,11 +328,36 @@ public class Main{
             }
         });
 
+        btnCrudCreate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnCrudCreateMethod();
+            }
+        });
+        btnCrudRead.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnCrudReadMethod();
+            }
+        });
+        btnCrudUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnCrudUpdateMethod();
+            }
+        });
+        btnCrudDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnCrudDeleteMethod();
+            }
+        });
+
         //SETUP RENDER TIMER FOR SIMULATION OUTPUT
         timer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { //this timer handles our frames
-                simRender();
+                appRender();
             }
         });
     }
