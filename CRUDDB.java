@@ -11,7 +11,8 @@ public class CRUDDB
 {
 
 
-    public static void addProduct(Connection conn) throws SQLException {
+    public static String addProduct(Connection conn) throws SQLException {
+        String print="";
         String sql = "INSERT INTO cs3250main.sharktable (product_id, quantity, wholsale_cost, sale_price, suplier_id) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement statement = conn.prepareStatement(sql);
@@ -24,11 +25,13 @@ public class CRUDDB
 
         int rows = statement.executeUpdate();
         if (rows > 0){
-            System.out.println("PRODUCT ADDED");
+            print+="PRODUCT ADDED<br>";
         }
+        return print;
     }
 
-    public static void select(Connection conn) throws SQLException {
+    public static String select(Connection conn) throws SQLException {
+        String print="";
         String selectSql = "SELECT * FROM cs3250main.sharktable";
         Statement selectStatement = conn.createStatement();
         ResultSet result = selectStatement.executeQuery(selectSql);
@@ -41,13 +44,15 @@ public class CRUDDB
             String sPrice = result.getString("sale_price");
             String sId = result.getString("suplier_id");
 
-            String output = "product: %s- %s- %s- %s- %s";
-            System.out.println(String.format(output, count++, pId, quan, wCost, sPrice, sId));
+            String output = "product: %s- %s- %s- %s- %s<br>";
+            print+=String.format(output, count++, pId, quan, wCost, sPrice, sId);
 
         }
+        return print;
     }
 
-    public static void update(Connection conn) throws SQLException{
+    public static String update(Connection conn) throws SQLException{
+        String print="";
         String updateSQL = "UPDATE cs3250main.sharktable SET quantity=?, wholsale_cost=?, sale_price=?, suplier_id=? WHERE product_id =? ";
         PreparedStatement statement3 = conn.prepareStatement(updateSQL);
         statement3.setString(1,"5344");
@@ -58,18 +63,25 @@ public class CRUDDB
 
         int rowsUpdated = statement3.executeUpdate();
         if(rowsUpdated>0){
-            System.out.println("An existing product updated successfully");
+            print+="An existing product updated successfully<br>";
         }
+        return print;
     }
 
-    public static void delete(Connection conn) throws SQLException{
+    public static String delete(Connection conn) throws SQLException{
+        String print="";
         String deleteSql = "DELETE FROM cs3250main.sharktable WHERE product_id=?";
         PreparedStatement statement4 = conn.prepareStatement(deleteSql);
         statement4.setString(1,"FDSDKE57465EWDFG");
         int rowsDeleted = statement4.executeUpdate();
         if(rowsDeleted > 0 ){
-            System.out.println("product Deleted successfully");
+            print+="product Deleted successfully<br>";
         }
+        else
+        {
+            print+="Product not found...<br>";
+        }
+        return print;
     }
 
 
