@@ -11,7 +11,7 @@ public class CRUDDB
 {
 
 
-    public static String addProduct(Connection conn) throws SQLException {
+    public String addProduct(Connection conn) throws SQLException {
         String print="";
         String sql = "INSERT INTO cs3250main.sharktable (product_id, quantity, wholesale_cost, sale_price, supplier_id) VALUES (?, ?, ?, ?, ?)";
 
@@ -30,7 +30,7 @@ public class CRUDDB
         return print;
     }
 
-    public static String select(Connection conn) throws SQLException {
+    public String select(Connection conn) throws SQLException {
         String print="";
         String selectSql = "SELECT * FROM cs3250main.sharktable";
         Statement selectStatement = conn.createStatement();
@@ -51,7 +51,7 @@ public class CRUDDB
         return print;
     }
 
-    public static String update(Connection conn) throws SQLException{
+    public String update(Connection conn) throws SQLException{
         String print="";
         String updateSQL = "UPDATE cs3250main.sharktable SET quantity=?, wholesale_cost=?, sale_price=?, supplier_id=? WHERE product_id =? ";
         PreparedStatement statement3 = conn.prepareStatement(updateSQL);
@@ -68,7 +68,7 @@ public class CRUDDB
         return print;
     }
 
-    public static String delete(Connection conn) throws SQLException{
+    public String delete(Connection conn) throws SQLException{
         String print="";
         String deleteSql = "DELETE FROM cs3250main.sharktable WHERE product_id=?";
         PreparedStatement statement4 = conn.prepareStatement(deleteSql);
