@@ -13,7 +13,7 @@ public class CRUDDB
 
     public String addProduct(Connection conn) throws SQLException {
         String print="";
-        String sql = "INSERT INTO cs3250main.sharktable (product_id, quantity, wholsale_cost, sale_price, suplier_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cs3250main.sharktable (product_id, quantity, wholesale_cost, sale_price, supplier_id) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement statement = conn.prepareStatement(sql);
 
