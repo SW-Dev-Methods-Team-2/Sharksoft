@@ -15,58 +15,57 @@ import static java.lang.Thread.*;
 
 public class Main{
 
-    //declare all variables and objects needed to run the program
+    //variables that control the status of the main program
+     StringStreamer simOutputStream = new StringStreamer(); //this streamer is used by simulator
+     StringStreamer crudOutputStream = new StringStreamer(); //this streamer is used by the CRUDframe
+     String txtMainStatusBarOutput = "Status";
+     boolean simulationRunning = false;
+     int timeSeconds = 0;
+     int dayCounter = 0;
 
-    static StringStreamer simOutputStream = new StringStreamer(); //this streamer is used by simulator
-    static StringStreamer crudOutputStream = new StringStreamer(); //this streamer is used by the CRUDframe
-    static String txtMainStatusBarOutput = "Status";
-    static boolean simulationRunning = false;
-    static int timeSeconds = 0;
-    static int dayCounter = 0;
+     boolean crudRunning = false;
+     int crudRenderTest=0;
 
-    static boolean crudRunning = false;
-    static int crudRenderTest=0;
-
-    //GUI component declarations
-    static GUI gui = new GUI();
-    static int mainScreen = gui.addScreen(); //the different screens this program is divided into
-    static int simScreen = gui.addScreen();
-    static int crudScreen = gui.addScreen();
+    //GUI related objects and variables
+     GUI gui = new GUI(); //create the GUI object
+     int mainScreen = gui.addScreen(); //the different screens this program is divided into
+     int simScreen = gui.addScreen();
+     int crudScreen = gui.addScreen();
 
     //buttons...
-    static int btnMainRunProgram = gui.addButton(mainScreen,"center","Run Program");
-    static int btnMainRunSim = gui.addButton(mainScreen,"center","Run Simulation");
-    static int btnSimGoBack = gui.addButton(simScreen,"south","Go Back");
-    static int btnSimCustomer = gui.addButton(simScreen,"south","Invoke Customer Order");
-    static int btnSimSupplier = gui.addButton(simScreen,"south","Invoke Supplier Order");
-    static int btnSimDummy = gui.addButton(simScreen,"south","dummy");
-    static int btnCrudGoBack = gui.addButton(crudScreen,"south","Go Back");
-    static int btnCrudCreate = gui.addButton(crudScreen,"south","Create Product");
-    static int btnCrudRead = gui.addButton(crudScreen,"south","Read Product");
-    static int btnCrudUpdate = gui.addButton(crudScreen,"south","Update Product");
-    static int btnCrudDelete = gui.addButton(crudScreen,"south","Delete Product");
+     int btnMainRunProgram = gui.addButton(mainScreen,"center","Run Program");
+     int btnMainRunSim = gui.addButton(mainScreen,"center","Run Simulation");
+     int btnSimGoBack = gui.addButton(simScreen,"south","Go Back");
+     int btnSimCustomer = gui.addButton(simScreen,"south","Invoke Customer Order");
+     int btnSimSupplier = gui.addButton(simScreen,"south","Invoke Supplier Order");
+     int btnSimDummy = gui.addButton(simScreen,"south","dummy");
+     int btnCrudGoBack = gui.addButton(crudScreen,"south","Go Back");
+     int btnCrudCreate = gui.addButton(crudScreen,"south","Create Product");
+     int btnCrudRead = gui.addButton(crudScreen,"south","Read Product");
+     int btnCrudUpdate = gui.addButton(crudScreen,"south","Update Product");
+     int btnCrudDelete = gui.addButton(crudScreen,"south","Delete Product");
     //end  buttons...
 
     //labels...
-    static int txtSharkSoft = gui.addLabel(mainScreen,"north","StuffBuySharks Co. Warehouse Portal");
-    static int txtMainStatusBar = gui.addLabel(mainScreen,"south",txtMainStatusBarOutput);
-    static int txtSimTime = gui.addLabel(simScreen,"north","Time");
-    static int txtSimOutput = gui.addLabel(simScreen,"center",simOutputStream.getStream());
-    static int txtSimOutput2 = gui.addLabel(simScreen,"center","");
-    static int txtCrudOutput = gui.addLabel(crudScreen,"center","CRUD output goes here");
+     int txtSharkSoft = gui.addLabel(mainScreen,"north","StuffBuySharks Co. Warehouse Portal");
+     int txtMainStatusBar = gui.addLabel(mainScreen,"south",txtMainStatusBarOutput);
+     int txtSimTime = gui.addLabel(simScreen,"north","Time");
+     int txtSimOutput = gui.addLabel(simScreen,"center",simOutputStream.getStream());
+     int txtSimOutput2 = gui.addLabel(simScreen,"center","");
+     int txtCrudOutput = gui.addLabel(crudScreen,"center","CRUD output goes here");
     //end labels...
 
-    //database connection parameters
-    static  String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-    static  String dbUsername = "admin";
-    static  String dbPassword = "cs3250db1";
+    //Database connection related variables
+      String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
+      String dbUsername = "admin";
+      String dbPassword = "cs3250db1";
 
-    static InventorySimulator simulator01 = new InventorySimulator(); //create the simulator
-    static Timer timer = new Timer(1000,null); //create the render timer
-    static CRUDDB db1 = new CRUDDB(); //create the crud object
-    static Connection conn; //connection object used to connect with DB
+     InventorySimulator simulator01 = new InventorySimulator(); //create the simulator
+     Timer timer = new Timer(1000,null); //create the render timer
+     CRUDDB db1 = new CRUDDB(); //create the crud object
+     Connection conn; //connection object used to connect with DB
 
-    static void appRender() {
+     void appRender() {
 
         gui.setText(txtMainStatusBar,txtMainStatusBarOutput); //update the status bar of main frame
 
@@ -97,11 +96,7 @@ public class Main{
             gui.setText(txtSimOutput2,simulator01.printTotalResult());
         }
     }
-
-
-    //PROGRAM ENTRY POINT----------------------------
-    public static void main(String[] args) {
-
+    void appStart(){
         gui.setupGUI();
         gui.screenChangeInto(mainScreen); //start by making the first screen visible
         setupListeners();
@@ -123,11 +118,22 @@ public class Main{
                 SQLException ex) {
             ex.printStackTrace();
         }
+    }
+
+    //PROGRAM ENTRY POINT----------------------------
+    public static void main(String[] args) {
+
+         Main app = new Main(); //app is an instance of this main class, access all variables using this instance
+        //Thank you Shane!
+
+        app.appStart(); //reconciling all method calls into this method eliminates the need to
+        // use "app." for everything, now the variables can be used by their own name
+        //without "static" or "app." attached as prefix
 
 
     }//END PROGRAM-----------------------------------------------------------
 
-    static void setupListeners(){
+     void setupListeners(){
         gui.getButton(btnMainRunProgram).addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e){
@@ -143,101 +149,94 @@ public class Main{
             appRender();
         }
     });
+         gui.getButton(btnMainRunSim).addActionListener(new ActionListener(){
+             public void actionPerformed(ActionEvent e){
+                 gui.screenChangeInto(simScreen);
+                 simulationRunning=true; //activate simulation
+             }
+         });
+         gui.getButton(btnSimGoBack).addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+                 gui.screenChangeInto(mainScreen);
+                 simulationRunning = false; //deactivate simulation
+             }
+         });
+         gui.getButton(btnSimCustomer).addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 simOutputStream.push(simulator01.processBuyer(timeSeconds));
+             }
+         });
+
+         gui.getButton(btnSimSupplier).addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 simOutputStream.push(simulator01.processSupplier(timeSeconds,dayCounter));
+             }
+         });
+         gui.getButton(btnSimDummy).addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 //dummy
+             }
+         });
+
+         gui.getButton(btnCrudGoBack).addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 gui.screenChangeInto(mainScreen);
+                 crudRunning=false;
+             }
+         });
+
+         gui.getButton(btnCrudCreate).addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 String result="Waiting access...";
+                 try{
+                     result=db1.addProduct(conn); //function passes result onto the string
+                 }catch (SQLException ex) {
+                     ex.printStackTrace();
+                 }
+                 crudOutputStream.push(result); //send result to stream for render later
+             }
+         });
+         gui.getButton(btnCrudRead).addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 String result="Waiting access...";
+                 try{
+                     result=db1.select(conn); //function passes result onto the string
+                 }catch (SQLException ex) {
+                     ex.printStackTrace();
+                 }
+                 crudOutputStream.push(result); //send result to stream for render later
+             }
+         });
+         gui.getButton(btnCrudUpdate).addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 String result="Waiting access...";
+                 try{
+                     result=db1.update(conn); //function passes result onto the string
+                 }catch (SQLException ex) {
+                     ex.printStackTrace();
+                 }
+                 crudOutputStream.push(result); //send result to stream for render later
+             }
+         });
+         gui.getButton(btnCrudDelete).addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 String result="Waiting access...";
+                 try{
+                     result=db1.delete(conn); //function passes result onto the string
+                 }catch (SQLException ex) {
+                     ex.printStackTrace();
+                 }
+                 crudOutputStream.push(result); //send result to stream for render later
+             }
+         });
     }//end setupListeners
-    //METHOD FOR PROGRAM SETUP-----------------------------------------------
 
-        /*//ACTION LISTENERS, these codes binds the methods to the buttons
-        //RUN SIMULATION BUTTON EVENT
-
-
-        btnMainRunSim.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                gui.screenChangeInto(simScreen);
-                simulationRunning=true; //activate simulation
-            }
-        });
-
-        //SIMULATION RETURN BUTTON EVENT
-        btnSimGoBack.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                gui.screenChangeInto(mainScreen);
-                simulationRunning = false; //deactivate simulation
-            }
-        });
-        btnSimCustomer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                simOutputStream.push(simulator01.processBuyer(timeSeconds));
-            }
-        });
-
-        btnSimSupplier.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                simOutputStream.push(simulator01.processSupplier(timeSeconds,dayCounter));
-            }
-        });
-        btnSimDummy.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //dummy
-            }
-        });
-
-        btnCrudGoBack.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                gui.screenChangeInto(mainScreen);
-                crudRunning=false;
-            }
-        });
-
-        btnCrudCreate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String result="Waiting access...";
-                try{
-                    result=db1.addProduct(conn); //function passes result onto the string
-                }catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-                crudOutputStream.push(result); //send result to stream for render later
-            }
-        });
-        btnCrudRead.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String result="Waiting access...";
-                try{
-                    result=db1.select(conn); //function passes result onto the string
-                }catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-                crudOutputStream.push(result); //send result to stream for render later
-            }
-        });
-        btnCrudUpdate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String result="Waiting access...";
-                try{
-                    result=db1.update(conn); //function passes result onto the string
-                }catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-                crudOutputStream.push(result); //send result to stream for render later
-            }
-        });
-        btnCrudDelete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String result="Waiting access...";
-                try{
-                    result=db1.delete(conn); //function passes result onto the string
-                }catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-                crudOutputStream.push(result); //send result to stream for render later
-            }
-        });*/
     }
