@@ -99,6 +99,8 @@ public class Main{
     void appStart(){
         gui.setupGUI();
         gui.screenChangeInto(mainScreen); //start by making the first screen visible
+        gui.getButton(btnMainRunProgram).setEnabled(false);
+        gui.getButton(btnMainRunSim).setEnabled(false);
         setupListeners();
 
         simulator01.initializeSimulatorData(); //initialize the simulator
@@ -113,6 +115,10 @@ public class Main{
                 //report status to the status bar in the main frame
                 txtMainStatusBarOutput="Status: ******CONNECTING******";
                 txtMainStatusBarOutput="Status: Connected to database";
+
+                //enable buttons only after db connection has been established
+                gui.getButton(btnMainRunProgram).setEnabled(true);
+                gui.getButton(btnMainRunSim).setEnabled(true);
             }
         } catch (
                 SQLException ex) {
@@ -142,13 +148,6 @@ public class Main{
             crudRunning = true;
         }});
 
-    //SETUP RENDER TIMER FOR SIMULATION OUTPUT
-        timer.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) { //this timer handles our frames
-            appRender();
-        }
-    });
          gui.getButton(btnMainRunSim).addActionListener(new ActionListener(){
              public void actionPerformed(ActionEvent e){
                  gui.screenChangeInto(simScreen);
@@ -181,6 +180,7 @@ public class Main{
              }
          });
 
+         //CRUD
          gui.getButton(btnCrudGoBack).addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
@@ -194,7 +194,23 @@ public class Main{
              public void actionPerformed(ActionEvent e) {
                  String result="Waiting access...";
                  try{
-                     result=db1.addProduct(conn); //function passes result onto the string
+                     JPanel panel = new JPanel();
+                     JTextField productIdField = new JTextField(20);
+                     JTextField quantityField = new JTextField(20);
+                     JTextField wholesaleCostField = new JTextField(20);
+                     JTextField salePriceField = new JTextField(20);
+                     JTextField supplierIdField = new JTextField(20);
+                     panel.add(productIdField);
+                     panel.add(quantityField);
+                     panel.add(wholesaleCostField);
+                     panel.add(salePriceField);
+                     panel.add(supplierIdField);
+                     JOptionPane.showMessageDialog(null,panel,"Information",JOptionPane.INFORMATION_MESSAGE);
+                     result=db1.addProduct(conn,productIdField.getText(),
+                             quantityField.getText(),
+                             wholesaleCostField.getText(),
+                             salePriceField.getText(),
+                             supplierIdField.getText()); //function passes result onto the string
                  }catch (SQLException ex) {
                      ex.printStackTrace();
                  }
@@ -207,6 +223,7 @@ public class Main{
                  String result="Waiting access...";
                  try{
                      result=db1.select(conn); //function passes result onto the string
+                     //this shows everything but supplier id... gotta fix later
                  }catch (SQLException ex) {
                      ex.printStackTrace();
                  }
@@ -235,6 +252,13 @@ public class Main{
                      ex.printStackTrace();
                  }
                  crudOutputStream.push(result); //send result to stream for render later
+             }
+         });
+         //SETUP RENDER TIMER FOR SIMULATION OUTPUT
+         timer.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) { //this timer handles our frames
+                 appRender();
              }
          });
     }//end setupListeners

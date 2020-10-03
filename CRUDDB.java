@@ -11,17 +11,21 @@ public class CRUDDB
 {
 
 
-    public static String addProduct(Connection conn) throws SQLException {
+    public static String addProduct(Connection conn,String _productId,
+                                    String _quantity,
+                                    String _wholesaleCost,
+                                    String _salePrice,
+                                    String _supplierId) throws SQLException {
         String print="";
         String sql = "INSERT INTO cs3250main.sharktable (product_id, quantity, wholesale_cost, sale_price, supplier_id) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement statement = conn.prepareStatement(sql);
 
-        statement.setString(1, "FDSDKE57465EWDFG");
-        statement.setString(2, "55555");
-        statement.setString(3, "550.5");
-        statement.setString(4, "560.8");
-        statement.setString(5,"QWERTYUI");
+        statement.setString(1, _productId);
+        statement.setString(2, _quantity);
+        statement.setString(3, _wholesaleCost);
+        statement.setString(4, _salePrice);
+        statement.setString(5,_supplierId);
 
         int rows = statement.executeUpdate();
         if (rows > 0){

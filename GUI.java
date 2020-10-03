@@ -15,6 +15,7 @@ class Screen{
     public Screen() { //does this constructor have to be public??
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //without this, frame is hidden but
         frame.setPreferredSize(new Dimension(640, 480));
+        frame.setBackground(Color.decode("#ffffff"));
     }
 
     void packScreen(){//all objects have been added to their respective JPanels,
@@ -59,6 +60,12 @@ public class GUI {
                   String _buttonName){ //name of the button
 
         JButton temp = new JButton(_buttonName);
+
+     /*   temp.setBackground(Color.decode("#47d3ec")); //add light blue color background
+        temp.setForeground(Color.decode("#b347ec"));
+        temp.setBorder(BorderFactory.createEmptyBorder()); //remove borders
+        temp.setPreferredSize(new Dimension(120,40));
+        temp.setFont(new Font("Arial", Font.PLAIN,16));*/
 
         if (_buttonPlace=="center"){
             screenList.get(_screenIndex).center.add(temp);
