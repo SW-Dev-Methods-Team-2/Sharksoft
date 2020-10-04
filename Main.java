@@ -55,6 +55,11 @@ public class Main{
      int txtCrudOutput = gui.addLabel(crudScreen,"center","CRUD output goes here");
     //end labels...
 
+    //forms...
+    int frmCrudAddProduct = gui.addForm("Product;Quantity;Wholesale Cost;Sale Price;Supplier Id;",10);
+    int frmCrudUpdateProduct = gui.addForm("Which Product?;New Quantity;New Wholesale Cost;New Sale Price;New Supplier Id;",10);
+    int frmCrudDeleteProduct = gui.addForm("Product:;",10);
+
     //Database connection related variables
       String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
       String dbUsername = "admin";
@@ -194,23 +199,14 @@ public class Main{
              public void actionPerformed(ActionEvent e) {
                  String result="Waiting access...";
                  try{
-                     JPanel panel = new JPanel();
-                     JTextField productIdField = new JTextField(20);
-                     JTextField quantityField = new JTextField(20);
-                     JTextField wholesaleCostField = new JTextField(20);
-                     JTextField salePriceField = new JTextField(20);
-                     JTextField supplierIdField = new JTextField(20);
-                     panel.add(productIdField);
-                     panel.add(quantityField);
-                     panel.add(wholesaleCostField);
-                     panel.add(salePriceField);
-                     panel.add(supplierIdField);
-                     JOptionPane.showMessageDialog(null,panel,"Information",JOptionPane.INFORMATION_MESSAGE);
-                     result=db1.addProduct(conn,productIdField.getText(),
-                             quantityField.getText(),
-                             wholesaleCostField.getText(),
-                             salePriceField.getText(),
-                             supplierIdField.getText()); //function passes result onto the string
+                    gui.getForm(frmCrudAddProduct).showFormDialog("Enter Product Details"); //show the product creation form
+                     String P,Q,W,Sp,Su;
+                     P=gui.getForm(frmCrudAddProduct).getKeyValue("Product");
+                     Q=gui.getForm(frmCrudAddProduct).getKeyValue("Quantity");
+                     W=gui.getForm(frmCrudAddProduct).getKeyValue("Wholesale Cost");
+                     Sp=gui.getForm(frmCrudAddProduct).getKeyValue("Sale Price");
+                     Su=gui.getForm(frmCrudAddProduct).getKeyValue("Supplier Id");
+                     result=db1.addProduct(conn,P,Q,W, Sp, Su); //add product with user entered values
                  }catch (SQLException ex) {
                      ex.printStackTrace();
                  }
@@ -235,7 +231,14 @@ public class Main{
              public void actionPerformed(ActionEvent e) {
                  String result="Waiting access...";
                  try{
-                     result=db1.update(conn); //function passes result onto the string
+                     gui.getForm(frmCrudUpdateProduct).showFormDialog("Enter Update Details");
+                     String P,Q,W,Sp,Su;
+                     P=gui.getForm(frmCrudUpdateProduct).getKeyValue("Which Product?");
+                     Q=gui.getForm(frmCrudUpdateProduct).getKeyValue("New Quantity");
+                     W=gui.getForm(frmCrudUpdateProduct).getKeyValue("New Wholesale Cost");
+                     Sp=gui.getForm(frmCrudUpdateProduct).getKeyValue("New Sale Price");
+                     Su=gui.getForm(frmCrudUpdateProduct).getKeyValue("New Supplier Id");
+                     result=db1.update(conn,P,Q,W,Sp,Su); //function passes result onto the string
                  }catch (SQLException ex) {
                      ex.printStackTrace();
                  }
@@ -247,7 +250,9 @@ public class Main{
              public void actionPerformed(ActionEvent e) {
                  String result="Waiting access...";
                  try{
-                     result=db1.delete(conn); //function passes result onto the string
+                     gui.getForm(frmCrudDeleteProduct).showFormDialog("Which Product Would You Like to Delete?");
+                     result=db1.delete(conn,
+                             gui.getForm(frmCrudDeleteProduct).getKeyValue("Product:"));
                  }catch (SQLException ex) {
                      ex.printStackTrace();
                  }

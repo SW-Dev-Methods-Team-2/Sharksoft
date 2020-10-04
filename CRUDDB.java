@@ -34,7 +34,8 @@ public class CRUDDB
         return print;
     }
 
-    public static String select(Connection conn) throws SQLException {
+    public static String select(Connection conn) throws SQLException { //wait for neol, add product
+        // name identifier to search for specific product
         String print="";
         String selectSql = "SELECT * FROM cs3250main.sharktable";
         Statement selectStatement = conn.createStatement();
@@ -55,15 +56,19 @@ public class CRUDDB
         return print;
     }
 
-    public static String update(Connection conn) throws SQLException{
+    public static String update(Connection conn, String _productId,
+                                String _quantity,
+                                String _wholesaleCost,
+                                String _salePrice,
+                                String _supplierId) throws SQLException{
         String print="";
         String updateSQL = "UPDATE cs3250main.sharktable SET quantity=?, wholesale_cost=?, sale_price=?, supplier_id=? WHERE product_id =? ";
         PreparedStatement statement3 = conn.prepareStatement(updateSQL);
-        statement3.setString(1,"5344");
-        statement3.setString(2, "54.0");
-        statement3.setString(3,"55.0");
-        statement3.setString(4,"qwerty78");
-        statement3.setString(5,"FDSDKE57465EWDFG");
+        statement3.setString(1,_quantity);
+        statement3.setString(2, _wholesaleCost);
+        statement3.setString(3,_salePrice);
+        statement3.setString(4,_supplierId);
+        statement3.setString(5,_productId);
 
         int rowsUpdated = statement3.executeUpdate();
         if(rowsUpdated>0){
@@ -72,11 +77,11 @@ public class CRUDDB
         return print;
     }
 
-    public static String delete(Connection conn) throws SQLException{
+    public static String delete(Connection conn, String _productId) throws SQLException{
         String print="";
         String deleteSql = "DELETE FROM cs3250main.sharktable WHERE product_id=?";
         PreparedStatement statement4 = conn.prepareStatement(deleteSql);
-        statement4.setString(1,"FDSDKE57465EWDFG");
+        statement4.setString(1,_productId);
         int rowsDeleted = statement4.executeUpdate();
         if(rowsDeleted > 0 ){
             print+="product Deleted successfully<br>";
