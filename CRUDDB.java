@@ -10,14 +10,26 @@ import java.util.Scanner;
 public class CRUDDB
 {
 
+    static String table="";
+    public CRUDDB(String _table){ //CRUDDB is used in many places with their own table, so
+        //specify destination table during construction of object
+        table = _table;
+    }
 
-    public static String addProduct(Connection conn,String _productId,
+    public static String addProduct(Connection conn,
+                                    String _productId,
                                     String _quantity,
                                     String _wholesaleCost,
                                     String _salePrice,
                                     String _supplierId) throws SQLException {
         String print="";
-        String sql = "INSERT INTO cs3250main.sharktable (product_id, quantity, wholesale_cost, sale_price, supplier_id) VALUES (?, ?, ?, ?, ?)";
+        if(_productId.equals("") || _quantity.equals("") || _wholesaleCost.equals("")
+        || _salePrice.equals("")
+        || _supplierId.equals("")){
+            return print;
+        }
+
+        String sql = "INSERT INTO cs3250main."+table+" (product_id, quantity, wholesale_cost, sale_price, supplier_id) VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement statement = conn.prepareStatement(sql);
 
@@ -37,7 +49,7 @@ public class CRUDDB
     public static String select(Connection conn) throws SQLException { //wait for neol, add product
         // name identifier to search for specific product
         String print="";
-        String selectSql = "SELECT * FROM cs3250main.sharktable";
+        String selectSql = "SELECT * FROM cs3250main."+table;
         Statement selectStatement = conn.createStatement();
         ResultSet result = selectStatement.executeQuery(selectSql);
 
@@ -62,7 +74,7 @@ public class CRUDDB
                                 String _salePrice,
                                 String _supplierId) throws SQLException{
         String print="";
-        String updateSQL = "UPDATE cs3250main.sharktable SET quantity=?, wholesale_cost=?, sale_price=?, supplier_id=? WHERE product_id =? ";
+        String updateSQL = "UPDATE cs3250main."+table+" SET quantity=?, wholesale_cost=?, sale_price=?, supplier_id=? WHERE product_id =? ";
         PreparedStatement statement3 = conn.prepareStatement(updateSQL);
         statement3.setString(1,_quantity);
         statement3.setString(2, _wholesaleCost);
@@ -79,7 +91,7 @@ public class CRUDDB
 
     public static String delete(Connection conn, String _productId) throws SQLException{
         String print="";
-        String deleteSql = "DELETE FROM cs3250main.sharktable WHERE product_id=?";
+        String deleteSql = "DELETE FROM cs3250main."+table+" WHERE product_id=?";
         PreparedStatement statement4 = conn.prepareStatement(deleteSql);
         statement4.setString(1,_productId);
         int rowsDeleted = statement4.executeUpdate();

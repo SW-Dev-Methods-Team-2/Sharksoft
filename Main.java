@@ -16,7 +16,6 @@ import static java.lang.Thread.*;
 public class Main{
 
     //variables that control the status of the main program
-     StringStreamer simOutputStream = new StringStreamer(); //this streamer is used by simulator
      StringStreamer crudOutputStream = new StringStreamer(); //this streamer is used by the CRUDframe
      String txtMainStatusBarOutput = "Status";
      boolean simulationRunning = false;
@@ -35,10 +34,13 @@ public class Main{
     //buttons...
      int btnMainRunProgram = gui.addButton(mainScreen,"center","Run Program");
      int btnMainRunSim = gui.addButton(mainScreen,"center","Run Simulation");
+
      int btnSimGoBack = gui.addButton(simScreen,"south","Go Back");
      int btnSimCustomer = gui.addButton(simScreen,"south","Invoke Customer Order");
      int btnSimSupplier = gui.addButton(simScreen,"south","Invoke Supplier Order");
-     int btnSimDummy = gui.addButton(simScreen,"south","dummy");
+     int btnSimSyncOnline = gui.addButton(simScreen,"south","Sync Online");
+     int btnSimClearOnline = gui.addButton(simScreen,"west","Clear Online");
+
      int btnCrudGoBack = gui.addButton(crudScreen,"south","Go Back");
      int btnCrudCreate = gui.addButton(crudScreen,"south","Create Product");
      int btnCrudRead = gui.addButton(crudScreen,"south","Read Product");
@@ -50,7 +52,7 @@ public class Main{
      int txtSharkSoft = gui.addLabel(mainScreen,"north","StuffBuySharks Co. Warehouse Portal");
      int txtMainStatusBar = gui.addLabel(mainScreen,"south",txtMainStatusBarOutput);
      int txtSimTime = gui.addLabel(simScreen,"north","Time");
-     int txtSimOutput = gui.addLabel(simScreen,"center",simOutputStream.getStream());
+     int txtSimOutput = gui.addLabel(simScreen,"center","---");
      int txtSimOutput2 = gui.addLabel(simScreen,"center","");
      int txtCrudOutput = gui.addLabel(crudScreen,"center","CRUD output goes here");
     //end labels...
@@ -67,7 +69,7 @@ public class Main{
 
      InventorySimulator simulator01 = new InventorySimulator(); //create the simulator
      Timer timer = new Timer(1000,null); //create the render timer
-     CRUDDB db1 = new CRUDDB(); //create the crud object
+     CRUDDB db1 = new CRUDDB("sharktable"); //create the crud object
      Connection conn; //connection object used to connect with DB
 
      void appRender() {
@@ -81,23 +83,14 @@ public class Main{
             gui.setText(txtCrudOutput,crudOutputStream.getStream());
         }
         if (simulationRunning == true) {
-            timeSeconds++; //add time
-            gui.setText(txtSimTime,"Time=" + Integer.toString(timeSeconds)); //print the time
+            simulator01.runSim();
+            gui.setText(txtSimTime,"Time=" + Integer.toString(simulator01.getTimeSeconds()));
 
-            //process the time
-            if (timeSeconds >= 86400) {
-                simOutputStream.push("Day Over!-------------------------------------------");
-                simulator01.resetAllSuppliers();
-                timeSeconds = 0;
-                dayCounter++;
-                if (dayCounter < 7) simOutputStream.push("Starting day " + dayCounter);
-            }
-            //...advance day counter each time the seconds hits 86400, then reset the seconds
             //...if day reaches 6, then simulation is over. This program simulates a week at a time.
-            if (dayCounter > 6) simulationRunning = false;
+            if (simulator01.getDayCounter() > 6) simulationRunning = false;
 
             //finalize and render all result at the end of the frame
-            gui.setText(txtSimOutput,simOutputStream.getStream());
+            gui.setText(txtSimOutput,simulator01.getStream());
             gui.setText(txtSimOutput2,simulator01.printTotalResult());
         }
     }
@@ -108,7 +101,7 @@ public class Main{
         gui.getButton(btnMainRunSim).setEnabled(false);
         setupListeners();
 
-        simulator01.initializeSimulatorData(); //initialize the simulator
+        simulator01.initializeSimulatorData(); //initialize the simulator, creates database inside itself
         timer.start(); //start rendering
 
         //Establish connection to database
@@ -168,22 +161,30 @@ public class Main{
          gui.getButton(btnSimCustomer).addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
-                 simOutputStream.push(simulator01.processBuyer(timeSeconds));
+                 simulator01.processBuyer(timeSeconds);
              }
          });
 
          gui.getButton(btnSimSupplier).addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
-                 simOutputStream.push(simulator01.processSupplier(timeSeconds,dayCounter));
+                 simulator01.processSupplier(timeSeconds,dayCounter);
              }
          });
-         gui.getButton(btnSimDummy).addActionListener(new ActionListener() {
+         gui.getButton(btnSimSyncOnline).addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
-                 //dummy
+                 simulator01.syncInventoryOnline();
              }
          });
+
+         gui.getButton(btnSimClearOnline).addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 simulator01.clearInventoryOnline();
+             }
+         });
+
 
          //CRUD
          gui.getButton(btnCrudGoBack).addActionListener(new ActionListener() {
