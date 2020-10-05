@@ -34,12 +34,11 @@ public class Main{
     //buttons...
      int btnMainRunProgram = gui.addButton(mainScreen,"center","Run Program");
      int btnMainRunSim = gui.addButton(mainScreen,"center","Run Simulation");
+     int btnMainExit = gui.addButton(mainScreen,"center","Exit Program");
 
      int btnSimGoBack = gui.addButton(simScreen,"south","Go Back");
      int btnSimCustomer = gui.addButton(simScreen,"south","Invoke Customer Order");
      int btnSimSupplier = gui.addButton(simScreen,"south","Invoke Supplier Order");
-     int btnSimSyncOnline = gui.addButton(simScreen,"south","Sync Online");
-     int btnSimClearOnline = gui.addButton(simScreen,"west","Clear Online");
 
      int btnCrudGoBack = gui.addButton(crudScreen,"south","Go Back");
      int btnCrudCreate = gui.addButton(crudScreen,"south","Create Product");
@@ -152,6 +151,14 @@ public class Main{
                  simulationRunning=true; //activate simulation
              }
          });
+
+         gui. getButton(btnMainExit).addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 simulator01.clearInventoryOnline();//clear out what you created in the online database
+                 System.exit(0); //and then exit the program
+             }
+         });
          gui.getButton(btnSimGoBack).addActionListener(new ActionListener() {
              public void actionPerformed(ActionEvent e) {
                  gui.screenChangeInto(mainScreen);
@@ -169,19 +176,6 @@ public class Main{
              @Override
              public void actionPerformed(ActionEvent e) {
                  simulator01.processSupplier(timeSeconds,dayCounter);
-             }
-         });
-         gui.getButton(btnSimSyncOnline).addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                 simulator01.syncInventoryOnline();
-             }
-         });
-
-         gui.getButton(btnSimClearOnline).addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                 simulator01.clearInventoryOnline();
              }
          });
 

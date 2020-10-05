@@ -25,7 +25,7 @@ public class CRUDDB
         String print="";
         if(_productId.equals("") || _quantity.equals("") || _wholesaleCost.equals("")
         || _salePrice.equals("")
-        || _supplierId.equals("")){
+        || _supplierId.equals("")){// this is so that empty forms won't crash this function
             return print;
         }
 
@@ -46,7 +46,7 @@ public class CRUDDB
         return print;
     }
 
-    public static String select(Connection conn) throws SQLException { //wait for neol, add product
+    public static String select(Connection conn) throws SQLException { //wait for noel, add product
         // name identifier to search for specific product
         String print="";
         String selectSql = "SELECT * FROM cs3250main."+table;

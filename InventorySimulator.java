@@ -123,11 +123,8 @@ public class InventorySimulator {
                 temp.setFields(supplierID_list);
                 Inventory.add(temp);
             }
+
             //add this inventory to the online database
-
-        }
-
-        void syncInventoryOnline(){
             for (int i=0;i<noOfProducts;i++) {
                 try {
                     simDB.addProduct(simConn, Inventory.get(i).productID,
@@ -141,6 +138,7 @@ public class InventorySimulator {
                 }
             }
         }
+
         void clearInventoryOnline(){ //call this when closing the program
             for (int i=0;i<noOfProducts;i++) {
                 try {
@@ -164,7 +162,7 @@ public class InventorySimulator {
         void processBuyer(int _timeSeconds){
 
                 //buyer handling code starts here
-                stream1.push("Customer order received! Time is "+_timeSeconds+"---------------<br>");
+                stream1.push("<br>Customer order received! Time is "+_timeSeconds+"---------------<br>");
                 //since buyer will enter their own random preferences regarding the product...
                 //we will randomize that as well for the sake of this simulation
 
@@ -193,19 +191,36 @@ public class InventorySimulator {
                     stream1.push("No more " + Inventory.get(selected).productID + " is left..."+"<br>");
                     stream1.push("Customer lost, end of order..."+"<br>");
                 }
+
+                //now update this to online database
+            int i=selected;
+            try {
+                simDB.update(simConn, Inventory.get(i).productID,
+                        Integer.toString(Inventory.get(i).quantity),
+                        Integer.toString(Inventory.get(i).wholesalePrice),
+                        Integer.toString(Inventory.get(i).salePrice),
+                        Inventory.get(i).supplier.supplierID);
+                stream1.push("<br>Online updated: "+Inventory.get(i).productID+"<br>");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
             }
 
             void processSupplier(int _timeSeconds, int _dayCounter) {
                 int i = 0;
-                while (i < noOfProducts) {
-                    if (!Inventory.get(i).supplier.suppliedForTheDay) {
+                /*while (i < noOfProducts) {
+                    if (!Inventory.get(i).supplier.suppliedForTheDay) { //can't figure this out, leave for later
                         if (Inventory.get(i).supplier.supplierDay1 == _dayCounter ||
                                 Inventory.get(i).supplier.supplierDay2 == _dayCounter) {
                             int supplierTime = Inventory.get(i).supplier.supplierTime; //if it's the right days
                             if (supplierTime == _timeSeconds / 3600) //if it's the right hour
                             {
-                                Inventory.get(i).supplier.suppliedForTheDay = true;
-                                stream1.push("******Delivery arrived from " + Inventory.get(i).supplier.supplierID + "******<br>");
+                                Inventory.get(i).supplier.suppliedForTheDay = true;*/
+
+                                //choose a random product from inventory to be delivered.
+                                Random rand = new Random();
+                                i = rand.nextInt(noOfProducts); //random from 50 to 250
+                                stream1.push("<br>******Delivery arrived from " + Inventory.get(i).supplier.supplierID + "******<br>");
                                 stream1.push("Time is " + timeSeconds + "<br>");
                                 stream1.push("Product delivered: " + Inventory.get(i).productID + "<br>");
                                 int noOfDelivery = (int) (Math.random() * (30 - 1 + 1) + 1);
@@ -217,14 +232,24 @@ public class InventorySimulator {
                                 totalDeliveries += noOfDelivery;
                                 stream1.push("Company Asset is " + companyAsset + " and " +
                                         "we have " + Inventory.get(i).quantity + " of " + Inventory.get(i).productID + "<br>");
-                                break;
+                                //break;
+                                try {
+                                    simDB.update(simConn, Inventory.get(i).productID,
+                                            Integer.toString(Inventory.get(i).quantity),
+                                            Integer.toString(Inventory.get(i).wholesalePrice),
+                                            Integer.toString(Inventory.get(i).salePrice),
+                                            Inventory.get(i).supplier.supplierID);
+                                    stream1.push("<br>Online updated: "+Inventory.get(i).productID+"<br>");
+                                } catch (SQLException ex) {
+                                    ex.printStackTrace();
+                                }
                             }
-                        }
+                        /*}
                     }
                     i++;
 
-                }
-            }
+                }*/
+            //}
             void resetAllSuppliers(){
                 //Reset all supplier delivered status.
                 for (int j=0;j<noOfProducts;j++)

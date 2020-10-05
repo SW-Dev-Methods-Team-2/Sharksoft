@@ -64,6 +64,8 @@ class Screen{
     public Screen() { //does this constructor have to be public??
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //without this, frame is hidden but
         frame.setPreferredSize(new Dimension(640, 480));
+        frame.setUndecorated(true); //remove windows border,we don't want user hitting the close button
+        frame.setLocation(128,128);
         frame.setBackground(Color.decode("#ffffff"));
     }
 
