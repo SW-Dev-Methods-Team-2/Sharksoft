@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>orderform</title>
+    <meta name="description" content="page with orderform">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body class="">
+    <div class="container">
+        <div class="nav-wrapper">
+            <div class="leftside">
+                <div class="brand">
+                    <div>STUFFBUYSHARKS</div>
+                </div>
+                <div class="motto">
+                    <div>THE ONE STOP SHOP FOR ALL YOUR SHARK NEEDS</div>
+                </div>
+            </div>
+            <div class="rightside">
+                <div class="nav-linkwrapper">
+                    <a href="index.html">Home</a>
+                </div>
+
+                <div class="nav-linkwrapper">
+                    <a href="orderform.html">Order Form</a>
+                </div>
+                <!-- 
+                <div class="nav-linkwrapper">
+                    <a href="login.html">Login</a>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+    <div class="content-wrapper">
+       <div class="order-form-wrapper">
+            <h1>Online Orders</h1>
+            <p>Use the form below to send us your order.</p>
+            <!-- to do-->
+            <form action="order.php" method="post">
+                <label for="userid">User ID:</label><br>
+                <input type="text" id="userid" name="userid" value="userid#"><br><br>
+                <label for="email">Enter your email:</label><br>
+                <input type="email" id="email" name="email" required><br><br>
+                <label for="address">Shipping address:</label><br>
+                <input type="text" id="address" name="address" value="123 shark lane Sharksville CO 12345" required><br><br>
+                <label for="items">Items to be ordered:</label><br>
+                <input type="text" id="email" name="email" value="item#,quantity" required><br><br>
+                <label for="myfile">Upload an order file:</label><br>
+                <input type="file" id="myfile" name="myfile"><br><br>
+                <input type="submit" value="Submit">
+                <input type="reset">
+              </form>
+       </div>
+    </div>
+    
+</body> 
+
+</html>
