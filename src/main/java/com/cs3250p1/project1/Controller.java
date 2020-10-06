@@ -1,3 +1,5 @@
+package com.cs3250p1.project1;
+
 import java.sql.SQLException;
 import java.util.Scanner;
 import java.sql.*;

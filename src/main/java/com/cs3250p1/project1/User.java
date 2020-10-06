@@ -1,3 +1,5 @@
+package com.cs3250p1.project1;
+
 public class User {
 
     protected String user_ID;
@@ -53,7 +55,7 @@ public class User {
         this.first_name = first_name;
     }
  
-    public double getlast_Name() {
+    public String getlast_Name() {
         return last_name;
     }
  
@@ -61,7 +63,7 @@ public class User {
         this.last_name = last_name;
     }
  
-    public int getadress_line1() {
+    public String getadress_line1() {
         return adress_line1;
     }
  

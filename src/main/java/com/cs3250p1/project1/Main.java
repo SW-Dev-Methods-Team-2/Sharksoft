@@ -1,3 +1,5 @@
+package com.cs3250p1.project1;
+
 //Main class of entry of this application
 
 

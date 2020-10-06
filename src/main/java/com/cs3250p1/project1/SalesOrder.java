@@ -1,3 +1,5 @@
+package com.cs3250p1.project1;
+
 public class SalesOrder {
     protected String id;
     protected double wholesale_cost;
@@ -33,7 +35,7 @@ public class SalesOrder {
     }
  
     public double getwholesale_cost() {
-        return wholsale_cost;
+        return wholesale_cost;
     }
  
     public void setwholesale_cost(int wholesale_cost) {
