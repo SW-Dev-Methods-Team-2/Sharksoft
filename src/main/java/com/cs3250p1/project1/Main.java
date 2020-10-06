@@ -2,7 +2,6 @@ package com.cs3250p1.project1;
 
 //Main class of entry of this application
 
-
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
@@ -11,10 +10,13 @@ import java.sql.SQLException;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 
 //import static java.lang.System.exit;
 //import static java.lang.Thread.*;
-
+@SpringBootApplication
 public class Main{
 
     //declare all variables and objects needed to run the program
@@ -52,6 +54,7 @@ public class Main{
     //PROGRAM ENTRY POINT----------------------------
     public static void main(String[] args) {
 
+        SpringApplication.run(Main.class, args);
         final String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
         final String dbUsername = "admin";
         final String dbPassword = "cs3250db1";

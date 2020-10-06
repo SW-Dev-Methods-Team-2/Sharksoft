@@ -2,7 +2,7 @@ package com.cs3250p1.project1;
 
 import java.sql.SQLException;
 import java.util.Scanner;
-import java.sql.*;
+//import java.sql.*;
 
 public class Controller {
 
@@ -22,7 +22,7 @@ public class Controller {
         try {
             p1.insertProduct(pro1, sharktabkle);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            
             e.printStackTrace();
         }
 

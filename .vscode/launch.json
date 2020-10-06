@@ -2,11 +2,28 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Project1Application",
+            "request": "launch",
+            "mainClass": "com.cs3250p1.project1.Project1Application",
+            "projectName": "project1"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-Main<project1>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "mainClass": "com.cs3250p1.project1.Main",
+            "projectName": "project1",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-Controller<project1>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.cs3250p1.project1.Controller",
             "projectName": "project1",
             "args": ""
         }

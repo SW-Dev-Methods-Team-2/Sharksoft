@@ -1,9 +1,9 @@
 package com.cs3250p1.project1;
 
-import java.nio.file.FileSystemNotFoundException;
+//import java.nio.file.FileSystemNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
+//import java.util.Scanner;
 
 class Supplier{
     String supplierID;
