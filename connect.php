@@ -7,13 +7,14 @@ $dbservername =  "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws
 $dbusername = "admin";
 $dbpassword = "cs3250db1";
 // Create connection
-$conn = new mysqli($dbservername, $dbusername, $dbpassword);
+$conn = new mysqli($host, $dbservername, $dbusername, $dbpassword);
+
 // Check connection
 if (!$conn) {die("Connection failed: " .mysqli_connect_error());}
 echo "Connected Successfully";
 }
 else{
-$sql = "INSERT INTO account(email) values ('$username')";
+$sql = "INSERT INTO Account(email) values ('$username')";
 if ($conn->query($sql)){
 echo "New Record is inserted successfully";    
 }
@@ -25,7 +26,7 @@ $conn->close();
 }
 }
 else{
-echo "Email should not be empty";
+echo "Email should not be empty.";
 die();    
 }
 ?>
