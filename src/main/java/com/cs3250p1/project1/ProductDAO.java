@@ -55,7 +55,7 @@ public class ProductDAO {
     }
      
     public boolean insertProduct(Product product, String table) throws SQLException {
-        String sql = "INSERT INTO " + table + "(product_id, quantity, wholsale_cost, sale_price, suplier_id) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO " + table + "(product_id, quantity, wholesale_cost, sale_price, supplier_id) VALUES (?, ?, ?, ?, ?)";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
@@ -86,11 +86,11 @@ public class ProductDAO {
 
             String id = resultSet.getString("product_id");
             int quantity = resultSet.getInt("quantiy");
-            double wholsale_cost = resultSet.getDouble("wholesale_cost");
+            double wholesale_cost = resultSet.getDouble("wholesale_cost");
             double sale_price = resultSet.getDouble("sale_price");
             String supplier_id = resultSet.getString("supplier_id");
              
-            Product product = new Product(id, quantity, wholsale_cost, sale_price, supplier_id);
+            Product product = new Product(id, quantity, wholesale_cost, sale_price, supplier_id);
             listProduct.add(product);
         }
          
@@ -117,7 +117,7 @@ public class ProductDAO {
     }
      
     public boolean updateProduct(Product product, String table) throws SQLException {
-        String sql = "UPDATE " + table + " SET quantity=?, wholsale_cost=?, sale_price=?, suplier_id=? WHERE product_id =? ";
+        String sql = "UPDATE " + table + " SET quantity=?, wholesale_cost=?, sale_price=?, supplier_id=? WHERE product_id =? ";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
