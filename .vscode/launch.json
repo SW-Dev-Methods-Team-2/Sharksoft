@@ -22,7 +22,7 @@
             "name": "Spring Boot-Controller<project1>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
+            "console": "integratedTerminal",
             "mainClass": "com.cs3250p1.project1.Controller",
             "projectName": "project1",
             "args": ""
