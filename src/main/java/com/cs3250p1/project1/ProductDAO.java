@@ -37,11 +37,19 @@ public class ProductDAO {
                 SQLException ex) {
             ex.printStackTrace();
         }*/
+        
         if (jdbcConnection == null || jdbcConnection.isClosed()) {
             try {
-                Class.forName("com.mysql.jdbc.Driver");
-            } catch (ClassNotFoundException e) {
-                throw new SQLException(e);
+                Connection conn = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+
+            if (conn != null) {
+                //report status to the status bar in the main frame
+                System.out.println("Status: ******CONNECTING******");
+                System.out.println("Status: Connected to database");
+            }
+            }  catch (
+                SQLException ex) {
+            ex.printStackTrace();
             }
             jdbcConnection = DriverManager.getConnection(
                                         jdbcURL, jdbcUsername, jdbcPassword);
