@@ -6,9 +6,9 @@ public class User {
     protected String first_name;
     protected String last_name;
     protected String email;
-    protected String adress_line1;
-    protected String adress_line2;
-    protected String adress_line3;
+    protected String address_line1;
+    protected String address_line2;
+    protected String address_line3;
 
  
     public User() {
@@ -18,25 +18,25 @@ public class User {
         this.user_ID = user_ID;
     }
  
-    public User(String user_ID, String first_name, String last_name, String email, String adress_line1,
-                    String adress_line2, String adress_line3) {
+    public User(String user_ID, String first_name, String last_name, String email, String address_line1,
+                    String address_line2, String address_line3) {
        
 
-        this(first_name,last_name,email,adress_line1, adress_line2,adress_line3);
+        this(first_name,last_name,email,address_line1, address_line2,address_line3);
         this.user_ID = user_ID;
     }
      
-    public User(String first_name, String last_name, String email, String adress_line1,
-                String adress_line2, String adress_line3) {
+    public User(String first_name, String last_name, String email, String address_line1,
+                String address_line2, String address_line3) {
 
        
 
         this.first_name= first_name;
         this.last_name = last_name;
         this.email = email;
-        this.adress_line1 = adress_line1;
-        this.adress_line2 = adress_line2;
-        this.adress_line3 = adress_line3;
+        this.address_line1 = address_line1;
+        this.address_line2 = address_line2;
+        this.address_line3 = address_line3;
     }
  
     public String getuserId() {
@@ -63,28 +63,28 @@ public class User {
         this.last_name = last_name;
     }
  
-    public String getadress_line1() {
-        return adress_line1;
+    public String getaddress_line1() {
+        return address_line1;
     }
  
-    public void setadress_line1(String adress_line1) {
-        this.adress_line1 = adress_line1;
+    public void setaddress_line1(String address_line1) {
+        this.address_line1 = address_line1;
     }
 
-    public String getadress_line2 (){
-        return adress_line2;
+    public String getaddress_line2 (){
+        return address_line2;
     }
 
-    public void setadress_line2(String adress_line2){
-        this.adress_line2 = adress_line2;
+    public void setaddress_line2(String address_line2){
+        this.address_line2 = address_line2;
     }
 
-    public String getaddress_line3(String adress_line3){
-        return adress_line3;
+    public String getaddress_line3(String address_line3){
+        return address_line3;
     }
 
-    public void setadress_line3(String adress_line3){
-        this.adress_line3 = adress_line3;
+    public void setaddress_line3(String address_line3){
+        this.address_line3 = address_line3;
     }
     
 }
