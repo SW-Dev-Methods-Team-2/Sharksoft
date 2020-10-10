@@ -1,32 +1,34 @@
 <?php
 
-$username = filter_input(INPUT_POST, 'email');
-if (!empty($username)){
-$host = "localhost"; //I think that we have to add the host of the website later here     
-$dbservername =  "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-$dbusername = "admin";
-$dbpassword = "cs3250db1";
+$email = filter_input(INPUT_POST, 'email');
+$user = filter_input(INPUT_POST, 'user_id');
+
+
+$servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
+$username = "admin";
+$password = "cs3250db1";
+$dbname = "cs3250main";
+$tablename = "sales_orders";
+//$dbname = "cs-3250main.sales_orders";
+
 // Create connection
-$conn = new mysqli($host, $dbservername, $dbusername, $dbpassword);
+$conn = new mysqli($servername, $username, $password, $dbname);
+  //echo "connected successfully";
 
 // Check connection
-if (!$conn) {die("Connection failed: " .mysqli_connect_error());}
-echo "Connected Successfully";
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
 }
-else{
-$sql = "INSERT INTO Account(email) values ('$username')";
-if ($conn->query($sql)){
-echo "New Record is inserted successfully";    
+
+$sql = "INSERT INTO $tablename (product_id, quantity, userID)
+VALUES ('$productid', '$productquantity', '$user')";
+
+if ($conn->query($sql) === TRUE) {
+  echo "New record created successfully";
+} else {
+  echo "Error: " . $sql . "<br>" . $conn->error;
 }
-else{
-echo "Error: ". $sql ."
-". $conn->error;    
-}
+
+
 $conn->close();
-}
-}
-else{
-echo "Email should not be empty.";
-die();    
-}
 ?>
