@@ -1,35 +1,31 @@
 <?php
 
 $email = filter_input(INPUT_POST, 'email');
-$email = filter_input(INPUT_POST, 'email');
-$email = filter_input(INPUT_POST, 'email');
-$email = filter_input(INPUT_POST, 'email');
+$userid = filter_input(INPUT_POST, 'userid');
+$productid = filter_input(INPUT_POST, 'itemid');
+$productquantity = filter_input(INPUT_POST, 'itemquant');
 
-$host = "localhost"; //I think that we have to add the host of the website later here     
-$dbservername =  "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-$dbusername = "admin";
-$dbpassword = "cs3250db1";
+$servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
+$username = "admin";
+$password = "cs3250db1";
+//$dbname = "myDB";
+
 // Create connection
-$conn = new mysqli($host, $dbservername, $dbusername, $dbpassword);
+$conn = new mysqli($servername, $username, $password);
 
 // Check connection
-if (!$conn) {die("Connection failed: " .mysqli_connect_error());}
-echo "Connected Successfully";
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
 }
-else{
-$sql = "INSERT INTO Account(email) values ('$username')";
-if ($conn->query($sql)){
-echo "New Record is inserted successfully";    
+
+$sql = "INSERT INTO sales_orders (product_id, quantity, user_ID)
+VALUES ($productid, $productquantity, $userid)";
+
+if ($conn->query($sql) === TRUE) {
+  echo "New record created successfully";
+} else {
+  echo "Error: " . $sql . "<br>" . $conn->error;
 }
-else{
-echo "Error: ". $sql ."
-". $conn->error;    
-}
+
 $conn->close();
-}
-}
-else{
-echo "Email should not be empty.";
-die();    
-}
 ?>
