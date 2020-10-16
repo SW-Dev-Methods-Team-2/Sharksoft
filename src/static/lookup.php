@@ -1,3 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>orderform</title>
+    <meta name="description" content="Order Processing">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+
+<body class="">
+    <div class="container">
+        <div class="nav-wrapper">
+            <div class="leftside">
+                <div class="brand">
+                    <div>STUFFBUYSHARKS</div>
+                </div>
+                <div class="motto">
+                    <div>THE ONE STOP SHOP FOR ALL YOUR SHARK NEEDS</div>
+                </div>
+            </div>
+            <div class="rightside">
+                <div class="nav-linkwrapper">
+                    <a href="index.html">Home</a>
+                </div>
+
+                <div class="nav-linkwrapper">
+                    <a href="orderform.html">Order Form</a>
+                </div>
+                <!-- 
+                <div class="nav-linkwrapper">
+                    <a href="login.html">Login</a>
+                </div>
+                -->
+
+            </div>
+        </div>
+    </div>
+    <div class="content-wrapper">
+       <div class="order-form-wrapper">
+            <h1>Your past orders:</h1>
+       </div>
+    </div>
+
 <?php
 
 
@@ -29,3 +74,7 @@ if ($conn->query($sql) === TRUE) {
 
 $conn->close();
 ?>
+
+</body> 
+
+</html>
