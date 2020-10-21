@@ -9,19 +9,39 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
 ?>
  
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
+ <!DOCTYPE html>
+<html>
 
-    <style type="text/css">
-        body{ font: 14px sans-serif; text-align: center; }
-    </style>
+<head>
+    <meta charset="utf-8" />
+    <title>orderform</title>
+    <meta name="description" content="page with orderform">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<body class="">
+    <div class="container">
+        <div class="nav-wrapper">
+            <div class="leftside">
+                <div class="brand">
+                    <div>STUFFBUYSHARKS</div>
+                </div>
+                <div class="motto">
+                    <div>THE ONE STOP SHOP FOR ALL YOUR SHARK NEEDS</div>
+                </div>
+            </div>
+            <div class="rightside">
+                <div class="nav-linkwrapper">
+                    <a href="index.html">Home</a>
+                </div>
+                
+            </div>
+        
+        </div>
+
+    <div class="wrapper">
     <div class="page-header">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>
+        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome! .</h1>
     </div>
     <p>
         <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
