@@ -50,7 +50,7 @@
   $password = "cs3250db1";
   $dbname = "cs3250main";
   $tablename = "sales_orders";
-  //$maintable = "shark_table"
+  $maintable = "simsharktable"
 
   // Create connection
   $conn = new mysqli($servername, $username, $password, $dbname);
@@ -64,17 +64,20 @@
   $email = filter_input(INPUT_POST, 'email');
   $useraddress = filter_input(INPUT_POST, 'address');
   $user = filter_input(INPUT_POST, 'user_id');
-   
   $productid = filter_input(INPUT_POST, 'itemid');
   $productquantity = filter_input(INPUT_POST, 'itemquant');
+  $orderdate = time();
+
+  //$sql = "select $maintable"
+
   //to do: only allow them to order as much as we have
+
   //add a date field, email, location, fufilled
   //add fufilled column and date column/time stamp
-  $sql = "INSERT INTO $tablename (product_id, quantity, userID)
-  VALUES ('$productid', '$productquantity', '$user')";
+  $sql = "INSERT INTO $tablename (product_id, quantity, userID, order_date, fufilled )
+  VALUES ('$productid', '$productquantity', '$user', '$orderdate', 'no')";
  //to do: post price
 
- //to do: update shark table with orders
   if ($conn->query($sql) === TRUE) {
     echo "<b>Your order: </b><br><br>";
     echo "<b>User ID:</b> $user <br><br><b>Email:</b> $email <br><br><b>Shipping Address:</b> $useraddress<br><br>";
@@ -83,8 +86,15 @@
     echo "<br>There was an error with your order: " . $sql . "<br>" . $conn->error;
   }
 
+//to do: update shark table with orders
+  $sql = "UPDATE $maintable SET quantity= $newquantity  WHERE product_id = $productid ";
+  if ($conn->query($sql) === TRUE) {
+    $sql = "UPDATE $tablename SET fufilled= 'yes'  WHERE product_id = $productid ";
+  }
+
   //send confirmation email
   //send internal order alert email
+
   $conn->close();
   ?>
 

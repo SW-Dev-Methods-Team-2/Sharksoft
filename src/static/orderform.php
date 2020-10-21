@@ -38,9 +38,31 @@
     </div>
     <div class="content-wrapper">
        <div class="order-form-wrapper">
-            <h1>Online Orders</h1>
-            <p>Use the form below to send us your order.</p>
+            <h2>Online Orders</h2>
+            <h1>Use the form below to send us your order.</h1>
             
+            <?php
+
+            $servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
+            $username = "admin";
+            $password = "cs3250db1";
+            $dbname = "cs3250main";
+            $tablename = "sales_orders";
+            $maintable = "simsharktable"
+
+            // Create connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+            //echo "connected successfully";
+
+            // Check connection
+            if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+            }
+
+            $sql = "SELECT quantity, salecost FROM $maintable WHERE product_id = $productid ";
+
+            ?>
+            <p><span class="error">* required field</span></p>
             <form action="order.php" method="post">
                 <label for="user_id">User ID:</label><br>
                 <input type="text" id="user_id" name="user_id" value="userid#" required><br><br>
@@ -56,7 +78,8 @@
                 <input type="file" id="myfile" name="myfile"><br><br>
                 <input type="submit" value="Submit">
                 <input type="reset">
-              </form>
+            </form>
+
        </div>
     </div>
     
