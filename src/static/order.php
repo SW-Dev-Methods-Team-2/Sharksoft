@@ -45,19 +45,16 @@
  
   <?php
 
-  $servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-  $username = "admin";
-  $password = "cs3250db1";
-  $dbname = "cs3250main";
-  $tablename = "sales_orders";
+// Include config file
+require_once "config.php";
   //$maintable = "shark_table"
 
   // Create connection
-  $conn = new mysqli($servername, $username, $password, $dbname);
+ // $conn = new mysqli($servername, $username, $password, $dbname);
     //echo "connected successfully";
 
   // Check connection
-  if ($conn->connect_error) {
+  if ($link->connect_error) {
     die("Connection failed: " . $conn->connect_error);
   }
 
@@ -75,7 +72,7 @@
  //to do: post price
 
  //to do: update shark table with orders
-  if ($conn->query($sql) === TRUE) {
+  if ($link->query($sql) === TRUE) {
     echo "<b>Your order: </b><br><br>";
     echo "<b>User ID:</b> $user <br><br><b>Email:</b> $email <br><br><b>Shipping Address:</b> $useraddress<br><br>";
     echo "<b>Item ID#:</b> $productid  <b>Quantity:</b> $productquantity";
@@ -85,7 +82,7 @@
 
   //send confirmation email
   //send internal order alert email
-  $conn->close();
+  $link->close();
   ?>
 
 </body> 
