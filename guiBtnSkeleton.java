@@ -12,6 +12,12 @@ public class guiBtnSkeleton{                               //changes the backgro
     //crudBtnGroup. JPanel "south" will also hold "southTextField"
     public static JPanel south;
 
+    public static JPanel mainBtnPanel;
+
+    public static JPanel empPortalPanel;
+
+    public static JPanel simPanel;
+
     //"mainBtnGroup will consist of JRadioButtons "empPortalBtn" and "simBtn"
     public ButtonGroup mainBtnGroup;
 
@@ -44,7 +50,10 @@ public class guiBtnSkeleton{                               //changes the backgro
     JRadioButton simUpdateBtn;
     JRadioButton simDeleteBtn;
 
+    JRadioButton crudGoBack;
 
+    TextField southTextField;
+    TextField northTextField;
 
     public static void main(String[] args) {    //Main method begins the program
 
@@ -62,11 +71,21 @@ public class guiBtnSkeleton{                               //changes the backgro
 
         south = new JPanel();           // JPanel "southPanel" is a new JPanel
 
+        mainBtnPanel = new JPanel();
+
+        empPortalPanel = new JPanel();
+
+        simPanel = new JPanel();
+
         mainBtnGroup = new ButtonGroup();     // Initializes "mainBtnGroup" as a new ButtonGroup
 
         empCrudBtnGroup = new ButtonGroup();  // Initializes "empCrudBtnGroup" as a new ButtonGroup
 
         simCrudBtnGroup = new ButtonGroup(); // Initializes "simCrudBtnGroup" as a new ButtonGroup
+
+        southTextField = new TextField();
+
+        northTextField = new TextField();
 
         buildNorth();                   // build the north JPanel
 
@@ -79,27 +98,33 @@ public class guiBtnSkeleton{                               //changes the backgro
 
         frame.add(north, BorderLayout.NORTH); //Default manager that puts the "north" JPanel in the North of frame
 
-        //north.add();
+        south.add(mainBtnPanel);
 
-        south.add(empPortalBtn);
-        south.add(simBtn);
+        south.add(empPortalPanel);
+        empPortalPanel.setVisible(false);
+        south.add(simPanel);
+        simPanel.setVisible(false);
+        south.add(crudGoBack);
+        crudGoBack.setVisible(false);
+        south.add(southTextField);
+        southTextField.setVisible(false);
 
-        south.add(empCreateBtn);
-        south.add(empReadBtn);
-        south.add(empUpdateBtn);
-        south.add(empDeleteBtn);
+        north.add(northTextField);
 
-        south.add(simCreateBtn);
-        south.add(simReadBtn);
-        south.add(simUpdateBtn);
-        south.add(simDeleteBtn);
+        mainBtnPanel.add(empPortalBtn);
+        mainBtnPanel.add(simBtn);
 
-        //attempting to use "backToMain" in two separate groups
-        south.add(empToMain);
-        south.add(simToMain);
+        empPortalPanel.add(empCreateBtn);
+        empPortalPanel.add(empReadBtn);
+        empPortalPanel.add(empUpdateBtn);
+        empPortalPanel.add(empDeleteBtn);
+        empPortalPanel.add(empToMain);
 
-        empToMain.setVisible(false);
-        simToMain.setVisible(false);
+        simPanel.add(simCreateBtn);
+        simPanel.add(simReadBtn);
+        simPanel.add(simUpdateBtn);
+        simPanel.add(simDeleteBtn);
+        simPanel.add(simToMain);
 
         frame.pack();                   // This condenses the GUI to have no unnecessary space
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE); //This exits the program when the JFrame is closed
@@ -133,6 +158,8 @@ public class guiBtnSkeleton{                               //changes the backgro
         simUpdateBtn = new JRadioButton("Update sim DB");
         simDeleteBtn = new JRadioButton("Delete from sim DB");
 
+        crudGoBack = new JRadioButton("go back");
+
         mainBtnGroup.add(empPortalBtn);
         mainBtnGroup.add(simBtn);
 
@@ -140,94 +167,107 @@ public class guiBtnSkeleton{                               //changes the backgro
         empCrudBtnGroup.add(empReadBtn);
         empCrudBtnGroup.add(empUpdateBtn);
         empCrudBtnGroup.add(empDeleteBtn);
-        // attempting to use "backToMain" in both "empCrudBtnGroup" and "simCrudBtnGroup"
         empCrudBtnGroup.add(empToMain);
 
         simCrudBtnGroup.add(simCreateBtn);
         simCrudBtnGroup.add(simReadBtn);
         simCrudBtnGroup.add(simUpdateBtn);
         simCrudBtnGroup.add(simDeleteBtn);
-        // attempting to use "backToMain" in both "empCrudBtnGroup" and "simCrudBtnGroup"
         simCrudBtnGroup.add(simToMain);
 
-        empCreateBtn.setVisible(false);
-        empReadBtn.setVisible(false);
-        empUpdateBtn.setVisible(false);
-        empDeleteBtn.setVisible(false);
+        empPortalBtn.addActionListener(e -> {
 
-        simCreateBtn.setVisible(false);
-        simReadBtn.setVisible(false);
-        simUpdateBtn.setVisible(false);
-        simDeleteBtn.setVisible(false);
-
-        empPortalBtn.addActionListener(e -> { //adds action listener to empJButton and changes visibility of buttons and
-
-            empPortalBtn.setVisible(false);
-            simBtn.setVisible(false);
-
-            empCreateBtn.setVisible(true);
-            empReadBtn.setVisible(true);
-            empUpdateBtn.setVisible(true);
-            empDeleteBtn.setVisible(true);
-            empToMain.setVisible(true);
-
-            //other JPanels
-
-            //empJButton.setBackground(Color.RED);  //This case the JRadioButton is clicked and turns its background to Red
-
-            //simJButton.setBackground(Color.WHITE);//while turning other JRadioButton backgrounds to white
-
-            //panelInPanel.setVisible(false);
-
-            //mainScreenLabel.setVisible(true);
+            mainBtnPanel.setVisible(false);
+            empPortalPanel.setVisible(true);
+            crudGoBack.setVisible(false);
 
         });
-        simBtn.addActionListener(e -> {//adds action listener to bJButton and changes color of each button background
 
-            empPortalBtn.setVisible(false);
-            simBtn.setVisible(false);
+        simBtn.addActionListener(e -> {
 
-            simCreateBtn.setVisible(true);
-            simReadBtn.setVisible(true);
-            simUpdateBtn.setVisible(true);
-            simDeleteBtn.setVisible(true);
-            simToMain.setVisible(true);
-
-            //simJButton.setBackground(Color.BLUE);
-
-            //empJButton.setBackground(Color.WHITE); //This case the JRadioButton is clicked and turns its background to Blue
-
-            //panelInPanel.setVisible(true); // this toggles the panel within the panel from off to on
-
-            //mainScreenLabel.setVisible(false);//toggles the original panel in the north from on to off
+            mainBtnPanel.setVisible(false);
+            simPanel.setVisible(true);
+            crudGoBack.setVisible(false);
 
         });
         empToMain.addActionListener(e ->{
 
-            empPortalBtn.setVisible(true);
-            simBtn.setVisible(true);
+            mainBtnPanel.setVisible(true);
+            empPortalPanel.setVisible(false);
 
-            empCreateBtn.setVisible(false);
-            empReadBtn.setVisible(false);
-            empUpdateBtn.setVisible(false);
-            empDeleteBtn.setVisible(false);
+        });
+        simToMain.addActionListener(e ->{
 
-            empToMain.setVisible(false);
+            mainBtnPanel.setVisible(true);
+            simPanel.setVisible(false);
+
+        });
+        empCreateBtn.addActionListener(e ->{
+
+            empPortalPanel.setVisible(false);
+            southTextField.setVisible(true);
+            crudGoBack.setVisible(true);
+
+        });
+        empReadBtn.addActionListener(e ->{
+
+            empPortalPanel.setVisible(false);
+            southTextField.setVisible(true);
+            crudGoBack.setVisible(true);
+
+                }
+                );
+
+        empUpdateBtn.addActionListener(e -> {
+
+            empPortalPanel.setVisible(false);
+            southTextField.setVisible(true);
+            crudGoBack.setVisible(true);
 
         });
 
-        simToMain.addActionListener(e ->{
+        empDeleteBtn.addActionListener(e -> {
 
-            empPortalBtn.setVisible(true);
-            simBtn.setVisible(true);
+            empPortalPanel.setVisible(false);
+            southTextField.setVisible(true);
+            crudGoBack.setVisible(true);
 
-            simCreateBtn.setVisible(false);
-            simReadBtn.setVisible(false);
-            simUpdateBtn.setVisible(false);
-            simDeleteBtn.setVisible(false);
+        });
 
-            simToMain.setVisible(false);
+        crudGoBack.addActionListener(e -> {
 
+            crudGoBack.setVisible(false);
+            southTextField.setVisible(false);
+            empPortalPanel.setVisible(true);
+
+        });
+
+        simCreateBtn.addActionListener(e -> {
+
+            simPanel.setVisible(false);
+            southTextField.setVisible(true);
+            crudGoBack.setVisible(true);
+        });
+
+        simReadBtn.addActionListener(e -> {
+
+            simPanel.setVisible(false);
+            southTextField.setVisible(true);
+            crudGoBack.setVisible(true);
+        });
+
+        simUpdateBtn.addActionListener(e -> {
+
+            simPanel.setVisible(false);
+            southTextField.setVisible(true);
+            crudGoBack.setVisible(true);
+        });
+
+        simDeleteBtn.addActionListener(e -> {
+
+            simPanel.setVisible(false);
+            southTextField.setVisible(true);
+            crudGoBack.setVisible(true);
         });
     }
 
