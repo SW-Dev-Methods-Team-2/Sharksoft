@@ -143,7 +143,7 @@ public class ProductDAO {
      
     public Product getProduct(String id, String table) throws SQLException {
         Product product = null;
-        String sql = "SELECT * FROM " + table +" WHERE book_id = ?";
+        String sql = "SELECT * FROM " + table +" WHERE product_id = ?";
          
         connect();
          
