@@ -45,19 +45,25 @@
  
   <?php
 
+<<<<<<< HEAD
   $servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
   $username = "admin";
   $password = "cs3250db1";
   $dbname = "cs3250main";
   $tablename = "sales_orders";
   $maintable = "simsharktable"
+=======
+// Include config file
+require_once "config.php";
+  //$maintable = "shark_table"
+>>>>>>> 015259e72b4916d21ed884367523df29162d23d5
 
   // Create connection
-  $conn = new mysqli($servername, $username, $password, $dbname);
+ // $conn = new mysqli($servername, $username, $password, $dbname);
     //echo "connected successfully";
 
   // Check connection
-  if ($conn->connect_error) {
+  if ($link->connect_error) {
     die("Connection failed: " . $conn->connect_error);
   }
 
@@ -78,7 +84,12 @@
   VALUES ('$productid', '$productquantity', '$user', '$orderdate', 'no')";
  //to do: post price
 
+<<<<<<< HEAD
   if ($conn->query($sql) === TRUE) {
+=======
+ //to do: update shark table with orders
+  if ($link->query($sql) === TRUE) {
+>>>>>>> 015259e72b4916d21ed884367523df29162d23d5
     echo "<b>Your order: </b><br><br>";
     echo "<b>User ID:</b> $user <br><br><b>Email:</b> $email <br><br><b>Shipping Address:</b> $useraddress<br><br>";
     echo "<b>Item ID#:</b> $productid  <b>Quantity:</b> $productquantity";
@@ -92,10 +103,21 @@
     $sql = "UPDATE $tablename SET fufilled= 'yes'  WHERE product_id = $productid ";
   }
 
-  //send confirmation email
+  //send confirmation email (needs installed and working email system!)
+  //$to = $email;
+  //$subject = "New SharkSoft Order Confirmation";
+  //$msg = "Thank you for your order! \nYour Order Details:\n Product ID: " + $productid + "\nQuantity: " + $productquantity + "\nShipping Address: " + $useraddress + "\n\nPlease let us know if there are any of this information is incorrect. \nThank You!";
+  //$msg = wordwrap($msg,70);
+  //$headers = "From: webmaster@example.com" . "\r\n" .
+
+   //mail($to,$subject,$msg,$headers);
   //send internal order alert email
+<<<<<<< HEAD
 
   $conn->close();
+=======
+  $link->close();
+>>>>>>> 015259e72b4916d21ed884367523df29162d23d5
   ?>
 
 </body> 
