@@ -70,18 +70,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 ?>
  
-<!DOCTYPE html>
-<html lang="en">
+ <!DOCTYPE html>
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Reset Password</title>
- 
-    <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
-    </style>
+    <meta charset="utf-8" />
+    <title>orderform</title>
+    <meta name="description" content="page with orderform">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<body class="">
+    <div class="container">
+        <div class="nav-wrapper">
+            <div class="leftside">
+                <div class="brand">
+                    <div>STUFFBUYSHARKS</div>
+                </div>
+                <div class="motto">
+                    <div>THE ONE STOP SHOP FOR ALL YOUR SHARK NEEDS</div>
+                </div>
+            </div>
+            <div class="rightside">
+                <div class="nav-linkwrapper">
+                    <a href="index.html">Home</a>
+                </div>
+                
+            </div>
+        
+        </div>
+
     <div class="wrapper">
         <h2>Reset Password</h2>
         <p>Please fill out this form to reset your password.</p>

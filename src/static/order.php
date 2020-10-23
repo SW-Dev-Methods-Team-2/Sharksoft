@@ -58,10 +58,6 @@ require_once "config.php";
   //$maintable = "shark_table"
 >>>>>>> 015259e72b4916d21ed884367523df29162d23d5
 
-  // Create connection
- // $conn = new mysqli($servername, $username, $password, $dbname);
-    //echo "connected successfully";
-
   // Check connection
   if ($link->connect_error) {
     die("Connection failed: " . $conn->connect_error);
