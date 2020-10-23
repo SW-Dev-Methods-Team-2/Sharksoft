@@ -8,3 +8,6 @@ $dbsheet = "cs3250main.sharktable"
 $connect = mysql_connect($dbservername, $dbusername, $dbpassword); 
 if (!connect) { die('Connection Failed: ' . mysql_error()); 
     { mysql_select_db(“database_name”, $connect);
+
+
+        1
