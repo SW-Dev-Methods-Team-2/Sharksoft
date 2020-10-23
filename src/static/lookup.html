@@ -24,13 +24,9 @@
                 <div class="nav-linkwrapper">
                     <a href="index.html">Home</a>
                 </div>
-                <!-- 
+                
                 <div class="nav-linkwrapper">
                     <a href="orderform.html">Order Form</a>
-                </div>
-                -->
-                <div class="nav-linkwrapper">
-                    <a href="login.html">Login</a>
                 </div>
 
             </div>
@@ -38,16 +34,13 @@
     </div>
     <div class="content-wrapper">
        <div class="order-form-wrapper">
-            <h1>Login To Your Account</h1>
+            <h1>Search for your past orders</h1>
             <!-- to do-->
-            <form method="post" action="login.php">
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" name="email" value="name@email.com" required><br>
-                <label for="password">Password:</label><br>
-                <input type="text" id="password" name="password" value="password" required><br><br>
+            <form method="post" action="lookup.php">
+                <label for="user_id">User ID:</label><br>
+                <input type="text" id="user_id" name="user_id" value="userid#"><br><br>
                 <input type="submit" value="Submit">
                 <input type="reset">
-                <input type="createuser" value="Create User Account">
               </form>
        </div>
     </div>

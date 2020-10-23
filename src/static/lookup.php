@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Login</title>
-    <meta name="description" content="page with login">
+    <title>orderform</title>
+    <meta name="description" content="Order Processing">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -24,34 +24,57 @@
                 <div class="nav-linkwrapper">
                     <a href="index.html">Home</a>
                 </div>
-                <!-- 
+
                 <div class="nav-linkwrapper">
                     <a href="orderform.html">Order Form</a>
                 </div>
-                -->
+                <!-- 
                 <div class="nav-linkwrapper">
                     <a href="login.html">Login</a>
                 </div>
+                -->
 
             </div>
         </div>
     </div>
     <div class="content-wrapper">
        <div class="order-form-wrapper">
-            <h1>Login To Your Account</h1>
-            <!-- to do-->
-            <form method="post" action="login.php">
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" name="email" value="name@email.com" required><br>
-                <label for="password">Password:</label><br>
-                <input type="text" id="password" name="password" value="password" required><br><br>
-                <input type="submit" value="Submit">
-                <input type="reset">
-                <input type="createuser" value="Create User Account">
-              </form>
+            <h1>Your past orders:</h1>
        </div>
     </div>
-    
+
+<?php
+
+
+$user = filter_input(INPUT_POST, 'user_id');
+
+$servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
+$username = "admin";
+$password = "cs3250db1";
+$dbname = "cs3250main";
+$tablename = "sales_orders";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+  echo "connected successfully";
+
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+//$sql = "INSERT INTO $tablename (product_id, quantity, userID)
+//VALUES ('$productid', '$productquantity', '$user')";
+
+if ($conn->query($sql) === TRUE) {
+  echo "New record created successfully";
+} else {
+  echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+$conn->close();
+?>
+
 </body> 
 
 </html>

@@ -27,7 +27,7 @@ CREATE TABLE sharktable (product_id VARCHAR(30), quantity INT(10),
 
 to load the csv file:
 
-LOAD DATA LOCAL INFILE  '/Users/derekrhine/desktop/3250Code/inventory_team2.csv'
+LOAD DATA LOCAL INFILE  '/Users/derekrhine/Desktop/inventory_team2.csv'
 INTO TABLE sharktable
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
@@ -55,3 +55,6 @@ UPDATE sharktable SET quantity=5 WHERE product_id LIKE '%H7UCHHECDDO%';
 Note: working for too long in command line, and not closing the window and re-logging in will cause me to have to reboot the server...
 
 Let Derek know if you need help...
+
+ php -S 127.0.0.1:8080
+ http://127.0.0.1:8080/dbcon.php
