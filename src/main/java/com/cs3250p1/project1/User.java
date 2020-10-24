@@ -1,5 +1,7 @@
 package com.cs3250p1.project1;
 
+import sun.security.util.Password;
+
 public class User {
 
     protected String user_ID;
@@ -18,7 +20,7 @@ public class User {
         this.user_ID = user_ID;
     }
  
-    public User(String user_ID, String first_name, String last_name, String email, String address_line1,
+    public User(String user_ID, String password, String first_name, String last_name, String email, String address_line1,
                     String address_line2, String address_line3) {
        
 
@@ -26,7 +28,7 @@ public class User {
         this.user_ID = user_ID;
     }
      
-    public User(String first_name, String last_name, String email, String address_line1,
+    public User(String password, String first_name, String last_name, String email, String address_line1,
                 String address_line2, String address_line3) {
 
        
@@ -45,6 +47,21 @@ public class User {
  
     public void setId(String user_id) {
         this.user_ID = user_id;
+    }
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    public void setEmail(String email){
+        this.email = email;
     }
  
     public String getfirst_Name() {
@@ -79,7 +96,7 @@ public class User {
         this.address_line2 = address_line2;
     }
 
-    public String getaddress_line3(String address_line3){
+    public String getaddress_line3(){
         return address_line3;
     }
 
