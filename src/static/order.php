@@ -45,18 +45,9 @@
  
   <?php
 
-<<<<<<< HEAD
-  $servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-  $username = "admin";
-  $password = "cs3250db1";
-  $dbname = "cs3250main";
-  $tablename = "sales_orders";
-  $maintable = "simsharktable"
-=======
 // Include config file
 require_once "config.php";
   //$maintable = "shark_table"
->>>>>>> 015259e72b4916d21ed884367523df29162d23d5
 
   // Check connection
   if ($link->connect_error) {
