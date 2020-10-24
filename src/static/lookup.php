@@ -22,7 +22,7 @@
             </div>
             <div class="rightside">
                 <div class="nav-linkwrapper">
-                    <a href="index.html">Home</a>
+                    <a href="index.php">Home</a>
                 </div>
 
                 <div class="nav-linkwrapper">
