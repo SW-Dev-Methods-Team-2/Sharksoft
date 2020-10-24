@@ -16,7 +16,7 @@ public class OrderDAO {
     private String jdbcPassword;
     private Connection jdbcConnection;
      
-    public ProductDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) {
+    public OrderDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) {
         this.jdbcURL = jdbcURL;
         this.jdbcUsername = jdbcUsername;
         this.jdbcPassword = jdbcPassword;
@@ -50,16 +50,16 @@ public class OrderDAO {
         }
     }
      
-    public boolean insertOrder(Order order, String table) throws SQLException {
+    public boolean insertOrder(SalesOrder order, String table) throws SQLException {
         String sql = "INSERT INTO " + table + "(product_id, quantity, wholesale_cost, sale_price, supplier_id) VALUES (?, ?, ?, ?, ?)";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setString(1, product.getId());
-        statement.setInt(2, product.getquantity());
-        statement.setDouble(3, product.getwholesale_cost());
-        statement.setDouble(4, product.getsale_price());
-        statement.setString(5, product.getsupplier_id());
+        statement.setString(1, order.getId());
+        statement.setInt(2, order.getquantity());
+        statement.setDouble(3, order.getwholesale_cost());
+        statement.setDouble(4, order.getsale_price());
+        statement.setString(5, order.getsupplier_id());
         
          
         boolean rowInserted = statement.executeUpdate() > 0;
@@ -104,7 +104,7 @@ public class OrderDAO {
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setString(1, product.getId());
+        statement.setString(1, order.getId());
          
         boolean rowDeleted = statement.executeUpdate() > 0;
         statement.close();
@@ -117,11 +117,11 @@ public class OrderDAO {
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setString(1, product.getId());
-        statement.setInt(2, product.getquantity());
-        statement.setDouble(3, product.getwholesale_cost());
-        statement.setDouble(4, product.getsale_price());
-        statement.setString(5, product.getsupplier_id());
+        statement.setString(1, order.getId());
+        statement.setInt(2, order.getquantity());
+        statement.setDouble(3, order.getwholesale_cost());
+        statement.setDouble(4, order.getsale_price());
+        statement.setString(5, order.getsupplier_id());
          
         boolean rowUpdated = statement.executeUpdate() > 0;
         statement.close();
@@ -129,7 +129,7 @@ public class OrderDAO {
         return rowUpdated;     
     }
      
-    public Product getOrder(String id, String table) throws SQLException {
+    public SalesOrder getOrder(String id, String table) throws SQLException {
         SalesOrder order = null;
         String sql = "SELECT * FROM " + table +" WHERE product_id = ?";
          
@@ -153,7 +153,7 @@ public class OrderDAO {
         resultSet.close();
         statement.close();
          
-        return product;
+        return order;
     }
 
 

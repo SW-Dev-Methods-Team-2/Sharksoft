@@ -1,6 +1,6 @@
 package com.cs3250p1.project1;
 
-import sun.security.util.Password;
+//import sun.security.util.Password;
 
 public class User {
 
@@ -11,6 +11,7 @@ public class User {
     protected String address_line1;
     protected String address_line2;
     protected String address_line3;
+    protected String password;
 
  
     public User() {
@@ -24,7 +25,7 @@ public class User {
                     String address_line2, String address_line3) {
        
 
-        this(first_name,last_name,email,address_line1, address_line2,address_line3);
+        this(password, first_name,last_name,email,address_line1, address_line2,address_line3);
         this.user_ID = user_ID;
     }
      

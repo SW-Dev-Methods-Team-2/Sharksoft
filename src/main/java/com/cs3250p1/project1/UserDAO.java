@@ -56,14 +56,14 @@ public class UserDAO {
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setString(1, product.getuserId());
-        statement.setInt(2, product.getPassword());
-        statement.setDouble(3, product.getfirst_Name());
-        statement.setDouble(4, product.getlast_Name());
-        statement.setString(5, product.getemail());
-        statement.setString(6, product.getadress_line1());
-        statement.setString(7, product.getadress_line2());
-        statement.setString(8, product.getadress_line3());
+        statement.setString(1, user.getuserId());
+        statement.setString(2, user.getPassword());
+        statement.setString(3, user.getfirst_Name());
+        statement.setString(4, user.getlast_Name());
+        statement.setString(5, user.getEmail());
+        statement.setString(6, user.getaddress_line1());
+        statement.setString(7, user.getaddress_line2());
+        statement.setString(8, user.getaddress_line3());
         
         
          
@@ -86,16 +86,16 @@ public class UserDAO {
         while (resultSet.next()) {
 
             String id = resultSet.getString("user_Id");
-            String password = resultSet.getInt("password");
-            String first = resultSet.getDouble("first_Name");
-            String last = resultSet.getDouble("last_Name");
+            String password = resultSet.getString("password");
+            String first = resultSet.getString("first_Name");
+            String last = resultSet.getString("last_Name");
             String email = resultSet.getString("email");
-            String adress_line1 = resultSet.getaddress_line1("address_line1");
-            String adress_line2 = resultSet.getaddress_line2("address_line2");
-            String adress_line3 = resultSet.getaddress_line3("address_line3");
+            String adress_line1 = resultSet.getString("address_line1");
+            String adress_line2 = resultSet.getString("address_line2");
+            String adress_line3 = resultSet.getString("address_line3");
 
              
-            User user = new User(id, password, first, last, emial, adress_line1,
+            User user = new User(id, password, first, last, email, adress_line1,
             adress_line2, adress_line3);
             listUser.add(user);
         }
@@ -105,7 +105,7 @@ public class UserDAO {
          
         disconnect();
          
-        return listProduct;
+        return listUser;
     }
      
     public boolean deleteUser(User user, String table) throws SQLException {
@@ -142,7 +142,7 @@ public class UserDAO {
         return rowUpdated;     
     }
      
-    public Product getUser(String id, String table) throws SQLException {
+    public User getUser(String id, String table) throws SQLException {
         User user = null;
         String sql = "SELECT * FROM " + table +" WHERE user_Id = ?";
          
@@ -155,13 +155,13 @@ public class UserDAO {
          
         if (resultSet.next()) {
 
-            String password = resultSet.getInt("password");
-            String first = resultSet.getDouble("first_Name");
-            String last = resultSet.getDouble("last_Name");
+            String password = resultSet.getString("password");
+            String first = resultSet.getString("first_Name");
+            String last = resultSet.getString("last_Name");
             String email = resultSet.getString("email");
-            String adress_line1 = resultSet.getaddress_line1("address_line1");
-            String adress_line2 = resultSet.getaddress_line2("address_line2");
-            String adress_line3 = resultSet.getaddress_line3("address_line3");
+            String adress_line1 = resultSet.getString("address_line1");
+            String adress_line2 = resultSet.getString("address_line2");
+            String adress_line3 = resultSet.getString("address_line3");
             
              user = new User(password,first, last, email, 
              adress_line1,adress_line2, adress_line3);
