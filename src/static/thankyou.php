@@ -1,13 +1,33 @@
+<?php
+// Initialize the session
+session_start();
+ 
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: login.php");
+    exit;
+}
+
+
+?>
+
+
+
+
+
 <!DOCTYPE HTML>
 <html>
 
 <head>
     <meta charset="utf-8" />
     <title>orderform</title>
-    <meta name="description" content="Order Processing">
+    <meta name="description" content="page with orderform">
     <link rel="stylesheet" href="styles.css">
 </head>
-
+<div class="page-header">
+        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome! .</h1>
+        <h1>Your User ID is : <b><?php echo htmlspecialchars($_SESSION["user_id"]); ?></b></h1>
+    </div>
 
 <body class="">
     <div class="container">
@@ -26,7 +46,10 @@
                 </div>
 
                 <div class="nav-linkwrapper">
-                    <a href="orderform.html">Order Form</a>
+                    <a href="order.php">Order Form</a>
+                </div>
+                <div class="nav-linkwrapper">
+                    <a href="logout.php">Logout</a>
                 </div>
                 <!-- 
                 <div class="nav-linkwrapper">
@@ -39,42 +62,12 @@
     </div>
     <div class="content-wrapper">
        <div class="order-form-wrapper">
-            <h1>Your past orders:</h1>
+            <h1>Thank you for your order!</h1>
+            <h1>Your order of </h1><?php echo htmlspecialchars($_SESSION["quantity"]); ?><h1> </h1><?php echo htmlspecialchars($_SESSION["itemid"]); ?><h1>is being processed</h1>
        </div>
+       <h1>To place another order click on the order button above! </h1>
     </div>
-
-<?php
-
-
-$user = filter_input(INPUT_POST, 'user_id');
-
-$servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-$username = "admin";
-$password = "cs3250db1";
-$dbname = "cs3250main";
-$tablename = "sales_orders";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-  echo "connected successfully";
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
-//$sql = "INSERT INTO $tablename (product_id, quantity, userID)
-//VALUES ('$productid', '$productquantity', '$user')";
-
-if ($conn->query($sql) === TRUE) {
-  echo "New record created successfully";
-} else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
-}
-
-$conn->close();
-?>
-
+    
 </body> 
 
 </html>

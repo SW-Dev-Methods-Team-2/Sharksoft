@@ -59,7 +59,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
         
                 
-                
+            
                 // Attempt to execute the prepared statement
                 if(mysqli_stmt_execute($stmt)){
                     // Redirect to login page
@@ -72,14 +72,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 mysqli_stmt_close($stmt);
             }
 
-    //$sql = "INSERT INTO user_data (useremail, password1) VALUES ('$useremail', '$password')";
-
-    //if ($link->query($sql) === TRUE) {
-    //echo "New record created successfully";
-    //} else {
-    //echo "Error: " . $sql . "<br>" . $conn->error;
-    //echo "User Email already exists";
-    //$useremail_err = "Email already exists in system"; 
+  
     }
 }
 
@@ -114,7 +107,7 @@ $link->close();
             </div>
             <div class="rightside">
                 <div class="nav-linkwrapper">
-                    <a href="index.html">Home</a>
+                    <a href="index.php">Home</a>
                 </div>
                 
             </div>

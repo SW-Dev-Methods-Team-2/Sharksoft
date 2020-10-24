@@ -22,17 +22,20 @@ if ($link->connect_error) {
     $orderdate = time();
     $sql = "INSERT INTO sales_orders (product_id, quantity, userID)
     VALUES ('$productid', '$productquantity', '$user')";
+    $_SESSION["loggedin"] = true;
+    $_SESSION["itemid"] = $productid;
+    $_SESSION["quantity"] = $productquantity;
+
 
     if ($link->query($sql) === TRUE) {
-        echo "<b>Your order: </b><br><br>";
-        echo "<b>User ID:</b> $user <br><br><b>Email:</b> $email <br><br><b>Shipping Address:</b> $useraddress<br><br>";
-        echo "<b>Item ID#:</b> $productid  <b>Quantity:</b> $productquantity";
+        header("location: thankyou.php");
     }
     else{
         echo "failed to update db";
     }
   }
 
+      
 
 ?>
 
@@ -64,11 +67,11 @@ if ($link->connect_error) {
             </div>
             <div class="rightside">
                 <div class="nav-linkwrapper">
-                    <a href="index.html">Home</a>
+                    <a href="index.php">Home</a>
                 </div>
 
                 <div class="nav-linkwrapper">
-                    <a href="orderform.html">Order Form</a>
+                    <a href="order.php">Order Form</a>
                 </div>
                 <!-- 
                 <div class="nav-linkwrapper">
@@ -93,7 +96,7 @@ if ($link->connect_error) {
                 <label for="itemid">Item ID:</label><br>
                 <input type="text" id="itemid" name="itemid" value="item id#" ><br>
                 <label for="itemquant"> Item quantity:</label><br>
-                <input type="number" id="itemquant" name="itemquant" min="1" max="10" ><br><br>
+                <input type="number" id="itemquant" name="itemquant" min="1" ><br><br>
                 <label for="myfile">Or upload an order file:</label><br>
                 <input type="file" id="myfile" name="myfile"><br><br>
                 <input type="submit" value="Submit">
@@ -104,6 +107,12 @@ if ($link->connect_error) {
     
 </body> 
 </html>
+
+ 
+  <?php
+
+
+
 
 
 
