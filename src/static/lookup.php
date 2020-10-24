@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>orderform</title>
-    <meta name="description" content="Order Processing">
+    <title>Search</title>
+    <meta name="description" content="Searching">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -22,7 +22,7 @@
             </div>
             <div class="rightside">
                 <div class="nav-linkwrapper">
-                    <a href="index.html">Home</a>
+                    <a href="index.php">Home</a>
                 </div>
 
                 <div class="nav-linkwrapper">
@@ -45,7 +45,8 @@
 
 <?php
 
-
+require_once "config.php";
+  maintable = 
 $user = filter_input(INPUT_POST, 'user_id');
 
 $servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
@@ -78,3 +79,32 @@ $conn->close();
 </body> 
 
 </html>
+
+<?php  
+/*
+  $search = $_POST["search"];
+  mysql_connect("localhost", "username", "password") OR die (mysql_error());
+  mysql_select_db ("your_db_name") or die(mysql_error());
+
+  $query = "SELECT * FROM `profile` WHERE `email`='$search'";
+
+  $result = mysql_query($query) or die (mysql_error());
+
+  if($result) 
+   {    
+      while($row=mysql_fetch_row($result))   
+       {      
+          echo $row[0],$row[1],$row[2];   
+       }    
+     }
+   else
+     { 
+       echo "No result";  
+     }
+ ?>
+
+<form action="profile.php" method="post">  
+  <input type="text" name="search"><br>  
+  <input type="submit">
+</form>
+*/   
