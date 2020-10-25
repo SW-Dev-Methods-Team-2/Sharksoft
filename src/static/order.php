@@ -1,13 +1,58 @@
+<?php
+// Initialize the session
+session_start();
+ 
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: login.php");
+    exit;
+}
+
+require_once "config.php";
+if ($link->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+  }
+
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $email = filter_input(INPUT_POST, 'email');
+    $useraddress = filter_input(INPUT_POST, 'address');
+    $user = filter_input(INPUT_POST, 'user_id');
+    $productid = filter_input(INPUT_POST, 'itemid');
+    $productquantity = filter_input(INPUT_POST, 'itemquant');
+    $orderdate = time();
+    $sql = "INSERT INTO sales_orders (product_id, quantity, userID)
+    VALUES ('$productid', '$productquantity', '$user')";
+    $_SESSION["loggedin"] = true;
+    $_SESSION["itemid"] = $productid;
+    $_SESSION["quantity"] = $productquantity;
+
+
+    if ($link->query($sql) === TRUE) {
+        header("location: thankyou.php");
+    }
+    else{
+        echo "failed to update db";
+    }
+  }
+
+      
+
+?>
+
+
 <!DOCTYPE HTML>
 <html>
 
 <head>
     <meta charset="utf-8" />
     <title>orderform</title>
-    <meta name="description" content="Order Processing">
+    <meta name="description" content="page with orderform">
     <link rel="stylesheet" href="styles.css">
 </head>
-
+<div class="page-header">
+        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome! .</h1>
+        <h1>Your User ID is : <b><?php echo htmlspecialchars($_SESSION["user_id"]); ?></b></h1>
+    </div>
 
 <body class="">
     <div class="container">
@@ -22,100 +67,54 @@
             </div>
             <div class="rightside">
                 <div class="nav-linkwrapper">
-                    <a href="index.html">Home</a>
+                    <a href="index.php">Home</a>
                 </div>
 
                 <div class="nav-linkwrapper">
-                    <a href="orderform.html">Order Form</a>
+                    <a href="order.php">Order Form</a>
                 </div>
                 <!-- 
                 <div class="nav-linkwrapper">
                     <a href="login.html">Login</a>
                 </div>
                 -->
-
             </div>
         </div>
     </div>
     <div class="content-wrapper">
        <div class="order-form-wrapper">
-            <h1>Thank you for your order!</h1>
+            <h1>Online Orders</h1>
+            <p>Use the form below to send us your order.</p>
+            
+            <form action="order.php" method="post">
+                <label for="user_id">User ID:</label><br>
+                <input type="text" id="user_id" name="user_id" value="userid#" required><br><br>
+                <label for="email">Enter your email:</label><br>
+                <input type="email" id="email" name="email" required><br><br>
+                <label for="address">Shipping address:</label><br>
+                <input type="text" id="address" name="address" value="123 shark lane Sharksville CO 12345" required><br><br>
+                <label for="itemid">Item ID:</label><br>
+                <input type="text" id="itemid" name="itemid" value="item id#" ><br>
+                <label for="itemquant"> Item quantity:</label><br>
+                <input type="number" id="itemquant" name="itemquant" min="1" ><br><br>
+                <label for="myfile">Or upload an order file:</label><br>
+                <input type="file" id="myfile" name="myfile"><br><br>
+                <input type="submit" value="Submit">
+                <input type="reset">
+              </form>
        </div>
     </div>
+    
+</body> 
+</html>
+
  
   <?php
 
-<<<<<<< HEAD
-  $servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-  $username = "admin";
-  $password = "cs3250db1";
-  $dbname = "cs3250main";
-  $tablename = "sales_orders";
-  $maintable = "simsharktable"
-=======
-// Include config file
-require_once "config.php";
-  //$maintable = "shark_table"
->>>>>>> 015259e72b4916d21ed884367523df29162d23d5
 
-  // Check connection
-  if ($link->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-  }
 
-  $email = filter_input(INPUT_POST, 'email');
-  $useraddress = filter_input(INPUT_POST, 'address');
-  $user = filter_input(INPUT_POST, 'user_id');
-  $productid = filter_input(INPUT_POST, 'itemid');
-  $productquantity = filter_input(INPUT_POST, 'itemquant');
-  $orderdate = time();
 
-  //$sql = "select $maintable"
 
-  //to do: only allow them to order as much as we have
 
-  //add a date field, email, location, fufilled
-  //add fufilled column and date column/time stamp
-  $sql = "INSERT INTO $tablename (product_id, quantity, userID, order_date, fufilled )
-  VALUES ('$productid', '$productquantity', '$user', '$orderdate', 'no')";
- //to do: post price
 
-<<<<<<< HEAD
-  if ($conn->query($sql) === TRUE) {
-=======
- //to do: update shark table with orders
-  if ($link->query($sql) === TRUE) {
->>>>>>> 015259e72b4916d21ed884367523df29162d23d5
-    echo "<b>Your order: </b><br><br>";
-    echo "<b>User ID:</b> $user <br><br><b>Email:</b> $email <br><br><b>Shipping Address:</b> $useraddress<br><br>";
-    echo "<b>Item ID#:</b> $productid  <b>Quantity:</b> $productquantity";
-  } else {
-    echo "<br>There was an error with your order: " . $sql . "<br>" . $conn->error;
-  }
 
-//to do: update shark table with orders
-  $sql = "UPDATE $maintable SET quantity= $newquantity  WHERE product_id = $productid ";
-  if ($conn->query($sql) === TRUE) {
-    $sql = "UPDATE $tablename SET fufilled= 'yes'  WHERE product_id = $productid ";
-  }
-
-  //send confirmation email (needs installed and working email system!)
-  //$to = $email;
-  //$subject = "New SharkSoft Order Confirmation";
-  //$msg = "Thank you for your order! \nYour Order Details:\n Product ID: " + $productid + "\nQuantity: " + $productquantity + "\nShipping Address: " + $useraddress + "\n\nPlease let us know if there are any of this information is incorrect. \nThank You!";
-  //$msg = wordwrap($msg,70);
-  //$headers = "From: webmaster@example.com" . "\r\n" .
-
-   //mail($to,$subject,$msg,$headers);
-  //send internal order alert email
-<<<<<<< HEAD
-
-  $conn->close();
-=======
-  $link->close();
->>>>>>> 015259e72b4916d21ed884367523df29162d23d5
-  ?>
-
-</body> 
-
-</html>
