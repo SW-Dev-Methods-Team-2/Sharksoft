@@ -68,8 +68,8 @@ public class OrderDAO {
         return rowInserted;
     }
      
-    public List<Product> listAllProducts(String table) throws SQLException {
-        List<Product> listProduct = new ArrayList<>();
+    public List<SalesOrder> listAllOrders(String table) throws SQLException {
+        List<SalesOrder> listOrders = new ArrayList<>();
          
         String sql = "SELECT * FROM " + table;
          
@@ -86,8 +86,8 @@ public class OrderDAO {
             double sale_price = resultSet.getDouble("sale_price");
             String supplier_id = resultSet.getString("supplier_id");
              
-            Product product = new Product(id, quantity, wholesale_cost, sale_price, supplier_id);
-            listProduct.add(product);
+            SalesOrder order = new SalesOrder(id, quantity, wholesale_cost, sale_price, supplier_id);
+            listOrders.add(order);
         }
          
         resultSet.close();
@@ -95,7 +95,7 @@ public class OrderDAO {
          
         disconnect();
          
-        return listProduct;
+        return listOrders;
     }
      
     public boolean deleteOrder(SalesOrder order, String table) throws SQLException {

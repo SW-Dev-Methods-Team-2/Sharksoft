@@ -68,13 +68,20 @@ int frmCrudUpdateProduct = gui.addForm("Which Product?;New Quantity;New Wholesal
 int frmCrudDeleteProduct = gui.addForm("Product:;",10);
 
 //Database connection related variables
- String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
- String dbUsername = "admin";
- String dbPassword = "cs3250db1";
+final String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
+final String dbUsername = "admin";
+final String dbPassword = "cs3250db1";
+final String sharktable = "cs3250main.sharktable";
+ String sales_order = "cs3250main.sales_orders";
+ String user_data = "cs3250main.user_data";
 
 InventorySimulator simulator01 = new InventorySimulator(); //create the simulator
 Timer timer = new Timer(1000,null); //create the render timer
 CRUDDB db1 = new CRUDDB("sharktable"); //create the crud object
+ProductDAO p1 = new ProductDAO(dbURL, dbUsername, dbPassword);
+Product pro1 = new Product();
+
+
 Connection conn; //connection object used to connect with DB
 
 void appRender() {
@@ -198,20 +205,27 @@ void setupListeners(){
     gui.getButton(btnCrudCreate).addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+
+
+
             String result="Waiting access...";
-            try{
+            
                gui.getForm(frmCrudAddProduct).showFormDialog("Enter Product Details"); //show the product creation form
-                String P,Q,W,Sp,Su;
-                P=gui.getForm(frmCrudAddProduct).getKeyValue("Product");
-                Q=gui.getForm(frmCrudAddProduct).getKeyValue("Quantity");
-                W=gui.getForm(frmCrudAddProduct).getKeyValue("Wholesale Cost");
-                Sp=gui.getForm(frmCrudAddProduct).getKeyValue("Sale Price");
-                Su=gui.getForm(frmCrudAddProduct).getKeyValue("Supplier Id");
-                result=db1.addProduct(conn,P,Q,W, Sp, Su); //add product with user entered values
-            }catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            crudOutputStream.push(result); //send result to stream for render later
+                
+                pro1.setId(gui.getForm(frmCrudAddProduct).getKeyValue("Product"));
+                pro1.setquantity(Integer.parseInt(gui.getForm(frmCrudAddProduct).getKeyValue("Quantity")));
+                pro1.setwholesale_cost(Double.parseDouble(gui.getForm(frmCrudAddProduct).getKeyValue("Wholesale Cost")));
+                pro1.setsale_price(Double.parseDouble(gui.getForm(frmCrudAddProduct).getKeyValue("Sale Price")));
+                pro1.setsupplier_id(gui.getForm(frmCrudAddProduct).getKeyValue("Supplier Id"));
+                try{
+                    p1.insertProduct(pro1,sharktable);
+                }catch(SQLException f){
+                    f.printStackTrace();
+                }
+                 //add product with user entered values
+            
+           // crudOutputStream.push(result); //send result to stream for render later
         }
     });
     gui.getButton(btnCrudRead).addActionListener(new ActionListener() {
@@ -219,7 +233,8 @@ void setupListeners(){
         public void actionPerformed(ActionEvent e) {
             String result="Waiting access...";
             try{
-                result=db1.select(conn); //function passes result onto the string
+                result = p1.listAllProducts(sharktable);
+                //result=db1.select(conn); //function passes result onto the string
                 //this shows everything but supplier id... gotta fix later
             }catch (SQLException ex) {
                 ex.printStackTrace();
@@ -233,13 +248,14 @@ void setupListeners(){
             String result="Waiting access...";
             try{
                 gui.getForm(frmCrudUpdateProduct).showFormDialog("Enter Update Details");
-                String P,Q,W,Sp,Su;
-                P=gui.getForm(frmCrudUpdateProduct).getKeyValue("Which Product?");
-                Q=gui.getForm(frmCrudUpdateProduct).getKeyValue("New Quantity");
-                W=gui.getForm(frmCrudUpdateProduct).getKeyValue("New Wholesale Cost");
-                Sp=gui.getForm(frmCrudUpdateProduct).getKeyValue("New Sale Price");
-                Su=gui.getForm(frmCrudUpdateProduct).getKeyValue("New Supplier Id");
-                result=db1.update(conn,P,Q,W,Sp,Su); //function passes result onto the string
+                
+                pro1.setId(gui.getForm(frmCrudUpdateProduct).getKeyValue("Which Product?"));
+                pro1.setquantity(Integer.parseInt(gui.getForm(frmCrudUpdateProduct).getKeyValue("New Quantity")));
+                pro1.setwholesale_cost(Double.parseDouble(gui.getForm(frmCrudUpdateProduct).getKeyValue("New Wholesale Cost")));
+                pro1.setsale_price(Double.parseDouble(gui.getForm(frmCrudUpdateProduct).getKeyValue("New Sale Price")));
+                pro1.setsupplier_id(gui.getForm(frmCrudUpdateProduct).getKeyValue("New Supplier Id"));
+                p1.updateProduct(pro1, sharktable);
+                //result=db1.update(conn,P,Q,W,Sp,Su); //function passes result onto the string
             }catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -251,9 +267,12 @@ void setupListeners(){
         public void actionPerformed(ActionEvent e) {
             String result="Waiting access...";
             try{
+
                 gui.getForm(frmCrudDeleteProduct).showFormDialog("Which Product Would You Like to Delete?");
-                result=db1.delete(conn,
-                        gui.getForm(frmCrudDeleteProduct).getKeyValue("Product:"));
+                pro1.setId(gui.getForm(frmCrudDeleteProduct).getKeyValue("Product:"));
+                p1.deleteProduct(pro1, sharktable);
+                /*result=db1.delete(conn,
+                        gui.getForm(frmCrudDeleteProduct).getKeyValue("Product:"));*/
             }catch (SQLException ex) {
                 ex.printStackTrace();
             }

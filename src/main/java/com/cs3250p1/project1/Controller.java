@@ -20,7 +20,7 @@ public class Controller {
         Product pro1 = createProduct();
 
         try {
-            p1.insertProduct(pro1, sharktabkle);
+            p1.updateProduct(pro1, sharktabkle);
         } catch (SQLException e) {
             
             e.printStackTrace();

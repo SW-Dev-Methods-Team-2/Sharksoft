@@ -80,8 +80,28 @@ public class ProductDAO {
         return rowInserted;
     }
      
-    public List<Product> listAllProducts(String table) throws SQLException {
-        List<Product> listProduct = new ArrayList<>();
+    public String listAllProducts(String table) throws SQLException {
+        String print="";
+        String selectSql = "SELECT * FROM cs3250main."+ table;
+        connect();
+        Statement selectStatement = jdbcConnection.createStatement();
+        ResultSet result = selectStatement.executeQuery(selectSql);
+
+        int count = 0;
+        while (result.next()){
+            String pId = result.getString("product_id");
+            String quan = result.getString("quantity");
+            String wCost = result.getString("wholesale_cost");
+            String sPrice = result.getString("sale_price");
+            String sId = result.getString("supplier_id");
+
+            String output = "product: %s- %s- %s- %s- %s<br>";
+            print+=String.format(output, count++, pId, quan, wCost, sPrice, sId);
+
+        }
+       
+        
+        /*List<Product> listProduct = new ArrayList<>();
          
         String sql = "SELECT * FROM " + table;
          
@@ -100,14 +120,14 @@ public class ProductDAO {
              
             Product product = new Product(id, quantity, wholesale_cost, sale_price, supplier_id);
             listProduct.add(product);
-        }
+        }*/
          
-        resultSet.close();
-        statement.close();
+        result.close();
+        selectStatement.close();
          
         disconnect();
          
-        return listProduct;
+        return print;
     }
      
     public boolean deleteProduct(Product product, String table) throws SQLException {
@@ -129,11 +149,12 @@ public class ProductDAO {
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setString(1, product.getId());
-        statement.setInt(2, product.getquantity());
-        statement.setDouble(3, product.getwholesale_cost());
-        statement.setDouble(4, product.getsale_price());
-        statement.setString(5, product.getsupplier_id());
+        
+        statement.setInt(1, product.getquantity());
+        statement.setDouble(2, product.getwholesale_cost());
+        statement.setDouble(3, product.getsale_price());
+        statement.setString(4, product.getsupplier_id());
+        statement.setString(5, product.getId());
          
         boolean rowUpdated = statement.executeUpdate() > 0;
         statement.close();

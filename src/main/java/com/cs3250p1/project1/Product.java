@@ -38,7 +38,7 @@ public class Product {
         return wholesale_cost;
     }
  
-    public void setwholesale_cost(int wholesale_cost) {
+    public void setwholesale_cost(double wholesale_cost) {
         this.wholesale_cost = wholesale_cost;
     }
  
@@ -46,7 +46,7 @@ public class Product {
         return sale_price;
     }
  
-    public void setsale_price(int sale_price) {
+    public void setsale_price(double sale_price) {
         this.sale_price = sale_price;
     }
  
