@@ -7,7 +7,6 @@ package com.cs3250p1.project1;
 
 import java.sql.*;
 import java.sql.Statement;
-import java.util.Scanner;
 
 public class CRUDDB
 {
@@ -18,7 +17,7 @@ public class CRUDDB
         table = _table;
     }
 
-    public static String addProduct(Connection conn,
+    public String addProduct(Connection conn,
                                     String _productId,
                                     String _quantity,
                                     String _wholesaleCost,
@@ -48,7 +47,7 @@ public class CRUDDB
         return print;
     }
 
-    public static String select(Connection conn) throws SQLException { //wait for noel, add product
+    public String select(Connection conn) throws SQLException { //wait for noel, add product
         // name identifier to search for specific product
         String print="";
         String selectSql = "SELECT * FROM cs3250main."+table;
@@ -70,7 +69,7 @@ public class CRUDDB
         return print;
     }
 
-    public static String update(Connection conn, String _productId,
+    public String update(Connection conn, String _productId,
                                 String _quantity,
                                 String _wholesaleCost,
                                 String _salePrice,
@@ -91,7 +90,7 @@ public class CRUDDB
         return print;
     }
 
-    public static String delete(Connection conn, String _productId) throws SQLException{
+    public String delete(Connection conn, String _productId) throws SQLException{
         String print="";
         String deleteSql = "DELETE FROM cs3250main."+table+" WHERE product_id=?";
         PreparedStatement statement4 = conn.prepareStatement(deleteSql);
