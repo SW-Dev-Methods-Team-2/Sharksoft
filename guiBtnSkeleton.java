@@ -1,6 +1,9 @@
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.*;                           //This program will create a JFrame and build North, East, and South
-import java.awt.*;                              //JPanels then place JRadio Buttons in a group in the South JPanel that
+import java.awt.*;                              //JPanels then place JRadio Buttons in a group in the South JPanel
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 public class guiBtnSkeleton{                               //changes the background color of each JRadioButton based on each
 
     JFrame frame;                               //This is my JFrame named frame
@@ -17,6 +20,8 @@ public class guiBtnSkeleton{                               //changes the backgro
     public static JPanel empPortalPanel;
 
     public static JPanel simPanel;
+
+    public static JPanel crudTextFieldPanel;
 
     //"mainBtnGroup will consist of JRadioButtons "empPortalBtn" and "simBtn"
     public ButtonGroup mainBtnGroup;
@@ -52,8 +57,14 @@ public class guiBtnSkeleton{                               //changes the backgro
 
     JRadioButton crudGoBack;
 
-    TextField southTextField;
-    TextField northTextField;
+    TextField productIDTextField;
+    TextField quantityTextField;
+    TextField wholeSalePriceTextField;
+    TextField salePriceTextField;
+    TextField supplierTextField;
+
+    //need to turn this into a "JTextArea" for 2 Dimensions
+    TextArea northTextArea;
 
     public static void main(String[] args) {    //Main method begins the program
 
@@ -65,11 +76,25 @@ public class guiBtnSkeleton{                               //changes the backgro
 
         frame = new JFrame("POS ACCESS CENTER"); //JFrame, "frame" is now titled
         frame.setAlwaysOnTop(true);     //This locks the GUI over the top of all other windows
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+
+        frame.addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowClosing(WindowEvent e){
+            if(JOptionPane.showConfirmDialog(frame,"Are you sure ?") == JOptionPane.YES_OPTION);
+
+            //Place method call to simulator DB Erase method // Must extend simulator class
+
+            frame.setVisible(false);
+            frame.dispose();
+        }
+
+        });
 
         north = new JPanel(); // creates a new panel "north" to be put inside the north using layout manager
 
-        south = new JPanel();           // JPanel "southPanel" is a new JPanel
+        south = new JPanel(); // JPanel "southPanel" is a new JPanel
 
         mainBtnPanel = new JPanel();
 
@@ -77,15 +102,21 @@ public class guiBtnSkeleton{                               //changes the backgro
 
         simPanel = new JPanel();
 
+        crudTextFieldPanel = new JPanel();
+
         mainBtnGroup = new ButtonGroup();     // Initializes "mainBtnGroup" as a new ButtonGroup
 
         empCrudBtnGroup = new ButtonGroup();  // Initializes "empCrudBtnGroup" as a new ButtonGroup
 
         simCrudBtnGroup = new ButtonGroup(); // Initializes "simCrudBtnGroup" as a new ButtonGroup
 
-        southTextField = new TextField();
+        productIDTextField = new TextField();
+        quantityTextField = new TextField();
+        wholeSalePriceTextField = new TextField();
+        salePriceTextField = new TextField();
+        supplierTextField = new TextField();
 
-        northTextField = new TextField();
+        northTextArea = new TextArea("This is where simDB is displayed");
 
         buildNorth();                   // build the north JPanel
 
@@ -106,10 +137,16 @@ public class guiBtnSkeleton{                               //changes the backgro
         simPanel.setVisible(false);
         south.add(crudGoBack);
         crudGoBack.setVisible(false);
-        south.add(southTextField);
-        southTextField.setVisible(false);
-
-        north.add(northTextField);
+        south.add(productIDTextField);
+        productIDTextField.setVisible(false);
+        south.add(quantityTextField);
+        quantityTextField.setVisible(false);
+        south.add(wholeSalePriceTextField);
+        wholeSalePriceTextField.setVisible(false);
+        south.add(salePriceTextField);
+        salePriceTextField.setVisible(false);
+        south.add(supplierTextField);
+        supplierTextField.setVisible(false);
 
         mainBtnPanel.add(empPortalBtn);
         mainBtnPanel.add(simBtn);
@@ -125,9 +162,10 @@ public class guiBtnSkeleton{                               //changes the backgro
         simPanel.add(simUpdateBtn);
         simPanel.add(simDeleteBtn);
         simPanel.add(simToMain);
+        frame.setSize(800, 200);
 
-        frame.pack();                   // This condenses the GUI to have no unnecessary space
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE); //This exits the program when the JFrame is closed
+        //frame.pack();                   // This condenses the GUI to have no unnecessary space
+       // frame.setDefaultCloseOperation(EXIT_ON_CLOSE); //This exits the program when the JFrame is closed
         frame.setVisible(true);         //This makes the GUI visible to the user
 
     }
@@ -135,6 +173,10 @@ public class guiBtnSkeleton{                               //changes the backgro
     public void buildNorth() {
 
         // add northTextfield here
+        north.add(northTextArea);
+
+        northTextArea.setEditable(false);
+       northTextArea.setColumns(20);
 
     }
 
@@ -205,14 +247,18 @@ public class guiBtnSkeleton{                               //changes the backgro
         empCreateBtn.addActionListener(e ->{
 
             empPortalPanel.setVisible(false);
-            southTextField.setVisible(true);
+            //southTextField.setColumns(5);
+
+            //southTextField.setVisible(true);
+
             crudGoBack.setVisible(true);
+
 
         });
         empReadBtn.addActionListener(e ->{
 
             empPortalPanel.setVisible(false);
-            southTextField.setVisible(true);
+           // southTextField.setVisible(true);
             crudGoBack.setVisible(true);
 
                 }
@@ -221,7 +267,7 @@ public class guiBtnSkeleton{                               //changes the backgro
         empUpdateBtn.addActionListener(e -> {
 
             empPortalPanel.setVisible(false);
-            southTextField.setVisible(true);
+           // southTextField.setVisible(true);
             crudGoBack.setVisible(true);
 
         });
@@ -229,7 +275,7 @@ public class guiBtnSkeleton{                               //changes the backgro
         empDeleteBtn.addActionListener(e -> {
 
             empPortalPanel.setVisible(false);
-            southTextField.setVisible(true);
+           // southTextField.setVisible(true);
             crudGoBack.setVisible(true);
 
         });
@@ -237,7 +283,7 @@ public class guiBtnSkeleton{                               //changes the backgro
         crudGoBack.addActionListener(e -> {
 
             crudGoBack.setVisible(false);
-            southTextField.setVisible(false);
+            //southTextField.setVisible(false);
             empPortalPanel.setVisible(true);
 
         });
@@ -245,28 +291,28 @@ public class guiBtnSkeleton{                               //changes the backgro
         simCreateBtn.addActionListener(e -> {
 
             simPanel.setVisible(false);
-            southTextField.setVisible(true);
+          //  southTextField.setVisible(true);
             crudGoBack.setVisible(true);
         });
 
         simReadBtn.addActionListener(e -> {
 
             simPanel.setVisible(false);
-            southTextField.setVisible(true);
+           // southTextField.setVisible(true);
             crudGoBack.setVisible(true);
         });
 
         simUpdateBtn.addActionListener(e -> {
 
             simPanel.setVisible(false);
-            southTextField.setVisible(true);
+         //   southTextField.setVisible(true);
             crudGoBack.setVisible(true);
         });
 
         simDeleteBtn.addActionListener(e -> {
 
             simPanel.setVisible(false);
-            southTextField.setVisible(true);
+           // southTextField.setVisible(true);
             crudGoBack.setVisible(true);
         });
     }
