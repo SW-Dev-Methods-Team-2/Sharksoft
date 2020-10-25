@@ -137,16 +137,13 @@ public class guiBtnSkeleton{                               //changes the backgro
         simPanel.setVisible(false);
         south.add(crudGoBack);
         crudGoBack.setVisible(false);
-        south.add(productIDTextField);
-        productIDTextField.setVisible(false);
-        south.add(quantityTextField);
-        quantityTextField.setVisible(false);
-        south.add(wholeSalePriceTextField);
-        wholeSalePriceTextField.setVisible(false);
-        south.add(salePriceTextField);
-        salePriceTextField.setVisible(false);
-        south.add(supplierTextField);
-        supplierTextField.setVisible(false);
+
+        crudTextFieldPanel.add(productIDTextField);
+
+        crudTextFieldPanel.add(quantityTextField);
+        crudTextFieldPanel.add(wholeSalePriceTextField);
+        crudTextFieldPanel.add(salePriceTextField);
+        crudTextFieldPanel.add(supplierTextField);
 
         mainBtnPanel.add(empPortalBtn);
         mainBtnPanel.add(simBtn);
@@ -162,6 +159,10 @@ public class guiBtnSkeleton{                               //changes the backgro
         simPanel.add(simUpdateBtn);
         simPanel.add(simDeleteBtn);
         simPanel.add(simToMain);
+
+        south.add(crudTextFieldPanel);
+        crudTextFieldPanel.setVisible(false);
+
         frame.setSize(800, 200);
 
         //frame.pack();                   // This condenses the GUI to have no unnecessary space
@@ -172,7 +173,6 @@ public class guiBtnSkeleton{                               //changes the backgro
 
     public void buildNorth() {
 
-        // add northTextfield here
         north.add(northTextArea);
 
         northTextArea.setEditable(false);
@@ -236,30 +236,27 @@ public class guiBtnSkeleton{                               //changes the backgro
 
             mainBtnPanel.setVisible(true);
             empPortalPanel.setVisible(false);
+            crudTextFieldPanel.setVisible(false);
 
         });
         simToMain.addActionListener(e ->{
 
             mainBtnPanel.setVisible(true);
             simPanel.setVisible(false);
+            crudTextFieldPanel.setVisible(false);
 
         });
         empCreateBtn.addActionListener(e ->{
-
             empPortalPanel.setVisible(false);
-            //southTextField.setColumns(5);
-
-            //southTextField.setVisible(true);
-
             crudGoBack.setVisible(true);
-
+            crudTextFieldPanel.setVisible(true);
 
         });
         empReadBtn.addActionListener(e ->{
 
             empPortalPanel.setVisible(false);
-           // southTextField.setVisible(true);
             crudGoBack.setVisible(true);
+            crudTextFieldPanel.setVisible(true);
 
                 }
                 );
@@ -267,53 +264,53 @@ public class guiBtnSkeleton{                               //changes the backgro
         empUpdateBtn.addActionListener(e -> {
 
             empPortalPanel.setVisible(false);
-           // southTextField.setVisible(true);
             crudGoBack.setVisible(true);
+            crudTextFieldPanel.setVisible(true);
 
         });
 
         empDeleteBtn.addActionListener(e -> {
 
             empPortalPanel.setVisible(false);
-           // southTextField.setVisible(true);
             crudGoBack.setVisible(true);
+            crudTextFieldPanel.setVisible(true);
 
         });
 
         crudGoBack.addActionListener(e -> {
 
             crudGoBack.setVisible(false);
-            //southTextField.setVisible(false);
             empPortalPanel.setVisible(true);
+            crudTextFieldPanel.setVisible(false);
 
         });
 
         simCreateBtn.addActionListener(e -> {
 
             simPanel.setVisible(false);
-          //  southTextField.setVisible(true);
             crudGoBack.setVisible(true);
+            crudTextFieldPanel.setVisible(true);
         });
 
         simReadBtn.addActionListener(e -> {
 
             simPanel.setVisible(false);
-           // southTextField.setVisible(true);
             crudGoBack.setVisible(true);
+            crudTextFieldPanel.setVisible(true);
         });
 
         simUpdateBtn.addActionListener(e -> {
 
             simPanel.setVisible(false);
-         //   southTextField.setVisible(true);
             crudGoBack.setVisible(true);
+            crudTextFieldPanel.setVisible(true);
         });
 
         simDeleteBtn.addActionListener(e -> {
 
             simPanel.setVisible(false);
-           // southTextField.setVisible(true);
             crudGoBack.setVisible(true);
+            crudTextFieldPanel.setVisible(true);
         });
     }
 
