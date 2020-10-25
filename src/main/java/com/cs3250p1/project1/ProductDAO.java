@@ -1,4 +1,5 @@
 package com.cs3250p1.project1;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -82,13 +83,13 @@ public class ProductDAO {
      
     public String listAllProducts(String table) throws SQLException {
         String print="";
-        String selectSql = "SELECT * FROM cs3250main."+ table;
+        String selectSql = "SELECT * FROM "+ table;
         connect();
         Statement selectStatement = jdbcConnection.createStatement();
         ResultSet result = selectStatement.executeQuery(selectSql);
 
         int count = 0;
-        while (result.next()){
+        while (result.next()) {
             String pId = result.getString("product_id");
             String quan = result.getString("quantity");
             String wCost = result.getString("wholesale_cost");
@@ -96,11 +97,8 @@ public class ProductDAO {
             String sId = result.getString("supplier_id");
 
             String output = "product: %s- %s- %s- %s- %s<br>";
-            print+=String.format(output, count++, pId, quan, wCost, sPrice, sId);
-
+            print += String.format(output, count++, pId, quan, wCost, sPrice, sId);
         }
-       
-        
         /*List<Product> listProduct = new ArrayList<>();
          
         String sql = "SELECT * FROM " + table;
@@ -126,7 +124,6 @@ public class ProductDAO {
         selectStatement.close();
          
         disconnect();
-         
         return print;
     }
      
