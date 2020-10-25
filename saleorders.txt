@@ -1,0 +1,5 @@
+1023 2020, abc@gma il.com, arvada, apple, 10
+12122020, bcd@msudenver.edu, littleton, banana, 20
+04292020, efg@gmail.com, fort collins, pear, 50
+02232019, lame@game.com, Denver, grapes, 5
+05242002, same@name.com, nepal, guava, 15
