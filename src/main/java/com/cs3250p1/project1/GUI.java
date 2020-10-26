@@ -12,6 +12,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+//add a global button disable variable, for example when program is preparing for simulation,
+//you dont want any sql requests being sent
+
 class GUIForm{ //one form stores one JPanel at a time
     String title="default";
     ArrayList<JLabel> keyList = new ArrayList<JLabel>();

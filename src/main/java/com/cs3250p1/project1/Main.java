@@ -15,7 +15,6 @@ import static java.lang.Thread.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-//iuhihviohiophogoihoi
 @SpringBootApplication
 /**
  * The main class of the application. This class creates the main objects needed to
@@ -26,7 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //Using this class to currently store any sales order received from opening
     //a file, after sql connection is set up, we'll have the sales order
     //directly go to the database
-class SalesOrderStorage{
+class CustomerOrderField{
     double date; //dates are long so needs double
     String email;
     String shipping_address;
@@ -37,6 +36,16 @@ class SalesOrderStorage{
                 product_id+","+Integer.toString(quantity);
     }
 }
+class SupplierOrderField{
+    double date;
+    String supplier_id;
+    String product_id;
+    int quantity;
+    String printField(){
+        return Double.toString(date)+","+supplier_id+","+product_id+","+Integer.toString(quantity);
+    }
+}
+
 public class Main{
 
 //variables that control the status of the main program
@@ -68,7 +77,8 @@ int btnCrudCreate = gui.addButton(crudScreen,"south","Create Product");
 int btnCrudRead = gui.addButton(crudScreen,"south","Read Product");
 int btnCrudUpdate = gui.addButton(crudScreen,"south","Update Product");
 int btnCrudDelete = gui.addButton(crudScreen,"south","Delete Product");
-int btnCrudOpenFile = gui.addButton(crudScreen,"east","Open File");
+int btnCrudOpenCustomerOrder = gui.addButton(crudScreen,"east","Open Customer Order");
+int btnCrudOpenSupplierOrder = gui.addButton(crudScreen,"east","Open Supplier Order");
 //end  buttons...
 
 //labels...
@@ -270,22 +280,37 @@ void setupListeners(){
         }
     });
 
-    gui.getButton(btnCrudOpenFile).addActionListener(new ActionListener() {
+    gui.getButton(btnCrudOpenCustomerOrder).addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             List<String> lines = gui.getStringFromFileDialog(); //lets user choose a file,
             // then loads it's string as a list onto the variable
             //parse that string and store it into a structure
 
-            ArrayList<SalesOrderStorage> storage = parseSalesOrder(lines);
+            ArrayList<CustomerOrderField> cusOrdTable = parseCustomerOrder(lines);
             //print what you got
-            storage.get(2).quantity=300;
-            for (int i=0;i<storage.size();i++){
-                crudOutputStream.pushLn(storage.get(i).printField());
+            for (int i=0;i<cusOrdTable.size();i++){
+                crudOutputStream.pushLn(cusOrdTable.get(i).printField());
             }
 
         }
     });
+    gui.getButton(btnCrudOpenSupplierOrder).addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            List<String> lines = gui.getStringFromFileDialog(); //lets user choose a file,
+            // then loads it's string as a list onto the variable
+            //parse that string and store it into a structure
+
+            ArrayList<SupplierOrderField> supOrdTable = parseSupplierOrder(lines);
+            //print what you got
+            for (int i=0;i<supOrdTable.size();i++){
+                crudOutputStream.pushLn(supOrdTable.get(i).printField());
+            }
+
+        }
+    });
+
     //SETUP RENDER TIMER FOR SIMULATION OUTPUT
     timer.addActionListener(new ActionListener() {
         @Override
@@ -295,14 +320,14 @@ void setupListeners(){
     });
 } //end setupListeners
 
-    ArrayList<SalesOrderStorage> parseSalesOrder(List<String> lines){
-        ArrayList<SalesOrderStorage> storage= new ArrayList<>();
+    ArrayList<CustomerOrderField> parseCustomerOrder(List<String> lines){
+        ArrayList<CustomerOrderField> table = new ArrayList<>();
 
         for (int i=0;i<lines.size();i++){
             //each item in this list is a single line from the string
 
             String thisLine= lines.get(i);//get a single line of string
-            SalesOrderStorage temp = new SalesOrderStorage();
+            CustomerOrderField temp = new CustomerOrderField();
 
             int commaCounter=0; String str="", output="";
             for (int j=0; j<thisLine.length();j++) {
@@ -336,9 +361,51 @@ void setupListeners(){
                 }//when loop ends only quantity is left over.
                 temp.quantity = Integer.parseInt(output);
                 output = ""; //just for safety
-                storage.add(temp); //add this new created field to storage
+                table.add(temp); //add this new created field to storage
             }
-        return storage; //return the newly created data structure
+        return table; //return the newly created data structure
         }
+
+    ArrayList<SupplierOrderField> parseSupplierOrder(List<String> lines){
+        ArrayList<SupplierOrderField> table = new ArrayList<>();
+
+        for (int i=0;i<lines.size();i++){
+            //each item in this list is a single line from the string
+
+            String thisLine= lines.get(i);//get a single line of string
+            SupplierOrderField temp = new SupplierOrderField();
+
+            int commaCounter=0; String str="", output="";
+            for (int j=0; j<thisLine.length();j++) {
+                str = thisLine.substring(j, j + 1);
+                if (str.equals(" ")) {
+                    continue;
+                } //ignore spaces
+
+                if (str.equals(",")) {
+                    commaCounter++;
+                    if (commaCounter == 1) {
+                        temp.date = Double.parseDouble(output);
+                        output = ""; //reset this variable
+                        continue;
+                    } else if (commaCounter == 2) {
+                        temp.supplier_id = output;
+                        output = "";
+                        continue;
+                    } else if (commaCounter == 3) {
+                        temp.product_id = output;
+                        output = "";
+                        continue;
+                    } else {
+                    }
+                }
+                output = output + str;
+            }//when loop ends only quantity is left over.
+            temp.quantity = Integer.parseInt(output);
+            output = ""; //just for safety
+            table.add(temp); //add this new created field to storage
+        }
+        return table; //return the newly created data structure
+    }
 
     }
