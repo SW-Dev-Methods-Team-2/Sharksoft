@@ -225,11 +225,11 @@ public class GUI {
         activeFrame = screenList.get(_screenIndex).frame; //put this active frame into reference
     }
 
-    List<String> getStringFromFileDialog() {
+    ArrayList<String> getStringFromFileDialog() {
 
         final JFileChooser fc = new JFileChooser();
         File file = null;
-        List<String> lines = null;
+        ArrayList<String> lines = null;
         //this dialog needs a frame to live inside.
         //by storing which frame is active in a variable, we can open
         //this dialog properly in its designated frame
@@ -242,7 +242,7 @@ public class GUI {
             Path path = Paths.get(file.getAbsolutePath()); //get the path for the file, I don't know how file system
             //works on mac, so keep all files local
             try {
-                lines = Files.readAllLines(path);
+                lines = (ArrayList<String>) Files.readAllLines(path);
                 for (int i = 0; i < lines.size(); i++) {
                     System.out.println(lines.get(i));
 

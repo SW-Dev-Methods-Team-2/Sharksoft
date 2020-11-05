@@ -1,53 +1,60 @@
 package com.cs3250p1.project1;
+import java.util.*;
 
 public class SalesOrder {
-    protected String id;
+    /*protected String id;
     protected double wholesale_cost;
     protected double sale_price;
-    protected int quantity;
+    protected int quantity;*/
+
     protected String supplier_id;
+    protected Date date; //dates are long so needs double
+    protected String email;
+    protected String shipping_address;
+    protected String product_id;
+    protected int quantity;
  
     public SalesOrder() {
     }
  
     public SalesOrder(String id) {
-        this.id = id;
+        this.product_id = id;
     }
  
-    public SalesOrder(String id, int quantity, double wholesale_cost, double sale_price,  String supplier_id) {
-        this(quantity, wholesale_cost, sale_price, supplier_id);
-        this.id = id;
+    public SalesOrder(String id, int quantity, String email, Date date, String supplier_id) {
+        this(quantity,  email, date, supplier_id);
+        this.product_id = id;
     }
      
-    public SalesOrder(int quantity, double wholesale_cost, double sale_price, String supplier_id) {
-        this.wholesale_cost = wholesale_cost;
-        this.sale_price = sale_price;
+    public SalesOrder(int quantity, String email, Date date, String supplier_id) {
+        this.email = email;
+        this.date = date;
         this.quantity = quantity;
         this.supplier_id = supplier_id;
     }
  
     public String getId() {
-        return id;
+        return product_id;
     }
  
     public void setId(String id) {
-        this.id = id;
+        this.product_id = id;
     }
  
-    public double getwholesale_cost() {
-        return wholesale_cost;
+    public Date getDate() {
+        return date;
     }
  
-    public void setwholesale_cost(int wholesale_cost) {
-        this.wholesale_cost = wholesale_cost;
+    public void setDate(Date date) {
+        this.date = date;
     }
  
-    public double getsale_price() {
-        return sale_price;
+    public String getEmail() {
+        return email;
     }
  
-    public void setsale_price(int sale_price) {
-        this.sale_price = sale_price;
+    public void setemail(String email) {
+        this.email = email;
     }
  
     public int getquantity() {
@@ -64,5 +71,13 @@ public class SalesOrder {
 
     public void setsupplier_id(String supplier_id){
         this.supplier_id = supplier_id;
+    }
+
+    public String getShippingA(){
+        return shipping_address;
+    }
+
+    public String setShippingA(String shipping_adress){
+       return this.shipping_address = shipping_adress;
     }
 }

@@ -1,5 +1,6 @@
 package com.cs3250p1.project1;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,15 +52,17 @@ public class OrderDAO {
     }
      
     public boolean insertOrder(SalesOrder order, String table) throws SQLException {
-        String sql = "INSERT INTO " + table + "(product_id, quantity, wholesale_cost, sale_price, supplier_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + table + "(email, shipping_address, product_id, quantity, date) VALUES (?, ?, ?, ?, ?)";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setString(1, order.getId());
-        statement.setInt(2, order.getquantity());
-        statement.setDouble(3, order.getwholesale_cost());
-        statement.setDouble(4, order.getsale_price());
-        statement.setString(5, order.getsupplier_id());
+        statement.setString(1, order.getEmail());
+        statement.setString(2, order.getShippingA());
+        statement.setString(3, order.getId());
+        statement.setInt(4, order.getquantity());
+        statement.setDate(5, order.getDate() );
+       
+        
         
          
         boolean rowInserted = statement.executeUpdate() > 0;
@@ -82,11 +85,11 @@ public class OrderDAO {
 
             String id = resultSet.getString("product_id");
             int quantity = resultSet.getInt("quantiy");
-            double wholesale_cost = resultSet.getDouble("wholesale_cost");
-            double sale_price = resultSet.getDouble("sale_price");
+            String email = resultSet.getString("email");
+            double date = resultSet.getDouble("date");
             String supplier_id = resultSet.getString("supplier_id");
              
-            SalesOrder order = new SalesOrder(id, quantity, wholesale_cost, sale_price, supplier_id);
+            SalesOrder order = new SalesOrder(id, quantity, email, date, supplier_id);
             listOrders.add(order);
         }
          
@@ -113,14 +116,14 @@ public class OrderDAO {
     }
      
     public boolean updateOrder(SalesOrder order, String table) throws SQLException {
-        String sql = "UPDATE " + table + " SET quantity=?, wholesale_cost=?, sale_price=?, supplier_id=? WHERE product_id =? ";
+        String sql = "UPDATE " + table + " SET quantity=?, email=?, date=?, supplier_id=? WHERE product_id =? ";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setString(1, order.getId());
         statement.setInt(2, order.getquantity());
-        statement.setDouble(3, order.getwholesale_cost());
-        statement.setDouble(4, order.getsale_price());
+        statement.setString(3, order.getEmail());
+        statement.setDouble(4, order.getDate());
         statement.setString(5, order.getsupplier_id());
          
         boolean rowUpdated = statement.executeUpdate() > 0;
@@ -143,17 +146,36 @@ public class OrderDAO {
         if (resultSet.next()) {
 
             int quantity = resultSet.getInt("quantity");
-            double wholesale_cost = resultSet.getDouble("wholesale_cost");
-            double sale_cost = resultSet.getDouble("sale_cost");
+            String email = resultSet.getString("email");
+            double date = resultSet.getDouble("date");
             String supplier_id = resultSet.getString("supplier_id");
             
-             order = new SalesOrder(quantity, wholesale_cost, sale_cost,supplier_id );
+             order = new SalesOrder(quantity, email, date,supplier_id );
         }
          
         resultSet.close();
         statement.close();
          
         return order;
+    }
+
+    public boolean bulkOrder(SalesOrder order, String table, List<String> lines)throws SQLException{
+
+        String sql = "INSERT INTO " + table + "(product_id, quantity, email, date, supplier_id) VALUES (?, ?, ?, ?, ?)";
+        connect();
+         
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        statement.setString(1, order.getId());
+        statement.setInt(2, order.getquantity());
+        statement.setString(3, order.getEmail());
+        statement.setDouble(4, order.getDate());
+        statement.setString(5, order.getsupplier_id());
+        
+         
+        boolean rowInserted = statement.executeUpdate() > 0;
+        statement.close();
+        disconnect();
+        return rowInserted;
     }
 
 

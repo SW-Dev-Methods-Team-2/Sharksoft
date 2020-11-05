@@ -3,11 +3,14 @@ package com.cs3250p1.project1;
 //Main class of entry of this application
 
 import java.awt.event.*;
+import java.util.*;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
-
+import javax.swing.Timer;
 
 import static java.lang.System.exit;
 import static java.lang.Thread.*;
@@ -86,6 +89,9 @@ Timer timer = new Timer(1000,null); //create the render timer
     FileHandler fHandle = new FileHandler();
 ProductDAO p1 = new ProductDAO(dbURL, dbUsername, dbPassword);
 Product pro1 = new Product();
+
+SalesOrder order = new SalesOrder();
+OrderDAO oDao = new OrderDAO(dbURL, dbUsername, dbPassword);
 
 void appRender() {
 
@@ -260,22 +266,39 @@ void setupListeners(){
     gui.getButton(btnCrudOpenCustomerOrder).addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            List<String> lines = gui.getStringFromFileDialog(); //lets user choose a file,
+            ArrayList<String> lines = gui.getStringFromFileDialog(); //lets user choose a file,
             // then loads it's string as a list onto the variable
             //parse that string and store it into a structure
 
-            ArrayList<CustomerOrderField> cusOrdTable = fHandle.parseCustomerOrder(lines);
-            //print what you got
-            for (int i=0;i<cusOrdTable.size();i++){
-                crudOutputStream.pushLn(cusOrdTable.get(i).printField());
-            }
+            for(int i = 0; i < lines.size(); i++){
+                String [] data = lines.get(i).split(",");
+                //System.out.println(data);
+                Date temp = null;
+                try {
+                     temp = new SimpleDateFormat("MMddyyyy").parse(data[0]);
+                } catch (ParseException f) {
+                    //wefwef
+                }
+                order.setDate(temp);
+                order.setemail(data[1]);
+                order.setShippingA(data[2]);
+                order.setId(data[3]);
+                order.setquantity(Integer.parseInt(data[4]));
+                try{
+                    oDao.insertOrder(order, "cs3250main.sales_orders");
+                }
+                catch(SQLException x){
+                    x.printStackTrace();
+                }
 
+            }
+           
         }
     });
     gui.getButton(btnCrudOpenSupplierOrder).addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            List<String> lines = gui.getStringFromFileDialog(); //lets user choose a file,
+            /*List<String> lines = gui.getStringFromFileDialog(); //lets user choose a file,
             // then loads it's string as a list onto the variable
             //parse that string and store it into a structure
 
@@ -283,7 +306,9 @@ void setupListeners(){
             //print what you got
             for (int i=0;i<supOrdTable.size();i++){
                 crudOutputStream.pushLn(supOrdTable.get(i).printField());
-            }
+            }*/
+
+
 
         }
     });
