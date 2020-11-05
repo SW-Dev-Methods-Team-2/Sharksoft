@@ -14,14 +14,15 @@ if ($link->connect_error) {
   }
 
   if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $date = date("mdY");
     $email = filter_input(INPUT_POST, 'email');
     $useraddress = filter_input(INPUT_POST, 'address');
     $user = filter_input(INPUT_POST, 'user_id');
     $productid = filter_input(INPUT_POST, 'itemid');
     $productquantity = filter_input(INPUT_POST, 'itemquant');
     $orderdate = time();
-    $sql = "INSERT INTO sales_orders (product_id, quantity, userID)
-    VALUES ('$productid', '$productquantity', '$user')";
+    $sql = "INSERT INTO sales_orders (date_, email, shipping_address, product_id, quantity, userID)
+    VALUES ('$date', '$email', '$useraddress','$productid', '$productquantity', '$user')";
     $_SESSION["loggedin"] = true;
     $_SESSION["itemid"] = $productid;
     $_SESSION["quantity"] = $productquantity;
@@ -88,9 +89,9 @@ if ($link->connect_error) {
             
             <form action="order.php" method="post">
                 <label for="user_id">User ID:</label><br>
-                <input type="text" id="user_id" name="user_id" value="userid#" required><br><br>
+                <input type="text" id="user_id" name="user_id" value=<?php echo htmlspecialchars($_SESSION["user_id"]); ?> required><br><br>
                 <label for="email">Enter your email:</label><br>
-                <input type="email" id="email" name="email" required><br><br>
+                <input type="email" id="email" name="email" value=<?php echo htmlspecialchars($_SESSION["username"]); ?> required><br><br>
                 <label for="address">Shipping address:</label><br>
                 <input type="text" id="address" name="address" value="123 shark lane Sharksville CO 12345" required><br><br>
                 <label for="itemid">Item ID:</label><br>
