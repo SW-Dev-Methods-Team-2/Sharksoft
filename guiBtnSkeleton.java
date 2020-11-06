@@ -3,6 +3,7 @@ import javax.swing.*;                           //This program will create a JFr
 import java.awt.*;                              //JPanels then place JRadio Buttons in a group in the South JPanel
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.LinkedList; // this is the import for the linked list
 
 public class guiBtnSkeleton{                               //changes the background color of each JRadioButton based on each
 
