@@ -317,3 +317,36 @@ public class guiBtnSkeleton{                               //changes the backgro
 
 
 }
+
+
+    LinkedList<String> product_ID = new LinkedList();
+    LinkedList<String> product_Info = new LinkedList();
+    LinkedList<String> words = new LinkedList();
+    SpiderLeg leg = new SpiderLeg();
+    public void search(String textFieldEntry){ //search method with textfield entry passed in
+
+    }
+
+    String currentProductNode; // declaring current node as a string
+    currentProductNode = this.nextProductNode();
+
+}
+leg.crawl(currentProductNode);// calls the crawl method inside of the leg with currentProductNode passed in
+
+    //if(currentProductNode.next = null){
+
+    //this.product.addAll(leg.words)
+// }}
+
+public string nextProductNode(){
+    
+    String nextProductNode = this.Product_Info
+        
+        if(!this.product_ID = null){
+            
+            this.product_ID.add(nextProductNode);
+            
+            return nextProductNode;
+            
+        }
+        return nextProductNode();
