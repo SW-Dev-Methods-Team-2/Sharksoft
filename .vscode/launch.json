@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - BarChartEx",
+            "request": "launch",
+            "mainClass": "com.cs3250p1.project1.BarChartEx",
+            "projectName": "project1"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - LineChartEx2",
+            "request": "launch",
+            "mainClass": "com.cs3250p1.project1.LineChartEx2",
+            "projectName": "project1"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - Project1Application",
             "request": "launch",
             "mainClass": "com.cs3250p1.project1.Project1Application",

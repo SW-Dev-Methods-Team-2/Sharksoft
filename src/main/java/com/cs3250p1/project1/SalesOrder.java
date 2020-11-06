@@ -8,7 +8,7 @@ public class SalesOrder {
     protected int quantity;*/
 
     protected String supplier_id;
-    protected Date date; //dates are long so needs double
+    protected String date; //dates are long so needs double
     protected String email;
     protected String shipping_address;
     protected String product_id;
@@ -21,12 +21,12 @@ public class SalesOrder {
         this.product_id = id;
     }
  
-    public SalesOrder(String id, int quantity, String email, Date date, String supplier_id) {
+    public SalesOrder(String id, int quantity, String email, String date, String supplier_id) {
         this(quantity,  email, date, supplier_id);
         this.product_id = id;
     }
      
-    public SalesOrder(int quantity, String email, Date date, String supplier_id) {
+    public SalesOrder(int quantity, String email, String date, String supplier_id) {
         this.email = email;
         this.date = date;
         this.quantity = quantity;
@@ -41,11 +41,11 @@ public class SalesOrder {
         this.product_id = id;
     }
  
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
  
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
  

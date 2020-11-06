@@ -52,7 +52,7 @@ public class OrderDAO {
     }
      
     public boolean insertOrder(SalesOrder order, String table) throws SQLException {
-        String sql = "INSERT INTO " + table + "(email, shipping_address, product_id, quantity, date) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + table + "(email, shipping_address, product_id, quantity, date_) VALUES (?, ?, ?, ?, ?)";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
@@ -60,7 +60,7 @@ public class OrderDAO {
         statement.setString(2, order.getShippingA());
         statement.setString(3, order.getId());
         statement.setInt(4, order.getquantity());
-        statement.setDate(5, order.getDate() );
+        statement.setString(5, order.getDate() );
        
         
         
@@ -86,7 +86,7 @@ public class OrderDAO {
             String id = resultSet.getString("product_id");
             int quantity = resultSet.getInt("quantiy");
             String email = resultSet.getString("email");
-            double date = resultSet.getDouble("date");
+            String date = resultSet.getString("date");
             String supplier_id = resultSet.getString("supplier_id");
              
             SalesOrder order = new SalesOrder(id, quantity, email, date, supplier_id);
@@ -123,7 +123,7 @@ public class OrderDAO {
         statement.setString(1, order.getId());
         statement.setInt(2, order.getquantity());
         statement.setString(3, order.getEmail());
-        statement.setDouble(4, order.getDate());
+        statement.setString(4, order.getDate());
         statement.setString(5, order.getsupplier_id());
          
         boolean rowUpdated = statement.executeUpdate() > 0;
@@ -147,7 +147,7 @@ public class OrderDAO {
 
             int quantity = resultSet.getInt("quantity");
             String email = resultSet.getString("email");
-            double date = resultSet.getDouble("date");
+            String date = resultSet.getString("date");
             String supplier_id = resultSet.getString("supplier_id");
             
              order = new SalesOrder(quantity, email, date,supplier_id );
@@ -159,24 +159,7 @@ public class OrderDAO {
         return order;
     }
 
-    public boolean bulkOrder(SalesOrder order, String table, List<String> lines)throws SQLException{
-
-        String sql = "INSERT INTO " + table + "(product_id, quantity, email, date, supplier_id) VALUES (?, ?, ?, ?, ?)";
-        connect();
-         
-        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setString(1, order.getId());
-        statement.setInt(2, order.getquantity());
-        statement.setString(3, order.getEmail());
-        statement.setDouble(4, order.getDate());
-        statement.setString(5, order.getsupplier_id());
-        
-         
-        boolean rowInserted = statement.executeUpdate() > 0;
-        statement.close();
-        disconnect();
-        return rowInserted;
-    }
+    
 
 
 

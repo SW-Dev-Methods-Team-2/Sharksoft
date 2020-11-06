@@ -273,17 +273,13 @@ void setupListeners(){
             for(int i = 0; i < lines.size(); i++){
                 String [] data = lines.get(i).split(",");
                 //System.out.println(data);
-                Date temp = null;
-                try {
-                     temp = new SimpleDateFormat("MMddyyyy").parse(data[0]);
-                } catch (ParseException f) {
-                    //wefwef
-                }
-                order.setDate(temp);
+                
+                order.setDate(data[0]);
                 order.setemail(data[1]);
                 order.setShippingA(data[2]);
                 order.setId(data[3]);
                 order.setquantity(Integer.parseInt(data[4]));
+                
                 try{
                     oDao.insertOrder(order, "cs3250main.sales_orders");
                 }
