@@ -34,7 +34,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </div>
             <div class="rightside">
                 <div class="nav-linkwrapper">
-                    <a href="index.php">Home</a>
+                    <a href="../index.php">Home</a>
                 </div>
 
                 <div class="nav-linkwrapper">

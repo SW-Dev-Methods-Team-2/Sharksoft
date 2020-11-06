@@ -57,7 +57,7 @@ Note: working for too long in command line, and not closing the window and re-lo
 Let Derek know if you need help...
 
  php -S 127.0.0.1:8080
- http://127.0.0.1:8080/dbcon.php
+ http://127.0.0.1:8080/index.php
 
 http://127.0.0.1:8080/PHPMailerAutoload.php
 
