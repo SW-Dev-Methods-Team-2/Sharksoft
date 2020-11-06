@@ -1,7 +1,7 @@
 package com.cs3250p1.project1;
 
 public class StringStreamer {
-    String output="<html></html>";
+    String output="";
     int linecounter=0;
     int linelimit=20;
 
@@ -33,7 +33,7 @@ public class StringStreamer {
     void manageLines() {
         while (linecounter >= linelimit) {
             output = output.substring(0,6) //the "<start>" part
-                    +output.substring(output.indexOf("<br>")+4 //the first occurence of "<br>", +4 for its end
+                    +output.substring(output.indexOf("\n")+4 //the first occurence of "\n", +4 for its end
                     ,output.length());
             linecounter--;
         }
@@ -42,21 +42,21 @@ public class StringStreamer {
         output=output.replaceAll("</html>","");
         output+=_string;
         output+="</html>";
-        linecounter+=noOfOccurrences(_string,"<br>");
+        linecounter+=noOfOccurrences(_string,"\n");
         manageLines();
     }
 
     void pushLn(String _string){
         output=output.replaceAll("</html>","");
         output+=_string;
-        output+="<br>";
+        output+="\n";
         output+="</html>";
-        linecounter+=noOfOccurrences(_string,"<br>");;
+        linecounter+=noOfOccurrences(_string,"\n");;
         manageLines();
     }
     void nextLn(){
         output=output.replaceAll("</html>","");
-        output+="<br>";
+        output+="\n";
         output+="</html>";
         linecounter++;
         manageLines();
