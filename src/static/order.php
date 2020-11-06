@@ -26,9 +26,10 @@ if ($link->connect_error) {
     $_SESSION["loggedin"] = true;
     $_SESSION["itemid"] = $productid;
     $_SESSION["quantity"] = $productquantity;
-
+    $_SESSION["email"] = $email;
 
     if ($link->query($sql) === TRUE) {
+           
         header("location: thankyou.php");
     }
     else{
