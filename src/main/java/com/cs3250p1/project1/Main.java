@@ -8,11 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 
-
-import static java.lang.System.exit;
-import static java.lang.Thread.*;
-
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
@@ -27,8 +22,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Main{
 
 //variables that control the status of the main program
-StringStreamer crudOutputStream = new StringStreamer(); //this streamer is used by the CRUDframe
-String txtMainStatusBarOutput = "Status";
+StringStreamer mainOutputStream = new StringStreamer(); //this streamer is used by the CRUDframe
 boolean simulationRunning = false;
 int timeSeconds = 0;
 int dayCounter = 0;
@@ -38,35 +32,6 @@ int crudRenderTest=0;
 
 //GUI related objects and variables
 GUI gui = new GUI(); //create the GUI object
-int mainScreen = gui.addScreen(); //the different screens this program is divided into
-int simScreen = gui.addScreen();
-int crudScreen = gui.addScreen();
-
-//buttons...
-int btnMainRunProgram = gui.addButton(mainScreen,"center","Run Program");
-int btnMainRunSim = gui.addButton(mainScreen,"center","Run Simulation");
-
-int btnSimGoBack = gui.addButton(simScreen,"south","Go Back");
-int btnSimCustomer = gui.addButton(simScreen,"south","Invoke Customer Order");
-int btnSimSupplier = gui.addButton(simScreen,"south","Invoke Supplier Order");
-
-int btnCrudGoBack = gui.addButton(crudScreen,"south","Go Back");
-int btnCrudCreate = gui.addButton(crudScreen,"south","Create Product");
-int btnCrudRead = gui.addButton(crudScreen,"south","Read Product");
-int btnCrudUpdate = gui.addButton(crudScreen,"south","Update Product");
-int btnCrudDelete = gui.addButton(crudScreen,"south","Delete Product");
-int btnCrudOpenCustomerOrder = gui.addButton(crudScreen,"east","Open Customer Order");
-int btnCrudOpenSupplierOrder = gui.addButton(crudScreen,"east","Open Supplier Order");
-//end  buttons...
-
-//labels...
-int txtSharkSoft = gui.addLabel(mainScreen,"north","StuffBuySharks Co. Warehouse Portal");
-int txtMainStatusBar = gui.addLabel(mainScreen,"south",txtMainStatusBarOutput);
-int txtSimTime = gui.addLabel(simScreen,"north","Time");
-int txtSimOutput = gui.addLabel(simScreen,"center","---");
-int txtSimOutput2 = gui.addLabel(simScreen,"center","");
-int txtCrudOutput = gui.addLabel(crudScreen,"center","CRUD output goes here");
-//end labels...
 
 //forms...
 int frmCrudAddProduct = gui.addForm("Enter Product Details","Product;Quantity;Wholesale Cost;Sale Price;Supplier Id;",10);
@@ -83,30 +48,24 @@ final String sharktable = "cs3250main.sharktable";
 
 InventorySimulator simulator01 = new InventorySimulator(); //create the simulator
 Timer timer = new Timer(1000,null); //create the render timer
-    FileHandler fHandle = new FileHandler();
+    AppFileHandler fHandle = new AppFileHandler();
 ProductDAO p1 = new ProductDAO(dbURL, dbUsername, dbPassword);
 Product pro1 = new Product();
 
 void appRender() {
 
-   gui.setText(txtMainStatusBar,txtMainStatusBarOutput); //update the status bar of main frame
+       gui.setText(mainOutputStream.getStream());
 
-   if (crudRunning == true) {
-       crudRenderTest++;
-       if (crudRenderTest>10) crudRenderTest=0;
-       crudOutputStream.push(Integer.toString(crudRenderTest));
-       gui.setText(txtCrudOutput,crudOutputStream.getStream());
-   }
    if (simulationRunning == true) {
        simulator01.runSim();
-       gui.setText(txtSimTime,"Time=" + Integer.toString(simulator01.getTimeSeconds()));
+       mainOutputStream.pushLn("Time=" + Integer.toString(simulator01.getTimeSeconds()));
 
        //...if day reaches 6, then simulation is over. This program simulates a week at a time.
        if (simulator01.getDayCounter() > 6) simulationRunning = false;
 
        //finalize and render all result at the end of the frame
-       gui.setText(txtSimOutput,simulator01.getStream());
-       gui.setText(txtSimOutput2,simulator01.printTotalResult());
+       mainOutputStream.pushLn(simulator01.getStream());
+       mainOutputStream.pushLn(simulator01.printTotalResult());
    }
 }
 /**
@@ -117,19 +76,14 @@ void appStart(){
 
    gui.setupGUI();
 
-   //the following for loop is temporary, it will be replaced with a more efficient code
-    for (int i=0;i<gui.screenList.size();i++) {
-        gui.screenList.get(i).frame.addWindowListener(new WindowAdapter() {
+    gui.frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                System.out.println("Clearing up simulator data...");
                 simulator01.clearInventoryOnline();//clear out what you created in the online database
+                System.out.println("Simulator data cleared!");
             }
         });
-    }
     //---end for loop
-
-   gui.screenChangeInto(mainScreen); //start by making the first screen visible
    setupListeners(); //setup listeners for button press events
 
    simulator01.initializeSimulatorData(); //initialize the simulator, creates database inside itself
@@ -150,52 +104,20 @@ public static void main(String[] args) {
 }//END PROGRAM-----------------------------------------------------------
 
 void setupListeners(){
-   gui.getButton(btnMainRunProgram).addActionListener(new ActionListener() {
-   @Override
-   public void actionPerformed(ActionEvent e){
-       gui.screenChangeInto(crudScreen);
-       //initialize crud process
-       crudRunning = true;
-   }});
-
-    gui.getButton(btnMainRunSim).addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent e){
-            gui.screenChangeInto(simScreen);
-            simulationRunning=true; //activate simulation
-        }
-    });
-
-    gui.getButton(btnSimGoBack).addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            gui.screenChangeInto(mainScreen);
-            simulationRunning = false; //deactivate simulation
-        }
-    });
-    gui.getButton(btnSimCustomer).addActionListener(new ActionListener() {
+    /* gui.getButton(btnSimCustomer).addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             simulator01.processBuyer(timeSeconds);
         }
     });
-
     gui.getButton(btnSimSupplier).addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             simulator01.processSupplier(timeSeconds,dayCounter);
         }
-    });
-
-
+    }); */
     //CRUD
-    gui.getButton(btnCrudGoBack).addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            gui.screenChangeInto(mainScreen);
-            crudRunning=false;
-        }
-    });
-
-    gui.getButton(btnCrudCreate).addActionListener(new ActionListener() {
+    gui.btnCrudCreate.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             
@@ -212,20 +134,20 @@ void setupListeners(){
                     f.printStackTrace();
                 }
             
-           crudOutputStream.push("Operation Complete."); //send result to stream for render later
+           mainOutputStream.push("Operation Complete."); //send result to stream for render later
         }
     });
-    gui.getButton(btnCrudRead).addActionListener(new ActionListener() {
+    gui.btnCrudRead.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try{
-                crudOutputStream.push(p1.listAllProducts(sharktable));
+                mainOutputStream.push(p1.listAllProducts(sharktable));
             }catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }
     });
-    gui.getButton(btnCrudUpdate).addActionListener(new ActionListener() {
+    gui.btnCrudUpdate.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try{
@@ -240,10 +162,10 @@ void setupListeners(){
             }catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            crudOutputStream.push("Operation Complete.");
+            mainOutputStream.push("Operation Complete.");
         }
     });
-    gui.getButton(btnCrudDelete).addActionListener(new ActionListener() {
+    gui.btnCrudDelete.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try{
@@ -253,11 +175,11 @@ void setupListeners(){
             }catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            crudOutputStream.push("Operation Complete.");
+            mainOutputStream.push("Operation Complete.");
         }
     });
 
-    gui.getButton(btnCrudOpenCustomerOrder).addActionListener(new ActionListener() {
+    gui.btnCrudOpenCustomerOrder.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             List<String> lines = gui.getStringFromFileDialog(); //lets user choose a file,
@@ -267,12 +189,12 @@ void setupListeners(){
             ArrayList<CustomerOrderField> cusOrdTable = fHandle.parseCustomerOrder(lines);
             //print what you got
             for (int i=0;i<cusOrdTable.size();i++){
-                crudOutputStream.pushLn(cusOrdTable.get(i).printField());
+                mainOutputStream.pushLn(cusOrdTable.get(i).printField());
             }
 
         }
     });
-    gui.getButton(btnCrudOpenSupplierOrder).addActionListener(new ActionListener() {
+    gui.btnCrudOpenSupplierOrder.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             List<String> lines = gui.getStringFromFileDialog(); //lets user choose a file,
@@ -282,7 +204,7 @@ void setupListeners(){
             ArrayList<SupplierOrderField> supOrdTable = fHandle.parseSupplierOrder(lines);
             //print what you got
             for (int i=0;i<supOrdTable.size();i++){
-                crudOutputStream.pushLn(supOrdTable.get(i).printField());
+                mainOutputStream.pushLn(supOrdTable.get(i).printField());
             }
 
         }

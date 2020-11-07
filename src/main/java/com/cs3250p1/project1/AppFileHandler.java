@@ -27,7 +27,7 @@ class SupplierOrderField{
     }
 }
 
-public class FileHandler {
+public class AppFileHandler {
     ArrayList<CustomerOrderField> parseCustomerOrder(List<String> lines){
         ArrayList<CustomerOrderField> table = new ArrayList<>();
 
