@@ -3,7 +3,7 @@ package com.cs3250p1.project1;
 public class StringStreamer {
     String output="";
     int linecounter=0;
-    int linelimit=20;
+    int linelimit=200;
 
     /* Checks if a String is empty ("") or null. */
     boolean isEmpty(String s) {

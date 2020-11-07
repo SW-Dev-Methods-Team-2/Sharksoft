@@ -96,7 +96,7 @@ public class ProductDAO {
             String sPrice = result.getString("sale_price");
             String sId = result.getString("supplier_id");
 
-            String output = "product: %s- %s- %s- %s- %s<br>";
+            String output = "product: %s- %s- %s- %s- %s\n";
             print += String.format(output, count++, pId, quan, wCost, sPrice, sId);
         }
         /*List<Product> listProduct = new ArrayList<>();

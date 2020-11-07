@@ -130,6 +130,10 @@ void setupListeners(){
                 pro1.setsupplier_id(gui.getForm(frmCrudAddProduct).getKeyValue("Supplier Id"));
                 try{
                     p1.insertProduct(pro1,sharktable);
+                   /*  if (simulation==true){
+                    p1.insertProduct(pro1,simsharktable);
+                    }
+                    else */
                 }catch(SQLException f){
                     f.printStackTrace();
                 }

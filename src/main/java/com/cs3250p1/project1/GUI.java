@@ -82,6 +82,7 @@ public class GUI {
     int formIndexCounter = 0;
 
     TextArea mainTextArea = new TextArea("Welcome to the portal",20,120);
+    JCheckBox chBoxSimulationMode = new JCheckBox("Simulation Mode");
 
     JButton btnCrudOpenCustomerOrder = new JButton("Open Customer Order");
     JButton btnCrudOpenSupplierOrder = new JButton("Open Supplier Order");
@@ -117,6 +118,7 @@ public class GUI {
         south.add(btnCrudDelete);
         east.add(btnCrudOpenCustomerOrder);
         east.add(btnCrudOpenSupplierOrder);
+        east.add(chBoxSimulationMode);
 
 
         frame.getContentPane().add(east, BorderLayout.EAST);
