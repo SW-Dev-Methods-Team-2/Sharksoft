@@ -15,7 +15,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-
 class GUIForm{ //one form stores one JPanel at a time
     String title="default";
     ArrayList<JLabel> keyList = new ArrayList<JLabel>();
@@ -67,6 +66,10 @@ class GUIForm{ //one form stores one JPanel at a time
     }
 }
 
+/**
+ * Handles graphical part of the program. Contains descriptions for jframe, jpanels, buttons,
+ * forms and a place for the bargraph
+ */
 public class GUI {
 
     JFrame frame = new JFrame();
@@ -84,6 +87,7 @@ public class GUI {
     TextArea mainTextArea = new TextArea("Welcome to the portal",20,120);
 
     JCheckBox chBoxSimulation = new JCheckBox("Simulation");
+    JCheckBox chBoxBarChart = new JCheckBox("Show Bar Chart");
 
     JButton btnCrudOpenCustomerOrder = new JButton("Open Customer Order");
     JButton btnCrudOpenSupplierOrder = new JButton("Open Supplier Order");
@@ -91,6 +95,11 @@ public class GUI {
     JButton btnCrudRead = new JButton("Read Product");
     JButton btnCrudUpdate = new JButton("Update Product");
     JButton btnCrudDelete = new JButton("Delete Product");
+
+    //Bar chart area
+    JFrame barChartFrame = new JFrame();
+    BarChartEx chart01 = new BarChartEx();
+
 
     int addForm(String _title, String _keyString, int _fieldSize) {
         GUIForm temp = new GUIForm(_title, _keyString, _fieldSize);
@@ -110,8 +119,7 @@ public class GUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //without this, frame is hidden but
         frame.setPreferredSize(new Dimension(1024, 768));
         frame.setLocation(128,0);
-        frame.setBackground(Color.decode("#ffffff"));
-        
+
         north.add(mainTextArea);
         south.add(btnCrudCreate);
         south.add(btnCrudRead);
@@ -120,6 +128,7 @@ public class GUI {
         east.add(btnCrudOpenCustomerOrder);
         east.add(btnCrudOpenSupplierOrder);
         east.add(chBoxSimulation);
+        east.add(chBoxBarChart);
 
 
         frame.getContentPane().add(east, BorderLayout.EAST);
@@ -129,13 +138,24 @@ public class GUI {
         frame.getContentPane().add(center, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
+
+        //settings for barChartFrame
+        barChartFrame.setDefaultCloseOperation((JFrame.EXIT_ON_CLOSE));
+        barChartFrame.setPreferredSize(new Dimension (640,480));
+        barChartFrame.setLocation(128,128);
+
+        //barchartframe setup operations.
+        barChartFrame.add(chart01.getChartPanel());
+        barChartFrame.pack();
+        barChartFrame.setVisible(false);
+
         }
 
-    ArrayList<String> getStringFromFileDialog() {
+    List<String> getStringFromFileDialog() {
 
         final JFileChooser fc = new JFileChooser();
         File file = null;
-        ArrayList<String> lines = null;
+        List<String> lines = null;
         //this dialog needs a frame to live inside.
         //by storing which frame is active in a variable, we can open
         //this dialog properly in its designated frame
@@ -148,7 +168,7 @@ public class GUI {
             Path path = Paths.get(file.getAbsolutePath()); //get the path for the file, I don't know how file system
             //works on mac, so keep all files local
             try {
-                lines = (ArrayList<String>) Files.readAllLines(path);
+                lines = Files.readAllLines(path);
                 for (int i = 0; i < lines.size(); i++) {
                     System.out.println(lines.get(i));
 
