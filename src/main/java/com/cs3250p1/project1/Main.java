@@ -190,10 +190,39 @@ void setupListeners(){
             // then loads it's string as a list onto the variable
             //parse that string and store it into a structure
 
-            ArrayList<CustomerOrderField> cusOrdTable = fHandle.parseCustomerOrder(lines);
-            //print what you got
-            for (int i=0;i<cusOrdTable.size();i++){
-                mainOutputStream.pushLn(cusOrdTable.get(i).printField());
+            SalesOrder order = new SalesOrder();
+            OrderDAO oDao = new OrderDAO(dbURL, dbUsername, dbPassword);
+
+            System.out.println("Start sending sales orders");
+            for(int i = 0; i < lines.size(); i++){
+                String [] data = lines.get(i).split(",");
+                
+                order.setDate(data[0]);
+                order.setemail(data[1]);
+                order.setShippingA(data[2]);
+                order.setId(data[3]);System.out.print(data[4]+"\n");
+                order.setquantity(Integer.parseInt(data[4].trim()));
+
+                mainOutputStream.push(data[0]);
+                mainOutputStream.push(data[1]);
+                mainOutputStream.push(data[2]);
+                mainOutputStream.push(data[3]);
+                mainOutputStream.push(data[4]+"\n");
+
+                System.out.print(data[0]);
+                System.out.print(data[1]);
+                System.out.print(data[2]);
+                System.out.print(data[3]);
+                System.out.print(data[4]);
+                
+                
+                try{
+                    oDao.insertOrder(order, "cs3250main.sales_orders");
+                }
+                catch(SQLException x){
+                    x.printStackTrace();
+                }
+
             }
 
         }
@@ -205,11 +234,38 @@ void setupListeners(){
             // then loads it's string as a list onto the variable
             //parse that string and store it into a structure
 
-            ArrayList<SupplierOrderField> supOrdTable = fHandle.parseSupplierOrder(lines);
+            SupplierOrder supOrder= new SupplierOrder();
+            SupplierOrderDAO supOrdDao = new SupplierOrderDAO(dbURL, dbUsername, dbPassword);
+
+            System.out.println("Start sending supplier orders");
+            for(int i = 0; i < lines.size(); i++){
+                String [] data = lines.get(i).split(",");
+                
+                supOrder.setDate(data[0]);
+                supOrder.setId(data[1]);
+                supOrder.setsupplier_id(data[2]);
+                supOrder.setquantity(Integer.parseInt(data[3].trim()));
+
+                mainOutputStream.pushLn("Data sent to supplier orders in database...");
+                mainOutputStream.pushLn(data[0]);
+                mainOutputStream.pushLn(data[1]);
+                mainOutputStream.pushLn(data[2]);
+                mainOutputStream.pushLn(data[3]);
+                
+                try{
+                    supOrdDao.insertOrder(supOrder, "cs3250main.supplier_orders");
+                }
+                catch(SQLException x){
+                    x.printStackTrace();
+                }
+
+            }
+
+            /* ArrayList<SupplierOrderField> supOrdTable = fHandle.parseSupplierOrder(lines);
             //print what you got
             for (int i=0;i<supOrdTable.size();i++){
                 mainOutputStream.pushLn(supOrdTable.get(i).printField());
-            }
+            } */
 
         }
     });

@@ -1,6 +1,5 @@
 package com.cs3250p1.project1;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,17 +8,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.util.SystemPropertyUtils;
 
-
-public class OrderDAO {
+public class SupplierOrderDAO {
     
     private String jdbcURL;
     private String jdbcUsername;
     private String jdbcPassword;
     private Connection jdbcConnection;
      
-    public OrderDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) {
+    public SupplierOrderDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) {
         this.jdbcURL = jdbcURL;
         this.jdbcUsername = jdbcUsername;
         this.jdbcPassword = jdbcPassword;
@@ -53,19 +50,15 @@ public class OrderDAO {
         }
     }
      
-    public boolean insertOrder(SalesOrder order, String table) throws SQLException {
-        String sql = "INSERT INTO " + table + "(email, shipping_address, product_id, quantity, date_) VALUES (?, ?, ?, ?, ?)";
+    public boolean insertOrder(SupplierOrder supOrder, String table) throws SQLException {
+        String sql = "INSERT INTO " + table + "(date, product_id, supplier_id, quantity) VALUES (?, ?, ?, ?)";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
-        statement.setString(1, order.getEmail());
-        statement.setString(2, order.getShippingA());
-        statement.setString(3, order.getId());
-        statement.setInt(4, order.getquantity());
-        statement.setString(5, order.getDate() );
-       
-        
-        
+        statement.setString(1, supOrder.getDate() );
+        statement.setString(2, supOrder.getId());
+        statement.setString(3, supOrder.getsupplier_id());
+        statement.setInt(4, supOrder.getquantity());
          
         boolean rowInserted = statement.executeUpdate() > 0;
         statement.close();
@@ -73,7 +66,7 @@ public class OrderDAO {
         return rowInserted;
     }
      
-    public List<SalesOrder> listAllOrders(String table) throws SQLException {
+    /* public List<SalesOrder> listAllOrders(String table) throws SQLException {
         List<SalesOrder> listOrders = new ArrayList<>();
          
         String sql = "SELECT * FROM " + table;
@@ -201,8 +194,8 @@ public class OrderDAO {
 
 
         return orderArray;
-
-    }
+ 
+    }*/
 
     
 
