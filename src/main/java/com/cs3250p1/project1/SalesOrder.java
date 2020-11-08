@@ -16,6 +16,12 @@ public class SalesOrder {
  
     public SalesOrder() {
     }
+
+    public SalesOrder(String id, int quantity){
+        this.product_id = id;
+        this.quantity = quantity;
+    }
+    
  
     public SalesOrder(String id) {
         this.product_id = id;

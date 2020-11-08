@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.util.SystemPropertyUtils;
+
 
 public class OrderDAO {
     
@@ -157,6 +159,49 @@ public class OrderDAO {
         statement.close();
          
         return order;
+    }
+
+    public ArrayList<SalesOrder> orderList(String table) throws SQLException {
+        ArrayList<SalesOrder> orderArray = new ArrayList<SalesOrder>();
+
+        //select top 5 item_name , sum(Quantity) as Quantity from Customer_Invoice 
+        //group by item_name 
+        //ORDER BY sum(Quantity) DESC
+        String print ="";
+        String sql = "SELECT product_id, SUM(quantity) AS quantity FROM cs3250main.sales_orders GROUP BY product_id ORDER BY SUM(quantity) DESC LIMIT 10";
+         
+        connect();
+         
+        Statement statement = jdbcConnection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+       
+        while (resultSet.next()) {
+
+            String id = resultSet.getString("product_id");
+            System.out.print(id + " ");
+            int quantity = resultSet.getInt("quantity");
+            System.out.println(quantity);
+            //String email = resultSet.getString("email");
+           // String date = resultSet.getString("date");
+           // String supplier_id = resultSet.getString("supplier_id");
+           
+            SalesOrder order = new SalesOrder(id, quantity);
+
+            
+            print+= "" + id + " " + quantity;
+            orderArray.add(order);
+        }
+         
+        resultSet.close();
+        statement.close();
+         
+        disconnect();
+
+
+
+        return orderArray;
+
     }
 
     

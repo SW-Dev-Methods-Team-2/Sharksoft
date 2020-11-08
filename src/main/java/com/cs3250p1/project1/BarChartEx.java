@@ -11,6 +11,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class BarChartEx extends JFrame {
 
@@ -37,13 +39,30 @@ public class BarChartEx extends JFrame {
 
     private CategoryDataset createDataset() {
 
+        final String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
+        final String dbUsername = "admin";
+        final String dbPassword = "cs3250db1";
+
         var dataset = new DefaultCategoryDataset();
-        dataset.setValue(46, "Gold medals", "USA");
-        dataset.setValue(38, "Gold medals", "China");
-        dataset.setValue(29, "Gold medals", "UK");
-        dataset.setValue(22, "Gold medals", "Russia");
-        dataset.setValue(13, "Gold medals", "South Korea");
-        dataset.setValue(11, "Gold medals", "Germany");
+        OrderDAO orders = new OrderDAO(dbURL, dbUsername, dbPassword);
+
+        try {
+            ArrayList<SalesOrder> orderList = orders.orderList("cs3250main.sales_orders");
+            for(int i= 0; i < orderList.size(); i++){
+                dataset.setValue(orderList.get(i).getquantity(),"quantity sold", orderList.get(i).getId());
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       
+        
+        
+
+        //implementaion with jdbc thoughts:
+        //first we need to order the top ten most purchased products by querying the database. 
+        //then we set the first result at the top with its quantity, and product id. 
+
 
         return dataset;
     }
@@ -51,9 +70,9 @@ public class BarChartEx extends JFrame {
     private JFreeChart createChart(CategoryDataset dataset) {
 
         JFreeChart barChart = ChartFactory.createBarChart(
-                "Olympic gold medals in London",
+                "Most sold product all time",
                 "",
-                "Gold medals",
+                "Quantity",
                 dataset,
                 PlotOrientation.VERTICAL,
                 false, true, false);

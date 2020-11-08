@@ -14,13 +14,15 @@ public class Controller {
         final String jdbcURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
         final String jdbcUsername = "admin";
         final String jdbcPassword = "cs3250db1";
-        final String sharktabkle = "cs3250main.sharktable";
+        final String sharktable = "cs3250main.sales_orders";
 
-        ProductDAO p1 = new ProductDAO(jdbcURL, jdbcUsername, jdbcPassword);
-        Product pro1 = createProduct();
+        OrderDAO p1 = new OrderDAO(jdbcURL, jdbcUsername, jdbcPassword);
+        //Product pro1 = createProduct();
+
+
 
         try {
-            p1.updateProduct(pro1, sharktabkle);
+            p1.orderList(sharktable);
         } catch (SQLException e) {
             
             e.printStackTrace();
