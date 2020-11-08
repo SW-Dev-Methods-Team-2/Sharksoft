@@ -4,7 +4,7 @@ session_start();
  
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: login.php");
+    header("location: Resources/login.php");
     exit;
 }
 ?>
@@ -14,7 +14,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <head> 
     <meta charset="utf-8" />
     <title>Home Page</title> 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="Resources/styles.css">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -30,18 +30,18 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </div>
             <div class="rightside">
                 <div class="nav-linkwrapper">
-                    <a href="index.html">Home</a>
+                    <a href="index.php">Home</a>
                 </div>
                 
                 <div class="nav-linkwrapper">
-                    <a href="order.php">Order Form</a>
+                    <a href="Resources/order.php">Order Form</a>
                 </div>
                 
                 <div class="nav-linkwrapper">
-                    <a href="login.php">Login</a>
+                    <a href="Resources/login.php">Login</a>
                 </div>
                 <div class="nav-linkwrapper">
-                    <a href="logout.php">Logout</a>
+                    <a href="Resources/logout.php">Logout</a>
                 </div>
             </div>
         </div>
@@ -55,13 +55,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 <div class="portfolio-item-wrapper">
                     <div class="portfolio-img-background" style="background-image:url(images/shark1.jpg)"></div>
                     <div class="img-text-wrapper">
+
                         <div class="subtitle">
                             A SHARK
-                        </div>
+                        </div> 
                     </div>
                 </div>
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(images/shark2.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(Resources/images/shark2.jpg)"></div>
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             A SHARK
@@ -69,7 +70,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(images/shark3.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(/Resources/images/shark3.jpg)"></div>
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             A SHARK
@@ -77,7 +78,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(images/shark4.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(/Resources/images/shark4.jpg)"></div>
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             A SHARK
@@ -85,7 +86,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(images/shark5.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(/Resources/images/shark5.jpg)"></div>
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             A SHARK
@@ -93,7 +94,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(images/shark6.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(/Resources/images/shark6.jpg)"></div>
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             A SHARK
@@ -102,7 +103,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
                 <!-- 
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(images/shark7.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(/Resources/images/shark7.jpg)"></div>
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             A SHARK
@@ -110,7 +111,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(images/shark8.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(Website/images/shark8.jpg)"></div>
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             A SHARK
@@ -118,7 +119,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(images/mantaray.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(Website/images/mantaray.jpg)"></div>
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             NOT A SHARK
@@ -126,7 +127,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(images/shark9.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(Website/images/shark9.jpg)"></div>
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             A SHARK
@@ -134,7 +135,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(images/shark10.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(Website/images/shark10.jpg)"></div>
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             A SHARK
@@ -142,7 +143,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(images/shark11.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(Website/images/shark11.jpg)"></div>
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             A SHARK
