@@ -36,10 +36,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <a href="Resources/lookup.php">Past Orders</a>
                 </div>
                 <div class="nav-linkwrapper">
-                    <a href="Resources/login.php">Login</a>
+                    <a href="Resources/login.php">Switch User</a>
                 </div>
                 <div class="nav-linkwrapper">
                     <a href="Resources/logout.php">Logout</a>
+                </div>
+                <div class="nav-linkwrapper">
+                    <a href="Resources/lookup.php">Order history</a>
                 </div>
             </div>
         </div>
@@ -116,7 +119,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>                
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(Website/images/shark9.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(/Resources/images/shark4.jpg)"></div>
+
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             A SHARK
