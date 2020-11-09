@@ -34,7 +34,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 <div class="nav-linkwrapper">
                     <a href="../index.php">Home</a>
                 </div>
-                
+                <div class="nav-linkwrapper">
+                    <a href="../logout.php">Logout</a>
+                </div>
             </div>
         
         </div>
@@ -50,3 +52,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </p>
 </body>
 </html>
+<?php
+    //automatic redirect: having some issues. need to sort out
+    //header("refresh:1.5; Location: http://stuffbuysharks.xyz/index.php");
+    //header("refresh:1.5; Location: ../index.php");
+    //exit();
+?>

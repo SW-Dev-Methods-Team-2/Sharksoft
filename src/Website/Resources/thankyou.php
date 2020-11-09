@@ -43,19 +43,9 @@ require_once "orderconfirmationemail.php";
                 <div class="nav-linkwrapper">
                     <a href="../index.php">Home</a>
                 </div>
-
-                <div class="nav-linkwrapper">
-                    <a href="order.php">Order Form</a>
-                </div>
                 <div class="nav-linkwrapper">
                     <a href="logout.php">Logout</a>
                 </div>
-                <!-- 
-                <div class="nav-linkwrapper">
-                    <a href="login.html">Login</a>
-                </div>
-                -->
-
             </div>
         </div>
     </div>
@@ -64,7 +54,7 @@ require_once "orderconfirmationemail.php";
             <h1>Thank you for your order!</h1>
             <h1>Your order of <?php echo htmlspecialchars($_SESSION["quantity"]); ?> <?php echo htmlspecialchars($_SESSION["itemid"]); ?> is being processed</h1>
        </div>
-       <h1>/nTo place another order click on the order button above! </h1>
+       <h1>\nTo place another order click <a href="order.php">here</a> </h1>
        <div class="portfolio-item-wrapper">
            <div class="portfolio-img-background" style="background-image:url(images/sharkdab.jpg)"></div>
        </div>

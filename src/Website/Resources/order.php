@@ -72,15 +72,6 @@ if ($link->connect_error) {
                 <div class="nav-linkwrapper">
                     <a href="../index.php">Home</a>
                 </div>
-
-                <div class="nav-linkwrapper">
-                    <a href="order.php">Order Form</a>
-                </div>
-                <!-- 
-                <div class="nav-linkwrapper">
-                    <a href="login.html">Login</a>
-                </div>
-                -->
             </div>
         </div>
     </div>
