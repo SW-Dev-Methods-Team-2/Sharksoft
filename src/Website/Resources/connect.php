@@ -24,8 +24,10 @@ echo "Error: ". $sql ."
 }
 $conn->close();
 }
+}
 else{
 echo "Email should not be empty.";
 die();    
 }
 ?>
+

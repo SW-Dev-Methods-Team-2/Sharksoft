@@ -7,6 +7,28 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+/*require_once "config.php";
+if ($link->connect_error) {
+    die("Connection Failed: " . $conn->connect_error);
+}*/
+
+// Search Method
+$ordersearch = "SELECT date_, userID, product_id, quantity, sale_price, shipping_address 
+  FROM sales_orders ";
+$result = $link->query($ordersearch);
+
+// Check to see if the search returned any results
+if($result->num_rows > 0) {
+  
+  // Output data of each row
+  while($row = $result->fetch_assoc()){
+    echo "<br> Order Date: " . $row["date_"]. "User ID: " .$row["userID"]. "Product: " .$row["product_id"]. 
+         "Quantity: " .$row["quantity"]. "Price: " .$row["sale_price"]. "Shipping Address: " .$row["shipping_address"]. "<br>";
+  }
+} else {
+    echo "No Orders Found for that User ID.";
+}
+?>
 ?>
 
 
@@ -54,69 +76,5 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <h1>Your past orders:</h1>
        </div>
     </div>
-
-<?php
-
-require_once "config.php";
-  maintable = 
-$user = filter_input(INPUT_POST, 'user_id');
-
-$servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-$username = "admin";
-$password = "cs3250db1";
-$dbname = "cs3250main";
-$tablename = "sales_orders";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-  echo "connected successfully";
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
-//$sql = "INSERT INTO $tablename (product_id, quantity, userID)
-//VALUES ('$productid', '$productquantity', '$user')";
-
-if ($conn->query($sql) === TRUE) {
-  echo "New record created successfully";
-} else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
-}
-
-$conn->close();
-?>
-
-</body> 
-
+    </body>
 </html>
-
-<?php  
-/*
-  $search = $_POST["search"];
-  mysql_connect("localhost", "username", "password") OR die (mysql_error());
-  mysql_select_db ("your_db_name") or die(mysql_error());
-
-  $query = "SELECT * FROM `profile` WHERE `email`='$search'";
-
-  $result = mysql_query($query) or die (mysql_error());
-
-  if($result) 
-   {    
-      while($row=mysql_fetch_row($result))   
-       {      
-          echo $row[0],$row[1],$row[2];   
-       }    
-     }
-   else
-     { 
-       echo "No result";  
-     }
- ?>
-
-<form action="profile.php" method="post">  
-  <input type="text" name="search"><br>  
-  <input type="submit">
-</form>
-*/   
