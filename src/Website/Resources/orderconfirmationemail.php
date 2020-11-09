@@ -24,8 +24,17 @@ $mail->addReplyTo('stuffbysharks@gmail.com', 'Information');
 $mail->isHTML(true);                                  // Set email format to HTML
 
 $mail->Subject = 'Order Confirmation';
-$mail->Body    = $_SESSION["email"];
-$mail->AltBody = $_SESSION["quantity"];
+$mail->Recipient = $_SESSION["email"];
+$mail->Header = "Shark Confirmation! ";
+$mail->Body  = "Hello, \r\n";
+$mail->Body .= "This is a confirmation of your recent shark order. \r\n";
+$mail->Body .= "You ordered:. \r\n\n";
+$mail->Body .= "Item ID#: $_SESSION["productid"] Quantity: $_SESSION["productquantity"] \r\n";
+$mail->Body .= "If you would like to cancel your order please visit the customer portal, navigate to the order history page, and click delete. \r\n";
+$mail->Body .= "Thanks for your order, \r\n";
+$mail->Body .= "Sharky \r\n";
+
+//mail($mail->Recipient,$mail->Subject,$mail->Header);
 
 if(!$mail->send()) {
     echo 'Message could not be sent.';
