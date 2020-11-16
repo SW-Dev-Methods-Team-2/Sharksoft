@@ -14,7 +14,7 @@ if ($link->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 // Delete order method
-$deleteOrder = "DELETE FROM sales_orders WHERE id=3";
+$deleteOrder = "DELETE "order number" FROM sales_orders WHERE id=3";
 
 if ($link->query($deleteOrder) === TRUE) {
     echo "Order Cancelled Successfully";
