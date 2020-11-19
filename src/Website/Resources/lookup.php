@@ -65,36 +65,40 @@ if ($link->connect_error) {
   echo "connection error";
 }
   
+$user = $_SESSION["user_id"];
 
-$user = filter_input($_SESSION["user_id"]);
+//$query = "SELECT * FROM sales_orders WHERE userID like '%$user%'"; //all columns
+$query = "SELECT date_,	email,	shipping_address,	product_id,	quantity, sale_price, userID FROM sales_orders WHERE userID like '%$user%'"; //specific columns
+if ($result = mysqli_query($link, $query)) {
+  $all_property = array();  //declare an array for saving property
 
-$query = "SELECT * FROM sales_orders WHERE userID like '%$user%'";
-$result = mysqli_query($link, $query);
-$all_property = array();  //declare an array for saving property
+  //showing property
+  if(mysqli_num_rows($result) > 0){
+    echo '<table class="data-table">
+            <tr class="data-heading">';  //initialize table tag
+    while ($property = mysqli_fetch_field($result )) {
+        echo '<td>' . $property->name . '</td>';  //get field name for header
+        array_push($all_property, $property->name);  //save those to array
+    }
+    echo '</tr>'; //end tr tag
 
-//showing property
-if(mysqli_num_rows($result) > 0){
-  echo '<table class="data-table">
-          <tr class="data-heading">';  //initialize table tag
-  while ($property = mysqli_fetch_field($result )) {
-      echo '<td>' . $property->name . '</td>';  //get field name for header
-      array_push($all_property, $property->name);  //save those to array
+    //showing all data
+    while ($row = mysqli_fetch_array($result)) {
+        echo "<tr>";
+        foreach ($all_property as $item) {
+            echo '<td>' . $row[$item] . '</td>'; //get items using property value
+        }
+        echo '</tr>';
+    }
+    echo "</table>";
+    mysqli_free_result($result);
+  } 
+  else{
+          echo "No records matching your query were found.";
   }
-  echo '</tr>'; //end tr tag
-
-  //showing all data
-  while ($row = mysqli_fetch_array($result)) {
-      echo "<tr>";
-      foreach ($all_property as $item) {
-          echo '<td>' . $row[$item] . '</td>'; //get items using property value
-      }
-      echo '</tr>';
-  }
-  echo "</table>";
-  mysqli_free_result($result);
-} 
-else{
-        echo "No records matching your query were found.";
+}
+else {
+  echo "ERROR: Could not execute search. ";
 }
 
 ?>
