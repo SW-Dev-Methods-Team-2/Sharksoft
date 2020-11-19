@@ -7,38 +7,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
-/*require_once "config.php";
-if ($link->connect_error) {
-    die("Connection Failed: " . $conn->connect_error);
-}*/
-
-// Search Method
-$sql = "SELECT * FROM sales_orders Where userID Like (userID) VALUES '$user';
-$result = $link->query($sql);
-
-// Check to see if the search returned any results
-if($result->num_rows > 0) {
-  
-  /*// Output data of each row
-  while($row = $result->fetch_assoc($result)){
-    echo "<br /> Order Date: " . $row["date_"]. "User ID: " .$row["userID"]. "Product: " .$row["product_id"]. 
-         "Quantity: " .$row["quantity"]. "Price: " .$row["sale_price"]. "Shipping Address: " .$row["shipping_address"]. "<br />";
-  }
-} else {
-    echo "No Orders Found for that User ID.";
-}
-*/
-
-if ($mysqli->query("CREATE TEMPORARY TABLE tempQueryTable LIKE ") === TRUE) {
-    printf("Table tempQueryTable successfully created.\n");
-}
-
-if ($result = $mysqli->query("SELECT  FROM City LIMIT 10")) {
-    printf("Select returned %d rows.\n", $result->num_rows);
-
-    /* free result set */
-    $result->close();
 ?>
+
 
 <!DOCTYPE HTML>
 <html>
@@ -84,5 +54,43 @@ if ($result = $mysqli->query("SELECT  FROM City LIMIT 10")) {
             <h1>Your past orders:</h1>
        </div>
     </div>
-    </body>
+
+<?php
+
+require_once "config.php";
+
+if ($link->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+  }
+  
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+$user = filter_input(INPUT_POST, 'user_id');
+
+$sql = "SELECT * FROM sales_orders WHERE userID like (userID)
+VALUES ('$user')";
+
+}
+
+$result = query($sql);
+//$result = $link->query ($sql) or die (error());
+
+if($result->num_rows > 0) 
+ {  
+  echo "<table>"; // start a table tag in the HTML   
+  while($row = fetch_assoc($result)){   
+  //Creates a loop to loop through results
+    echo "<tr><td>" . $row['1'] . "</td><td>" . $row['2'] . "</td></tr>";  
+    }
+  echo "</table>"; //Close the table in HTML
+    
+ }
+ else
+   { 
+     echo "No result";  
+   }
+?>
+
+</body> 
+
 </html>
