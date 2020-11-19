@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD:src/Website/index.php
 // Initialize the session
 session_start();
  
@@ -158,11 +157,3 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </div>
 </body>
 </html>
-=======
-$title = "Home";
-$content = "SHARKDEV";
-
-include 'Website-Template.php';
-
-?>
->>>>>>> 216fdfa64ed457cd101cf70bead4bb2de42c9ba8:src/static/index.php

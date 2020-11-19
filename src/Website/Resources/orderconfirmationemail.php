@@ -23,15 +23,29 @@ $mail->addReplyTo('stuffbysharks@gmail.com', 'Information');
 //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
 $mail->isHTML(true);                                  // Set email format to HTML
 
-$mail->Subject = 'Order Confirmation';
-$mail->Body    = $_SESSION["email"];
-$mail->AltBody = $_SESSION["quantity"];
-
+$mail->isHTML(true); // Set email format to HTML
+$mail->Subject = 'Shark Order Confirmation';
+$mail->Recipient = $_SESSION["email"];
+$mail->Header = "Your Shark Order is on it's Way!! ";
+$mail->Body = "Hello, <br />";
+$mail->Body .= "This is a confirmation of your recent shark order. <br />";
+$mail->Body .= "You ordered: <br />";
+$mail->Body .= "Item ID#: ";
+$mail->Body .= $_SESSION["itemid"] ;
+$mail->Body .= "<br /> Quantity: ";
+$mail->Body .= $_SESSION["quantity"] ;
+$mail->Body .= "<br /> If you would like to cancel your order please visit the customer portal, navigate to the order history page, and click delete. <br />";
+$mail->Body .= "Thanks for your order, <br />";
+$mail->Body .= "Sharky <br />";
+ 
 if(!$mail->send()) {
-    echo 'Message could not be sent.';
-    echo 'Mailer Error: ' . $mail->ErrorInfo;
+ echo 'Message could not be sent.';
+ echo 'Mailer Error: ' . $mail->ErrorInfo;
 } else {
-    echo 'Message has been sent';
+ echo 'Message has been sent';
 }
+
+
+
 
 
