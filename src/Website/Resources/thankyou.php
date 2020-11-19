@@ -24,7 +24,7 @@ require_once "orderconfirmationemail.php";
     <link rel="stylesheet" href="styles.css">
 </head>
 <div class="page-header">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome! .</h1>
+        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b> Welcome! </h1>
         <h1>Your User ID is : <b><?php echo htmlspecialchars($_SESSION["user_id"]); ?></b></h1>
     </div>
 
@@ -55,9 +55,7 @@ require_once "orderconfirmationemail.php";
             <h1>Your order of <?php echo htmlspecialchars($_SESSION["quantity"]); ?> <?php echo htmlspecialchars($_SESSION["itemid"]); ?> is being processed</h1>
        </div>
        <h1>To place another order click <a href="order.php">here</a> </h1>
-       <div class="portfolio-item-wrapper">
-           <div class="portfolio-img-background" style="background-image:url(images/sharkdab.jpg)"></div>
-       </div>
+       <img class="two" src="images/sharkdab.jpg" width="200" height="300">
     </div>
     
 </body> 

@@ -38,7 +38,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
 
                 <div class="nav-linkwrapper">
-                    <a href="orderform.php">Order Form</a>
+                    <a href="order.php">Order Form</a>
                 </div>
                 <div class="nav-linkwrapper">
                     <a href="logout.php">Logout</a>
@@ -47,7 +47,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </div>
         </div>
         <div class="page-header">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome! </h1>
+        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b> Welcome! </h1>
         <h1>Your User ID is : <b><?php echo htmlspecialchars($_SESSION["user_id"]); ?></b></h1>
     </div>
     <div class="content-wrapper">
@@ -77,7 +77,7 @@ if ($result = mysqli_query($link, $query)) {
     echo '<table class="data-table">
             <tr class="data-heading">';  //initialize table tag
     while ($property = mysqli_fetch_field($result )) {
-        echo '<td>' . $property->name . '</td>';  //get field name for header
+        echo '<td><b><u>' . $property->name . '</u></b></td>';  //get field name for header
         array_push($all_property, $property->name);  //save those to array
     }
     echo '</tr>'; //end tr tag
