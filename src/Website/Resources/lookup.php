@@ -38,16 +38,17 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
 
                 <div class="nav-linkwrapper">
-                    <a href="orderform.html">Order Form</a>
+                    <a href="orderform.php">Order Form</a>
                 </div>
-                <!-- 
                 <div class="nav-linkwrapper">
-                    <a href="login.html">Login</a>
-                </div>
-                -->
+                    <a href="logout.php">Logout</a>
+                </div>              
 
             </div>
         </div>
+        <div class="page-header">
+        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome! </h1>
+        <h1>Your User ID is : <b><?php echo htmlspecialchars($_SESSION["user_id"]); ?></b></h1>
     </div>
     <div class="content-wrapper">
        <div class="order-form-wrapper">
@@ -61,34 +62,41 @@ require_once "config.php";
 
 if ($link->connect_error) {
   die("Connection failed: " . $conn->connect_error);
-  }
+  echo "connection error";
+}
   
-if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-$user = filter_input(INPUT_POST, 'user_id');
+$user = filter_input($_SESSION["user_id"]);
 
-$sql = "SELECT * FROM sales_orders WHERE userID like (userID)
-VALUES ('$user')";
+$query = "SELECT * FROM sales_orders WHERE userID like '%$user%'";
+$result = mysqli_query($link, $query);
+$all_property = array();  //declare an array for saving property
 
+//showing property
+if(mysqli_num_rows($result) > 0){
+  echo '<table class="data-table">
+          <tr class="data-heading">';  //initialize table tag
+  while ($property = mysqli_fetch_field($result )) {
+      echo '<td>' . $property->name . '</td>';  //get field name for header
+      array_push($all_property, $property->name);  //save those to array
+  }
+  echo '</tr>'; //end tr tag
+
+  //showing all data
+  while ($row = mysqli_fetch_array($result)) {
+      echo "<tr>";
+      foreach ($all_property as $item) {
+          echo '<td>' . $row[$item] . '</td>'; //get items using property value
+      }
+      echo '</tr>';
+  }
+  echo "</table>";
+  mysqli_free_result($result);
+} 
+else{
+        echo "No records matching your query were found.";
 }
 
-$result = query($sql);
-//$result = $link->query ($sql) or die (error());
-
-if($result->num_rows > 0) 
- {  
-  echo "<table>"; // start a table tag in the HTML   
-  while($row = fetch_assoc($result)){   
-  //Creates a loop to loop through results
-    echo "<tr><td>" . $row['1'] . "</td><td>" . $row['2'] . "</td></tr>";  
-    }
-  echo "</table>"; //Close the table in HTML
-    
- }
- else
-   { 
-     echo "No result";  
-   }
 ?>
 
 </body> 
