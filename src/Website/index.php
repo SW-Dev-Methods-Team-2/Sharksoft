@@ -41,9 +41,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 <div class="nav-linkwrapper">
                     <a href="Resources/logout.php">Logout</a>
                 </div>
-                <div class="nav-linkwrapper">
-                    <a href="Resources/lookup.php">Order history</a>
-                </div>
             </div>
         </div>
         <div class="page-header">

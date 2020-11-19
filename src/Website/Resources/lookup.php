@@ -58,34 +58,30 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <?php
 
 require_once "config.php";
-  //maintable = I don't know what this was for, but it broke the page and commenting it out fixed it
-$user = filter_input(INPUT_POST, 'user_id');
 
-$servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-$username = "admin";
-$password = "cs3250db1";
-$dbname = "cs3250main";
-$tablename = "sales_orders";
+$search = $_POST["search"];
+//mysql_connect("localhost", "username", "password") OR die (mysql_error());
+//mysql_select_db ("your_db_name") or die(mysql_error());
+ 
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-  echo "connected successfully";
+$query = "SELECT * FROM sales_orders WHERE userID LIKE '$_SESSION["user_id"]'";
 
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+$result = mysql_query($query) or die (mysql_error());
 
-//$sql = "INSERT INTO $tablename (product_id, quantity, userID)
-//VALUES ('$productid', '$productquantity', '$user')";
+if($result->num_rows > 0) 
+ {  
+  echo "<table>"; // start a table tag in the HTML   
+  while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results
+    echo "<tr><td>" . $row['date'] . "</td><td>" . $row['age'] . "</td></tr>";  //$row['index'] the index here is a field name
+    }
+  echo "</table>"; //Close the table in HTML
+    
+ }
+ else
+   { 
+     echo "No result";  
+   }
 
-if ($conn->query($sql) === TRUE) {
-  echo "New record created successfully";
-} else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
-}
-
-$conn->close();
 ?>
 
 </body> 
