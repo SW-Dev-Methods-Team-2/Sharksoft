@@ -59,20 +59,28 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 require_once "config.php";
 
-$search = $_POST["search"];
-//mysql_connect("localhost", "username", "password") OR die (mysql_error());
-//mysql_select_db ("your_db_name") or die(mysql_error());
- 
+if ($link->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+  }
+  
+if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-$query = "SELECT * FROM sales_orders WHERE userID LIKE '$_SESSION["user_id"]'";
+$user = filter_input(INPUT_POST, 'user_id');
 
-$result = mysql_query($query) or die (mysql_error());
+$sql = "SELECT * FROM sales_orders WHERE userID like (userID)
+VALUES ('$user')";
+
+}
+
+$result = query($sql);
+//$result = $link->query ($sql) or die (error());
 
 if($result->num_rows > 0) 
  {  
   echo "<table>"; // start a table tag in the HTML   
-  while($row = mysql_fetch_array($result)){   //Creates a loop to loop through results
-    echo "<tr><td>" . $row['date'] . "</td><td>" . $row['age'] . "</td></tr>";  //$row['index'] the index here is a field name
+  while($row = fetch_assoc($result)){   
+  //Creates a loop to loop through results
+    echo "<tr><td>" . $row['1'] . "</td><td>" . $row['2'] . "</td></tr>";  
     }
   echo "</table>"; //Close the table in HTML
     
@@ -81,38 +89,10 @@ if($result->num_rows > 0)
    { 
      echo "No result";  
    }
-
 ?>
 
 </body> 
 
 </html>
 
-<?php  
-/*
-  $search = $_POST["search"];
-  mysql_connect("localhost", "username", "password") OR die (mysql_error());
-  mysql_select_db ("your_db_name") or die(mysql_error());
 
-  $query = "SELECT * FROM `profile` WHERE `email`='$search'";
-
-  $result = mysql_query($query) or die (mysql_error());
-
-  if($result) 
-   {    
-      while($row=mysql_fetch_row($result))   
-       {      
-          echo $row[0],$row[1],$row[2];   
-       }    
-     }
-   else
-     { 
-       echo "No result";  
-     }
- ?>
-
-<form action="profile.php" method="post">  
-  <input type="text" name="search"><br>  
-  <input type="submit">
-</form>
-*/   
