@@ -24,6 +24,7 @@ $mail->addReplyTo('stuffbysharks@gmail.com', 'Information');
 //$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
 //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
 $mail->isHTML(true);                                  // Set email format to HTML
+
 $mail->Subject = 'Shark Order Confirmation';
 $mail->Recipient = $_SESSION["email"];
 $mail->Header = "Your Shark Order is on it's Way!! ";
@@ -38,6 +39,20 @@ $mail->Body .= "<br />  If you would like to cancel your order please visit the 
 $mail->Body .= "Thanks for your order, <br />";
 $mail->Body .= "Sharky <br />";
  
+=======
+
+$mail->Subject = 'Shark Order Confirmation';
+$mail->Recipient = $_SESSION["email"];
+$mail->Header = "Your Shark Order is on it's Way!! ";
+$mail->Body  = "Hello, \r\n\n";
+$mail->Body .= "This is a confirmation of your recent shark order. \r\n";
+$mail->Body .= "You ordered:. \r\n\n";
+$mail->Body .= "Item ID#: $_SESSION["productid"] Quantity: $_SESSION["productquantity"] \r\n";
+$mail->Body .= "If you would like to cancel your order please visit the customer portal, navigate to the order history page, and click delete. \r\n\n";
+$mail->Body .= "Thanks for your order, \r\n\n";
+$mail->Body .= "Sharky \r\n";
+
+
 if(!$mail->send()) {
  echo 'Message could not be sent.';
  echo 'Mailer Error: ' . $mail->ErrorInfo;

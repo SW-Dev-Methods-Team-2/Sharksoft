@@ -30,18 +30,19 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             </div>
             <div class="rightside">
                 <div class="nav-linkwrapper">
-                    <a href="index.php">Home</a>
-                </div>
-                
-                <div class="nav-linkwrapper">
                     <a href="Resources/order.php">Order Form</a>
                 </div>
-                
                 <div class="nav-linkwrapper">
-                    <a href="Resources/login.php">Login</a>
+                    <a href="Resources/lookup.php">Past Orders</a>
+                </div>
+                <div class="nav-linkwrapper">
+                    <a href="Resources/login.php">Switch User</a>
                 </div>
                 <div class="nav-linkwrapper">
                     <a href="Resources/logout.php">Logout</a>
+                </div>
+                <div class="nav-linkwrapper">
+                    <a href="Resources/lookup.php">Order history</a>
                 </div>
             </div>
         </div>
@@ -53,9 +54,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <div class="content-wrapper">
             <div class="portfolio-items-wrapper">
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(images/shark1.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(Resources/images/shark1.jpg)"></div>
                     <div class="img-text-wrapper">
-
                         <div class="subtitle">
                             A SHARK
                         </div> 
@@ -78,10 +78,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                 </div>
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(/Resources/images/shark4.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(Resources/images/mantaray.jpg)"></div>
                     <div class="img-text-wrapper">
                         <div class="subtitle">
-                            A SHARK
+                            NOT A SHARK
                         </div>
                     </div>
                 </div>
@@ -101,7 +101,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                         </div>
                     </div>
                 </div>
-                <!-- 
+                <!-- extra sharks
                 <div class="portfolio-item-wrapper">
                     <div class="portfolio-img-background" style="background-image:url(/Resources/images/shark7.jpg)"></div>
                     <div class="img-text-wrapper">
@@ -117,17 +117,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             A SHARK
                         </div>
                     </div>
-                </div>
+                </div>                
                 <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(Website/images/mantaray.jpg)"></div>
-                    <div class="img-text-wrapper">
-                        <div class="subtitle">
-                            NOT A SHARK
-                        </div>
-                    </div>
-                </div>
-                <div class="portfolio-item-wrapper">
-                    <div class="portfolio-img-background" style="background-image:url(Website/images/shark9.jpg)"></div>
+                    <div class="portfolio-img-background" style="background-image:url(/Resources/images/shark4.jpg)"></div>
+
                     <div class="img-text-wrapper">
                         <div class="subtitle">
                             A SHARK
@@ -150,6 +143,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                         </div>
                     </div>
                 </div> 
+                <div class="portfolio-item-wrapper">
+                    <div class="portfolio-img-background" style="background-image:url(/Resources/images/shark4.jpg)"></div>
+                    <div class="img-text-wrapper">
+                        <div class="subtitle">
+                            A SHARK
+                        </div>
+                    </div>
+                </div>
             -->
                 
             </div>

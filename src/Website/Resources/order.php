@@ -23,6 +23,7 @@ if ($link->connect_error) {
     $orderdate = time();
     $sql = "INSERT INTO sales_orders (date_, email, shipping_address, product_id, quantity, userID)
     VALUES ('$date', '$email', '$useraddress','$productid', '$productquantity', '$user')";
+    //think we lost the updating of the main inventory at some point during refactoring
     $_SESSION["loggedin"] = true;
     $_SESSION["itemid"] = $productid;
     $_SESSION["quantity"] = $productquantity;
@@ -71,15 +72,6 @@ if ($link->connect_error) {
                 <div class="nav-linkwrapper">
                     <a href="../index.php">Home</a>
                 </div>
-
-                <div class="nav-linkwrapper">
-                    <a href="order.php">Order Form</a>
-                </div>
-                <!-- 
-                <div class="nav-linkwrapper">
-                    <a href="login.html">Login</a>
-                </div>
-                -->
             </div>
         </div>
     </div>

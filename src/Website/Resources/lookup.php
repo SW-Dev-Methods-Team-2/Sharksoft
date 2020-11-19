@@ -58,7 +58,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <?php
 
 require_once "config.php";
-  maintable = 
+  //maintable = I don't know what this was for, but it broke the page and commenting it out fixed it
 $user = filter_input(INPUT_POST, 'user_id');
 
 $servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
