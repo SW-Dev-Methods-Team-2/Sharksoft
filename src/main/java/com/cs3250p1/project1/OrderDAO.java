@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class OrderDAO {
         statement.setString(2, order.getShippingA());
         statement.setString(3, order.getId());
         statement.setInt(4, order.getquantity());
-        statement.setString(5, order.getDate() );
+        statement.setTimestamp(5, order.getDate() );
        
         
         
@@ -88,7 +89,7 @@ public class OrderDAO {
             String id = resultSet.getString("product_id");
             int quantity = resultSet.getInt("quantiy");
             String email = resultSet.getString("email");
-            String date = resultSet.getString("date");
+            Timestamp date = resultSet.getTimestamp("date_");
             String supplier_id = resultSet.getString("supplier_id");
              
             SalesOrder order = new SalesOrder(id, quantity, email, date, supplier_id);
@@ -118,14 +119,14 @@ public class OrderDAO {
     }
      
     public boolean updateOrder(SalesOrder order, String table) throws SQLException {
-        String sql = "UPDATE " + table + " SET quantity=?, email=?, date=?, supplier_id=? WHERE product_id =? ";
+        String sql = "UPDATE " + table + " SET quantity=?, email=?, date_=?, supplier_id=? WHERE product_id =? ";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setString(1, order.getId());
         statement.setInt(2, order.getquantity());
         statement.setString(3, order.getEmail());
-        statement.setString(4, order.getDate());
+        statement.setTimestamp(4, order.getDate());
         statement.setString(5, order.getsupplier_id());
          
         boolean rowUpdated = statement.executeUpdate() > 0;
@@ -149,7 +150,7 @@ public class OrderDAO {
 
             int quantity = resultSet.getInt("quantity");
             String email = resultSet.getString("email");
-            String date = resultSet.getString("date");
+            Timestamp date = resultSet.getTimestamp("date_");
             String supplier_id = resultSet.getString("supplier_id");
             
              order = new SalesOrder(quantity, email, date,supplier_id );
@@ -168,7 +169,7 @@ public class OrderDAO {
         //group by item_name 
         //ORDER BY sum(Quantity) DESC
         String print ="";
-        String sql = "SELECT product_id, SUM(quantity) AS quantity FROM cs3250main.sales_orders GROUP BY product_id ORDER BY SUM(quantity) DESC LIMIT 10";
+        String sql = "SELECT product_id, SUM(quantity) AS quantity FROM cs3250main.sales_orders GROUP BY product_id ORDER BY SUM(quantity) DESC LIMIT 10 WHERE date_ between 2020-01-31 and 2020-02-01";
          
         connect();
          
@@ -183,7 +184,8 @@ public class OrderDAO {
             int quantity = resultSet.getInt("quantity");
             System.out.println(quantity);
             //String email = resultSet.getString("email");
-           // String date = resultSet.getString("date");
+           // Timestamp date = resultSet.getTimestamp("date_");
+           // System.out.println(date);
            // String supplier_id = resultSet.getString("supplier_id");
            
             SalesOrder order = new SalesOrder(id, quantity);
@@ -205,7 +207,5 @@ public class OrderDAO {
     }
 
     
-
-
 
 }

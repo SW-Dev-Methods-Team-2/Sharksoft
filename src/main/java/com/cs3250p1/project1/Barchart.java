@@ -1,11 +1,5 @@
 package com.cs3250p1.project1;
 
-/**
- * @author Noel Corrales
- * Dont forget to add the jfree library files into the project first
- */
-
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -20,39 +14,24 @@ import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class BarChartEx {
+public class Barchart {
 
+    public CategoryDataset createDataset(OrderDAO dao) {
 
-    // this code might need to go somewhere else. Probably in main?
-    CategoryDataset dataset = createDataset();
-    JFreeChart chart = createChart(dataset);
-    ChartPanel chartPanel = new ChartPanel(chart);
-
-    BarChartEx() {
-        chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        chartPanel.setBackground(Color.white);
-    }
-
-    ChartPanel getChartPanel() {
-        return chartPanel;
-    }
-
-    private CategoryDataset createDataset() {
-
-        final String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
+        /*final String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
         final String dbUsername = "admin";
         final String dbPassword = "cs3250db1";
 
+        
+        OrderDAO orders = new OrderDAO(dbURL, dbUsername, dbPassword);*/
         var dataset = new DefaultCategoryDataset();
-        OrderDAO orders = new OrderDAO(dbURL, dbUsername, dbPassword);
-
         try {
 
             // we might need to move orderList outside of this class so that we can pass in different tables and dates 
             // that means we will be able to get rid of login credentials on this class 
             // We should eliminate logins from every class to avoid hacking 
 
-            ArrayList<SalesOrder> orderList = orders.orderList("cs3250main.sales_orders");
+            ArrayList<SalesOrder> orderList = dao.orderList("cs3250main.sales_orders" );
             for (int i = 0; i < orderList.size(); i++) {
                 dataset.setValue(orderList.get(i).getquantity(), "quantity sold", orderList.get(i).getId());
             }
@@ -68,17 +47,5 @@ public class BarChartEx {
 
         return dataset;
     }
-
-    private JFreeChart createChart(CategoryDataset dataset) {
-
-        JFreeChart barChart = ChartFactory.createBarChart(
-                "Most sold product all time",
-                "",
-                "Quantity",
-                dataset,
-                PlotOrientation.VERTICAL,
-                false, true, false);
-
-        return barChart;
-    }
+    
 }

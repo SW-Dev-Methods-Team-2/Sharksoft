@@ -1,5 +1,5 @@
-10232020, abc@gmail.com, arvada, apple,10
-12122020, bcd@msudenver.edu, littleton, banana,20
-04292020, efg@gmail.com, fort collins, pear,50
-02232019, lame@game.com, Denver, grapes,5
-05242002, same@name.com, nepal, guava,15
+10/23/2020, abc@gmail.com, arvada, apple,10
+12/12/2020, bcd@msudenver.edu, littleton, banana,20
+04/29/2020, efg@gmail.com, fort collins, pear,50
+02/23/2019, lame@game.com, Denver, grapes,5
+05/24/2002, same@name.com, nepal, guava,15

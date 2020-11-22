@@ -4,9 +4,16 @@ package com.cs3250p1.project1;
 
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -250,10 +257,21 @@ void appStart(){
             OrderDAO oDao = new OrderDAO(dbURL, dbUsername, dbPassword);
 
             System.out.println("Start sending sales orders");
-            for(int i = 0; i < lines.size(); i++){
+            for(int i = 1; i < lines.size(); i++){
                 String [] data = lines.get(i).split(",");
-                
-                order.setDate(data[0]);
+                //String [] date = data[0].replaceAll(target, replacement)
+                String date = data[0].replaceAll("/","-");
+                String [] dateArray = date.split("-");
+                if(dateArray[0].length()<2){
+                    dateArray[0]= "0" + dateArray[0];
+                }
+                if(dateArray[1].length()<2){
+                    dateArray[1]= "0" + dateArray[1];
+                }
+                String output = dateArray[2] + "-" + dateArray[0] + "-" + dateArray[1];
+                Timestamp nextTime = Timestamp.valueOf(LocalDate.parse(output).atStartOfDay());
+
+                order.setDate(nextTime);//
                 order.setemail(data[1]);
                 order.setShippingA(data[2]);
                 order.setId(data[3]);System.out.print(data[4]+"\n");
