@@ -3,7 +3,6 @@ import javax.swing.*;                           //This program will create a JFr
 import java.awt.*;                              //JPanels then place JRadio Buttons in a group in the South JPanel
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.LinkedList; // this is the import for the linked list
 
 public class guiBtnSkeleton{                               //changes the background color of each JRadioButton based on each
 
@@ -58,14 +57,15 @@ public class guiBtnSkeleton{                               //changes the backgro
 
     JRadioButton crudGoBack;
 
-    TextField productIDTextField;
-    TextField quantityTextField;
-    TextField wholeSalePriceTextField;
-    TextField salePriceTextField;
-    TextField supplierTextField;
+    JTextField productIDTextField;
+    JTextField quantityTextField;
+    JTextField wholeSalePriceTextField;
+    JTextField salePriceTextField;
+    JTextField supplierTextField;
 
-    //need to turn this into a "JTextArea" for 2 Dimensions
+    //needed to turn this into a "JTextArea" for 2 Dimensions
     TextArea northTextArea;
+
 
     public static void main(String[] args) {    //Main method begins the program
 
@@ -83,7 +83,7 @@ public class guiBtnSkeleton{                               //changes the backgro
         frame.addWindowListener(new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent e){
-            if(JOptionPane.showConfirmDialog(frame,"Are you sure ?") == JOptionPane.YES_OPTION);
+            if(JOptionPane.showConfirmDialog(frame,"Wipe Sim Input First?") == JOptionPane.YES_NO_CANCEL_OPTION);
 
             //Place method call to simulator DB Erase method // Must extend simulator class
 
@@ -93,7 +93,7 @@ public class guiBtnSkeleton{                               //changes the backgro
 
         });
 
-        north = new JPanel(); // creates a new panel "north" to be put inside the north using layout manager
+        north = new JPanel(); // creates a new panel "north" to be put inside the North using layout manager
 
         south = new JPanel(); // JPanel "southPanel" is a new JPanel
 
@@ -111,18 +111,28 @@ public class guiBtnSkeleton{                               //changes the backgro
 
         simCrudBtnGroup = new ButtonGroup(); // Initializes "simCrudBtnGroup" as a new ButtonGroup
 
-        productIDTextField = new TextField();
-        quantityTextField = new TextField();
-        wholeSalePriceTextField = new TextField();
-        salePriceTextField = new TextField();
-        supplierTextField = new TextField();
+        JLabel productIDLabel = new JLabel("Product ID");
+        productIDTextField = new JTextField();
 
-        northTextArea = new TextArea("This is where simDB is displayed");
+        JLabel quantityLabel = new JLabel("Quantity");
+        quantityTextField = new JTextField();
+
+        JLabel wholeSalePriceLabel = new JLabel("WholeSale Price");
+        wholeSalePriceTextField = new JTextField();
+
+        JLabel salePriceLabel = new JLabel("Sale Price");
+        salePriceTextField = new JTextField();
+
+        JLabel supplierLabel = new JLabel("Supplier");
+        supplierTextField = new JTextField();
+
+        northTextArea = new TextArea("This is where Inventory is displayed");
+        //northTextArea.insert(productIDTextField,quantityTextField);
+
 
         buildNorth();                   // build the north JPanel
 
         buildSouth();                   // This builds the south JPanel
-
 
         ///////north.add(mainScreenLabel);;    //adds TextField "mainScreenLabel" to the north(Uneditable)
 
@@ -139,12 +149,28 @@ public class guiBtnSkeleton{                               //changes the backgro
         south.add(crudGoBack);
         crudGoBack.setVisible(false);
 
+        crudTextFieldPanel.add(productIDLabel);
         crudTextFieldPanel.add(productIDTextField);
+        productIDTextField.setColumns(5);
+        //productIDTextField.addKeyListener();// what arg. do i put inside the key listener. Is the key listener arg a
+        // comp.
+        // or is the keylistener arg a method call??
 
+        crudTextFieldPanel.add(quantityLabel);
         crudTextFieldPanel.add(quantityTextField);
+        quantityTextField.setColumns(5);
+
+        crudTextFieldPanel.add(wholeSalePriceLabel);
         crudTextFieldPanel.add(wholeSalePriceTextField);
+        wholeSalePriceTextField.setColumns(5);
+
+        crudTextFieldPanel.add(salePriceLabel);
         crudTextFieldPanel.add(salePriceTextField);
+        salePriceTextField.setColumns(5);
+
+        crudTextFieldPanel.add(supplierLabel);
         crudTextFieldPanel.add(supplierTextField);
+        supplierTextField.setColumns(5);
 
         mainBtnPanel.add(empPortalBtn);
         mainBtnPanel.add(simBtn);
@@ -164,7 +190,7 @@ public class guiBtnSkeleton{                               //changes the backgro
         south.add(crudTextFieldPanel);
         crudTextFieldPanel.setVisible(false);
 
-        frame.setSize(800, 200);
+        frame.setSize(1050, 250);
 
         //frame.pack();                   // This condenses the GUI to have no unnecessary space
        // frame.setDefaultCloseOperation(EXIT_ON_CLOSE); //This exits the program when the JFrame is closed
@@ -175,9 +201,8 @@ public class guiBtnSkeleton{                               //changes the backgro
     public void buildNorth() {
 
         north.add(northTextArea);
-
         northTextArea.setEditable(false);
-       northTextArea.setColumns(20);
+        //northTextArea.setColumns(1);
 
     }
 
@@ -220,6 +245,7 @@ public class guiBtnSkeleton{                               //changes the backgro
 
         empPortalBtn.addActionListener(e -> {
 
+            //call to method for connecting to real db
             mainBtnPanel.setVisible(false);
             empPortalPanel.setVisible(true);
             crudGoBack.setVisible(false);
@@ -258,6 +284,7 @@ public class guiBtnSkeleton{                               //changes the backgro
             empPortalPanel.setVisible(false);
             crudGoBack.setVisible(true);
             crudTextFieldPanel.setVisible(true);
+            //method call to method that displays and allows search
 
                 }
                 );
@@ -318,36 +345,3 @@ public class guiBtnSkeleton{                               //changes the backgro
 
 
 }
-
-
-    LinkedList<String> product_ID = new LinkedList();
-    LinkedList<String> product_Info = new LinkedList();
-    LinkedList<String> words = new LinkedList();
-    SpiderLeg leg = new SpiderLeg();
-    public void search(String textFieldEntry){ //search method with textfield entry passed in
-
-    }
-
-    String currentProductNode; // declaring current node as a string
-    currentProductNode = this.nextProductNode();
-
-}
-leg.crawl(currentProductNode);// calls the crawl method inside of the leg with currentProductNode passed in
-
-    //if(currentProductNode.next = null){
-
-    //this.product.addAll(leg.words)
-// }}
-
-public string nextProductNode(){
-    
-    String nextProductNode = this.Product_Info
-        
-        if(!this.product_ID = null){
-            
-            this.product_ID.add(nextProductNode);
-            
-            return nextProductNode;
-            
-        }
-        return nextProductNode();
