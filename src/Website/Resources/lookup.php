@@ -38,16 +38,17 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 </div>
 
                 <div class="nav-linkwrapper">
-                    <a href="orderform.html">Order Form</a>
+                    <a href="order.php">Order Form</a>
                 </div>
-                <!-- 
                 <div class="nav-linkwrapper">
-                    <a href="login.html">Login</a>
-                </div>
-                -->
+                    <a href="logout.php">Logout</a>
+                </div>              
 
             </div>
         </div>
+        <div class="page-header">
+        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b> Welcome! </h1>
+        <h1>Your User ID is : <b><?php echo htmlspecialchars($_SESSION["user_id"]); ?></b></h1>
     </div>
     <div class="content-wrapper">
        <div class="order-form-wrapper">
@@ -58,65 +59,52 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <?php
 
 require_once "config.php";
-  //maintable = I don't know what this was for, but it broke the page and commenting it out fixed it
-$user = filter_input(INPUT_POST, 'user_id');
 
-$servername = "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-$username = "admin";
-$password = "cs3250db1";
-$dbname = "cs3250main";
-$tablename = "sales_orders";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-  echo "connected successfully";
-
-// Check connection
-if ($conn->connect_error) {
+if ($link->connect_error) {
   die("Connection failed: " . $conn->connect_error);
+  echo "connection error";
+}
+  
+$user = $_SESSION["user_id"];
+
+//$query = "SELECT * FROM sales_orders WHERE userID like '%$user%'"; //all columns
+$query = "SELECT date_,	email,	shipping_address,	product_id,	quantity, sale_price, userID FROM sales_orders WHERE userID like '%$user%'"; //specific columns
+if ($result = mysqli_query($link, $query)) {
+  $all_property = array();  //declare an array for saving property
+
+  //showing property
+  if(mysqli_num_rows($result) > 0){
+    echo '<table class="data-table">
+            <tr class="data-heading">';  //initialize table tag
+    while ($property = mysqli_fetch_field($result )) {
+        echo '<td><b><u>' . $property->name . '</u></b></td>';  //get field name for header
+        array_push($all_property, $property->name);  //save those to array
+    }
+    echo '</tr>'; //end tr tag
+
+    //showing all data
+    while ($row = mysqli_fetch_array($result)) {
+        echo "<tr>";
+        foreach ($all_property as $item) {
+            echo '<td>' . $row[$item] . '</td>'; //get items using property value
+        }
+        echo '</tr>';
+    }
+    echo "</table>";
+    mysqli_free_result($result);
+  } 
+  else{
+          echo "No records matching your query were found.";
+  }
+}
+else {
+  echo "ERROR: Could not execute search. ";
 }
 
-//$sql = "INSERT INTO $tablename (product_id, quantity, userID)
-//VALUES ('$productid', '$productquantity', '$user')";
-
-if ($conn->query($sql) === TRUE) {
-  echo "New record created successfully";
-} else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
-}
-
-$conn->close();
 ?>
 
 </body> 
 
 </html>
 
-<?php  
-/*
-  $search = $_POST["search"];
-  mysql_connect("localhost", "username", "password") OR die (mysql_error());
-  mysql_select_db ("your_db_name") or die(mysql_error());
 
-  $query = "SELECT * FROM `profile` WHERE `email`='$search'";
-
-  $result = mysql_query($query) or die (mysql_error());
-
-  if($result) 
-   {    
-      while($row=mysql_fetch_row($result))   
-       {      
-          echo $row[0],$row[1],$row[2];   
-       }    
-     }
-   else
-     { 
-       echo "No result";  
-     }
- ?>
-
-<form action="profile.php" method="post">  
-  <input type="text" name="search"><br>  
-  <input type="submit">
-</form>
-*/   

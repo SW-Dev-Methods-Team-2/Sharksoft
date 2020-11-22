@@ -108,3 +108,8 @@ body {
     font-family: 'Poppins', sans-serif;
     overflow-x: hidden;
   }
+
+img.two {
+height: 50%;
+width: 35%;
+}
