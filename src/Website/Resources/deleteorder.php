@@ -7,7 +7,43 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+$message = " ";
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    require_once "config.php";
+    if ($link->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+    }
+    $date = date("mdY");
+    $email = filter_input(INPUT_POST, 'email');
+    $useraddress = filter_input(INPUT_POST, 'address');
+    $user = filter_input(INPUT_POST, 'user_id');
+    $ordernumber= filter_input(INPUT_POST, 'ordernumber');
+    $productquantity = filter_input(INPUT_POST, 'itemquant');
+    $orderdate = time();
+    $sql = "UPDATE sales_orders set status_ = 0 WHERE order_num like '%$ordernumber%' AND userID like '%$user%'"; 
+    //think we lost the updating of the main inventory at some point during refactoring
+    $_SESSION["loggedin"] = true;
+    $_SESSION["itemid"] = $productid;
+    $_SESSION["quantity"] = $productquantity;
+    $_SESSION["email"] = $email;
+    $_SESSION["ordernumber"] = $ordernumber;
+
+    if ($link->query($sql) === TRUE) {
+        require_once "ordercancelemail.php";
+        
+    }
+    else{
+        echo "We where unable to cancel your order please try again";
+        $message = "We where unable to cancel your order please try again";
+        header("location: deleteorder.php");
+    }
+  }
+  //update sales_orders set status_ = 0 where order_num  =1;
+
 ?>
+
+
 
 
 <!DOCTYPE HTML>
@@ -49,9 +85,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <div class="page-header">
         <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b> Welcome! </h1>
         <h1>Your User ID is : <b><?php echo htmlspecialchars($_SESSION["user_id"]); ?></b></h1>
+        <h1> <b><?php echo htmlspecialchars($message); ?></b></h1>
     </div>
     <div class="content-wrapper">
        <div class="order-form-wrapper">
+       <form action="deleteorder.php" method="post">
+            <h1>What Order would you like to cancel?</h1>
+                <input type="text" id="Order Number" name="ordernumber" value="enter number" required><br><br>
+                <label for="Order Number">Item ID:</label><br>
+                </form>
             <h1>Your past orders:</h1>
        </div>
     </div>
@@ -101,11 +143,8 @@ else {
   echo "ERROR: Could not execute search. ";
 }
 
-
 ?>
 
 </body> 
 
 </html>
-
-

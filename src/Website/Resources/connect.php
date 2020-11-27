@@ -1,11 +1,13 @@
 <?php
 
+require 'logindata.php';
+
 $username = filter_input(INPUT_POST, 'email');
 if (!empty($username)){
 $host = "localhost"; //I think that we have to add the host of the website later here     
-$dbservername =  "cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-$dbusername = "admin";
-$dbpassword = "cs3250db1";
+$dbservername =  $dbserver ;
+$dbusername = $dbusern;
+$dbpassword = $dbpassw;
 // Create connection
 $conn = new mysqli($host, $dbservername, $dbusername, $dbpassword);
 
