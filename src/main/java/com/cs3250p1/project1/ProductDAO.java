@@ -186,6 +186,45 @@ public class ProductDAO {
         return product;
     }
 
+    public boolean updateQuantity(List<SalesOrder> ordersList, String table) throws SQLException {
+        String sql = "UPDATE " + table + " SET quantity= quantity - ? WHERE product_id =?";
+        connect();
+         
+        int count = 0;
+        int batchSize = 1000;
+        boolean rowUpdated = false;
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        jdbcConnection.setAutoCommit(false);
+        try{
+            
+            for(int i =1; i < ordersList.size(); i++){
+               
+                statement.setInt(1, ordersList.get(i).getquantity());
+                statement.setString(2, ordersList.get(i).getId());
+                statement.addBatch();
+                
+                if(++count % batchSize == 0){
+                    System.out.println("Commit the batch");
+                    int [] result = statement.executeBatch();
+                    System.out.println("Number of rows updated: "+ result.length);
+                                    jdbcConnection.commit();
+                }
+            }
+            int [] remaining = statement.executeBatch();
+            System.out.println("The number of rows updated:" + remaining.length);
+            jdbcConnection.commit();
+            rowUpdated = true;
+        }catch(SQLException x){
+            x.printStackTrace();
+            jdbcConnection.rollback();
+        }finally{
+            if(statement != null){
+                statement.close();
+            }
+        }
+        return rowUpdated;     
+    }
+
 
 
 }

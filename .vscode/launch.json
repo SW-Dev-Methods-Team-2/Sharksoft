@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - BarChartFrame",
+            "request": "launch",
+            "mainClass": "com.cs3250p1.project1.BarChartFrame",
+            "projectName": "project1"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - TimeSeries_AWT",
             "request": "launch",
             "mainClass": "com.cs3250p1.project1.TimeSeries_AWT",

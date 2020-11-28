@@ -5,80 +5,91 @@ package com.cs3250p1.project1;
  * Dont forget to add the jfree library files into the project first
  */
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.sql.SQLException;
-import java.util.ArrayList;
+public class BarChartEx extends JFrame{
 
-public class BarChartEx {
-
-
-    // this code might need to go somewhere else. Probably in main?
-    CategoryDataset dataset = createDataset();
-    JFreeChart chart = createChart(dataset);
-    ChartPanel chartPanel = new ChartPanel(chart);
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
     BarChartEx() {
-        chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        chartPanel.setBackground(Color.white);
+        final GraphPanel gPanel = new GraphPanel();
+		gPanel.create();
+		JButton button = new JButton(new AbstractAction("Update") {
+			/**
+             *
+             */
+            private static final long serialVersionUID = 1L;
+
+            @Override
+			public void actionPerformed(ActionEvent e) {
+				String a = JOptionPane.showInputDialog(rootPane, "ENTER DATE IN yyyy-mm-dd", "", JOptionPane.PLAIN_MESSAGE);
+				
+				gPanel.update(a);
+			}
+		});
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.add(gPanel, BorderLayout.CENTER);
+		this.add(button, BorderLayout.SOUTH);
+		this.pack();
+		this.setLocationRelativeTo(null);
+		this.setVisible(true);
+        
     }
 
-    ChartPanel getChartPanel() {
-        return chartPanel;
-    }
+    private static class GraphPanel extends JPanel{
+        /**
+         *
+         */
+        private static final long serialVersionUID = 1L;
+        private DefaultCategoryDataset gData = new DefaultCategoryDataset();
 
-    private CategoryDataset createDataset() {
-
-        final String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
-        final String dbUsername = "admin";
-        final String dbPassword = "cs3250db1";
-
-        var dataset = new DefaultCategoryDataset();
-        OrderDAO orders = new OrderDAO(dbURL, dbUsername, dbPassword);
-
-        try {
-
-            // we might need to move orderList outside of this class so that we can pass in different tables and dates 
-            // that means we will be able to get rid of login credentials on this class 
-            // We should eliminate logins from every class to avoid hacking 
-
-            ArrayList<SalesOrder> orderList = orders.orderList("cs3250main.sales_orders");
-            for (int i = 0; i < orderList.size(); i++) {
-                dataset.setValue(orderList.get(i).getquantity(), "quantity sold", orderList.get(i).getId());
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+		void create() {
+			update("");
+			JFreeChart chart = ChartFactory.createBarChart("", "", "", gData, PlotOrientation.VERTICAL, false, false,
+					false);
+			ChartPanel chartPanel = new ChartPanel(chart);
+			this.add(chartPanel);
         }
 
-        //implementaion with jdbc thoughts:
-        //first we need to order the top ten most purchased products by querying the database.
-        //then we set the first result at the top with its quantity, and product id.
-
-
-        return dataset;
+		private void update(String date) {
+            gData.clear();
+            final String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
+            final String dbUsername = "admin";
+            final String dbPassword = "cs3250db1";
+            OrderDAO orders = new OrderDAO(dbURL, dbUsername, dbPassword);
+    
+            try {
+    
+                ArrayList<SalesOrder> orderList = orders.orderList("cs3250main.sales_orders", date);
+                for (int i = 0; i < orderList.size(); i++) {
+                    gData.setValue(orderList.get(i).getquantity(), "quantity sold", orderList.get(i).getId());
+                }
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+        }
+        
     }
-
-    private JFreeChart createChart(CategoryDataset dataset) {
-
-        JFreeChart barChart = ChartFactory.createBarChart(
-                "Most sold product all time",
-                "",
-                "Quantity",
-                dataset,
-                PlotOrientation.VERTICAL,
-                false, true, false);
-
-        return barChart;
-    }
+   
 }

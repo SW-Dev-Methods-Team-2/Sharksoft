@@ -33,6 +33,7 @@ public class OrderDAO {
         if (jdbcConnection == null || jdbcConnection.isClosed()) {
             try {
                 Connection conn = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+                
 
             if (conn != null) {
                 //report status to the status bar in the main frame
@@ -51,6 +52,7 @@ public class OrderDAO {
     protected void disconnect() throws SQLException {
         if (jdbcConnection != null && !jdbcConnection.isClosed()) {
             jdbcConnection.close();
+            System.out.println("Disconnected");
         }
     }
      
@@ -64,9 +66,7 @@ public class OrderDAO {
         statement.setString(3, order.getId());
         statement.setInt(4, order.getquantity());
         statement.setTimestamp(5, order.getDate() );
-       
-        
-        
+   
          
         boolean rowInserted = statement.executeUpdate() > 0;
         statement.close();
@@ -162,14 +162,11 @@ public class OrderDAO {
         return order;
     }
 
-    public ArrayList<SalesOrder> orderList(String table) throws SQLException {
+    public ArrayList<SalesOrder> orderList(String table, String date) throws SQLException {
         ArrayList<SalesOrder> orderArray = new ArrayList<SalesOrder>();
 
-        //select top 5 item_name , sum(Quantity) as Quantity from Customer_Invoice 
-        //group by item_name 
-        //ORDER BY sum(Quantity) DESC
         String print ="";
-        String sql = "SELECT product_id, SUM(quantity) AS quantity FROM cs3250main.sales_orders GROUP BY product_id ORDER BY SUM(quantity) DESC LIMIT 10 WHERE date_ between 2020-01-31 and 2020-02-01";
+        String sql = "SELECT SUM(quantity) AS quantity, product_id AS product_id FROM cs3250main.sales_orders WHERE DATE(date_)='" + date+ "' GROUP BY product_id ORDER BY quantity DESC LIMIT 10";
          
         connect();
          
@@ -204,6 +201,50 @@ public class OrderDAO {
 
         return orderArray;
 
+    }
+
+    public boolean insertBatch(List<SalesOrder> ordersList, String table) throws SQLException {
+
+        String sql = "INSERT INTO " + table + "(email, shipping_address, product_id, quantity, date_) VALUES (?, ?, ?, ?, ?)";
+        connect();
+        int count = 0;
+        int batchSize = 1000;
+        boolean rowInserted = false;
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        jdbcConnection.setAutoCommit(false);
+        try{
+            
+            for(int i =1; i < ordersList.size(); i++){
+                statement.setString(1, ordersList.get(i).getEmail());
+                statement.setString(2, ordersList.get(i).getShippingA());
+                statement.setString(3, ordersList.get(i).getId());
+                statement.setInt(4, ordersList.get(i).getquantity());
+                statement.setTimestamp(5, ordersList.get(i).getDate() );
+                statement.addBatch();
+                
+                if(++count % batchSize == 0){
+                    System.out.println("Commit the batch");
+                    int [] result = statement.executeBatch();
+                    System.out.println("Number of rows inserted: "+ result.length);
+                                    jdbcConnection.commit();
+                }
+            }
+            int [] remaining = statement.executeBatch();
+            System.out.println("The number of rows inserted:" + remaining.length);
+            jdbcConnection.commit();
+            rowInserted = true;
+        }catch(SQLException x){
+            x.printStackTrace();
+            jdbcConnection.rollback();
+        }finally{
+            if(statement != null){
+                statement.close();
+            }
+        }
+       
+        disconnect();
+        return rowInserted;
+       
     }
 
     
