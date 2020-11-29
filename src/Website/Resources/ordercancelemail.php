@@ -35,12 +35,12 @@ $mail->addReplyTo('stuffbysharks@gmail.com', 'Information');
 $mail->isHTML(true);                                  // Set email format to HTML
 
 $mail->isHTML(true); // Set email format to HTML
-$mail->Subject = 'Shark Order Cancelation Confirmation';
+$mail->Subject = 'Shark Order Cancellation Confirmation';
 $mail->Recipient = $_SESSION["email"];
-$mail->Header = "Your Shark Order has been Canceled!! ";
+$mail->Header = "Your Shark Order has been Cancelled!! ";
 
 $mail->Body = "Hello, <br />";
-$mail->Body .= "This is a confirmation of your recent shark order Cancelation. <br />";
+$mail->Body .= "This is a confirmation of your recent shark order Cancellation. <br />";
 $mail->Body .= "You ordered: <br />";
 $mail->Body .= "Item ID#: ";
 $mail->Body .= $_SESSION["itemid"] ;
