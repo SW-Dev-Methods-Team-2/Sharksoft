@@ -30,10 +30,11 @@ if ($link->connect_error) {
     $_SESSION["email"] = $email;
 
     if ($link->query($sql) === TRUE) {
-           
+        $link->close();
         header("location: thankyou.php");
     }
     else{
+        $link->close();
         echo "failed to update db";
     }
   }
@@ -104,11 +105,3 @@ if ($link->connect_error) {
 
  
   <?php
-
-
-
-
-
-
-
-

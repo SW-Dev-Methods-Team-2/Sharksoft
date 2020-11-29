@@ -1,9 +1,18 @@
 <?php
 require 'PHPMailerAutoload.php';
 require 'logindata.php';
-$mail = new PHPMailer;
 
 //$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+
+
+
+$mail = new PHPMailer(true);
+
+
+
+
+
 
 $mail->isSMTP();                                      // Set mailer to use SMTP
 $mail->Host = $mailHost;  // Specify main and backup SMTP servers
