@@ -48,13 +48,17 @@ final String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-wes
 final String dbUsername = "admin";
 final String dbPassword = "cs3250db1";
 final String sharktable = "cs3250main.sharktable";
-final String simsharktable = "cs3250main.simsharktable";
- String sales_order = "cs3250main.sales_orders";
- String user_data = "cs3250main.user_data";
+String simsharktable = "cs3250main.simsharktable";
+String sales_order = "cs3250main.sales_orders";
+String supplier_order = "cs3250main.supplier_orders";
+String simsales_order = "cs3250main.simsales_orders";
 
 InventorySimulator simulator01 = new InventorySimulator(); //create the simulator
 Timer timer = new Timer(1000,null); //create the render timer
 AppFileHandler fHandle = new AppFileHandler();
+BarChartEx chart01 = new BarChartEx();
+SQLTableAccessor acc1 = new SQLTableAccessor(dbURL, dbUsername, dbPassword);
+    JTable mainTable = new JTable();
 ProductDAO p1 = new ProductDAO(dbURL, dbUsername, dbPassword);
 Product pro1 = new Product();
 SalesOrder order = new SalesOrder();
@@ -66,35 +70,29 @@ OrderDAO oDao = new OrderDAO(dbURL, dbUsername, dbPassword);
  */
 void appRender() {
 
-       gui.setText(mainOutputStream.getStream());
-       if (simulationMode==true) {
-           gui.chBoxSimulation.setText("Simulation On");
-       }
-       else{
-           gui.chBoxSimulation.setText("Simulation Off");
-       }
+    if (simulationMode==true) {
+        gui.chBoxSimulationStatus.setText("Simulation On");
+    }
+    else{
+        gui.chBoxSimulationStatus.setText("Simulation Off");
+    }
 
-    //each loop, update simulation variable according to checkbox status
-       simulationMode= gui.chBoxSimulation.isSelected();
+ //each loop, update simulation variable according to checkbox status
+    simulationMode= gui.chBoxSimulationStatus.isSelected();
 
-   /*if (simulationMode == true) {
-       simulator01.runSim();
-       mainOutputStream.pushLn("Time=" + Integer.toString(simulator01.getTimeSeconds()));
-
-       //...if day reaches 6, then simulation is over. This program simulates a week at a time.
-       if (simulator01.getDayCounter() > 6) simulationMode = false;
-
-       //finalize and render all result at the end of the frame
-       mainOutputStream.pushLn(simulator01.getStream());
-       mainOutputStream.pushLn(simulator01.printTotalResult());
-   }*/
+    gui.consoleArea.setText(mainOutputStream.getStream());
 }
 /**
  * A method that contains routines to initialize the program and its objects.
  */
 void appStart(){
 
-   gui.setupGUI();
+    try {
+        mainTable = new JTable(acc1.getTableModel("cs3250main.sharktable"));
+    } catch (SQLException e) {
+    }
+
+    gui.GUIinit(mainTable);
 
     gui.frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -103,13 +101,6 @@ void appStart(){
                 System.out.println("Simulator data cleared!");
             }
         });
-    gui.barChartFrame.addWindowListener(new WindowAdapter(){
-        @Override
-        public void windowClosing(WindowEvent e){
-            simulator01.clearInventoryOnline();;
-            System.out.println("Simulator data cleared!");
-        }
-    });
     //---end for loop
    setupListeners(); //setup listeners for button press events
 
@@ -157,44 +148,30 @@ void appStart(){
         public void actionPerformed(ActionEvent e) {
 
             //first get data from the form
-               gui.getForm(frmCrudAddProduct).showFormDialog(); //show the product creation form
+            gui.getForm(frmCrudAddProduct).showFormDialog(); //show the product creation form
                 
-                pro1.setId(gui.getForm(frmCrudAddProduct).getKeyValue("Product"));
-                pro1.setquantity(Integer.parseInt(gui.getForm(frmCrudAddProduct).getKeyValue("Quantity")));
-                pro1.setwholesale_cost(Double.parseDouble(gui.getForm(frmCrudAddProduct).getKeyValue("Wholesale Cost")));
-                pro1.setsale_price(Double.parseDouble(gui.getForm(frmCrudAddProduct).getKeyValue("Sale Price")));
-                pro1.setsupplier_id(gui.getForm(frmCrudAddProduct).getKeyValue("Supplier Id"));
-                //data from form is stored in object pro1
+            pro1.setId(gui.getForm(frmCrudAddProduct).getKeyValue("Product"));
+            pro1.setquantity(Integer.parseInt(gui.getForm(frmCrudAddProduct).getKeyValue("Quantity")));
+            pro1.setwholesale_cost(Double.parseDouble(gui.getForm(frmCrudAddProduct).getKeyValue("Wholesale Cost")));
+            pro1.setsale_price(Double.parseDouble(gui.getForm(frmCrudAddProduct).getKeyValue("Sale Price")));
+            pro1.setsupplier_id(gui.getForm(frmCrudAddProduct).getKeyValue("Supplier Id"));
+            //data from form is stored in object pro1
 
-                try {
-                    //check if simulation is off, if so use sharktable, else use simsharktable
-                    if (simulationMode == false) {
-                        p1.insertProduct(pro1, sharktable);
-                        mainOutputStream.push("Sharktable: Operation Complete.\n");
-                    } else
-                    {
-                        p1.insertProduct(pro1, simsharktable);
-                        mainOutputStream.push("SimSharktable: Operation Complete.\n");
+            try {
+                //check if simulation is off, if so use sharktable, else use simsharktable
+                if (simulationMode == false) {
+                    p1.insertProduct(pro1, sharktable);
+                    mainOutputStream.push("Sharktable: Operation Complete.\n");
+                    updateTable(sharktable);
+                } else
+                {
+                    p1.insertProduct(pro1, simsharktable);
+                    mainOutputStream.push("SimSharktable: Operation Complete.\n");
+                    updateTable(simsharktable);
 
-                    }
-                }catch(SQLException f){
-                    f.printStackTrace();
                 }
-        }
-    });
-    gui.btnCrudRead.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try{
-                if(simulationMode==false) {
-                    mainOutputStream.push(p1.listAllProducts(sharktable));
-                    mainOutputStream.pushLn("Main Inventory Product listings complete.");
-                }
-                else{
-                    mainOutputStream.push(p1.listAllProducts(simsharktable));
-                }
-            }catch (SQLException ex) {
-                ex.printStackTrace();
+            }catch(SQLException f){
+                f.printStackTrace();
             }
         }
     });
@@ -214,10 +191,12 @@ void appStart(){
                 if (simulationMode==false) {
                     p1.updateProduct(pro1, sharktable);
                     mainOutputStream.pushLn("Sharktable: Product updated.");
+                    updateTable(sharktable);
                 }
                 else{
                     p1.updateProduct(pro1,simsharktable);
                     mainOutputStream.pushLn("Simsharktable: Product updated.");
+                    updateTable(simsharktable);
                 }
             }catch (SQLException ex) {
                 ex.printStackTrace();
@@ -235,11 +214,13 @@ void appStart(){
                 if (simulationMode==false) {
                     p1.deleteProduct(pro1, sharktable);
                     mainOutputStream.pushLn("Sharktable: Product deleted.");
+                    updateTable(sharktable);
                 }
                 else
                 {
                     p1.deleteProduct(pro1,simsharktable);
                     mainOutputStream.pushLn("Simsharktable: Product deleted.");
+                    updateTable(simsharktable);
                 }
             }catch (SQLException ex) {
                 ex.printStackTrace();
@@ -248,7 +229,7 @@ void appStart(){
         }
     });
 
-    gui.btnCrudOpenCustomerOrder.addActionListener(new ActionListener() {
+    gui.btnCustomerOrder.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             List<String> lines = gui.getStringFromFileDialog(); //lets user choose a file,
@@ -299,10 +280,12 @@ void appStart(){
                     mainOutputStream.pushLn("Order inserted into cs3250main.sales_orders.");
                     p1.updateQuantity(bulkOrder,"cs3250main.sharktable" );
                     System.out.println("Operation complete");
+                    updateTable(sales_order);
                 }
                 else{
                     oDao.insertBatch(bulkOrder,"cs3250main.simsales_orders");
                     mainOutputStream.pushLn("Order insertd into cs3250main.simsales_orders");
+                    updateTable(simsales_order);
                 }
 
             }
@@ -314,7 +297,7 @@ void appStart(){
 
         }
     });
-    gui.btnCrudOpenSupplierOrder.addActionListener(new ActionListener() {
+    gui.btnSupplierOrder.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             List<String> lines = gui.getStringFromFileDialog(); //lets user choose a file,
@@ -343,10 +326,11 @@ void appStart(){
                     if (simulationMode==false) {
                         supOrdDao.insertOrder(supOrder, "cs3250main.supplier_orders");
                         mainOutputStream.pushLn("Supplier order inserted into cs3250main.supplier_orders");
+                        updateTable(supplier_order);
                     }
                     else
                     {
-                        mainOutputStream.pushLn("Sorry! Bulk Supplier Order simulation not added yet!");
+
                     }
                 }
                 catch(SQLException x){
@@ -356,20 +340,12 @@ void appStart(){
             }
         }
     });
-
-    gui.chBoxBarChart.addActionListener(new ActionListener() {
+    gui.tableSelector.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!gui.barChartFrame.isVisible()){
-                gui.barChartFrame.setVisible(true);
-            }
-            else
-            {
-                gui.barChartFrame.setVisible(false);
-            }
+           updateTable((String) gui.tableSelector.getSelectedItem());
         }
     });
-
     //SETUP RENDER TIMER FOR SIMULATION OUTPUT
     timer.addActionListener(new ActionListener() {
         @Override
@@ -378,4 +354,11 @@ void appStart(){
         }
     });
 } //end setupListeners
+void updateTable(String _table){
+    try {
+        mainTable.setModel(acc1.getTableModel(_table));
+    } catch (SQLException f) {
+    }
+    mainTable.repaint();
+}
 }
