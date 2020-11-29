@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class OrderDAO {
         if (jdbcConnection == null || jdbcConnection.isClosed()) {
             try {
                 Connection conn = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+                
 
             if (conn != null) {
                 //report status to the status bar in the main frame
@@ -50,6 +52,7 @@ public class OrderDAO {
     protected void disconnect() throws SQLException {
         if (jdbcConnection != null && !jdbcConnection.isClosed()) {
             jdbcConnection.close();
+            System.out.println("Disconnected");
         }
     }
      
@@ -62,10 +65,8 @@ public class OrderDAO {
         statement.setString(2, order.getShippingA());
         statement.setString(3, order.getId());
         statement.setInt(4, order.getquantity());
-        statement.setString(5, order.getDate() );
-       
-        
-        
+        statement.setTimestamp(5, order.getDate() );
+   
          
         boolean rowInserted = statement.executeUpdate() > 0;
         statement.close();
@@ -88,7 +89,7 @@ public class OrderDAO {
             String id = resultSet.getString("product_id");
             int quantity = resultSet.getInt("quantiy");
             String email = resultSet.getString("email");
-            String date = resultSet.getString("date");
+            Timestamp date = resultSet.getTimestamp("date_");
             String supplier_id = resultSet.getString("supplier_id");
              
             SalesOrder order = new SalesOrder(id, quantity, email, date, supplier_id);
@@ -118,14 +119,14 @@ public class OrderDAO {
     }
      
     public boolean updateOrder(SalesOrder order, String table) throws SQLException {
-        String sql = "UPDATE " + table + " SET quantity=?, email=?, date=?, supplier_id=? WHERE product_id =? ";
+        String sql = "UPDATE " + table + " SET quantity=?, email=?, date_=?, supplier_id=? WHERE product_id =? ";
         connect();
          
         PreparedStatement statement = jdbcConnection.prepareStatement(sql);
         statement.setString(1, order.getId());
         statement.setInt(2, order.getquantity());
         statement.setString(3, order.getEmail());
-        statement.setString(4, order.getDate());
+        statement.setTimestamp(4, order.getDate());
         statement.setString(5, order.getsupplier_id());
          
         boolean rowUpdated = statement.executeUpdate() > 0;
@@ -149,7 +150,7 @@ public class OrderDAO {
 
             int quantity = resultSet.getInt("quantity");
             String email = resultSet.getString("email");
-            String date = resultSet.getString("date");
+            Timestamp date = resultSet.getTimestamp("date_");
             String supplier_id = resultSet.getString("supplier_id");
             
              order = new SalesOrder(quantity, email, date,supplier_id );
@@ -161,14 +162,11 @@ public class OrderDAO {
         return order;
     }
 
-    public ArrayList<SalesOrder> orderList(String table) throws SQLException {
+    public ArrayList<SalesOrder> orderList(String table, String date) throws SQLException {
         ArrayList<SalesOrder> orderArray = new ArrayList<SalesOrder>();
 
-        //select top 5 item_name , sum(Quantity) as Quantity from Customer_Invoice 
-        //group by item_name 
-        //ORDER BY sum(Quantity) DESC
         String print ="";
-        String sql = "SELECT product_id, SUM(quantity) AS quantity FROM cs3250main.sales_orders GROUP BY product_id ORDER BY SUM(quantity) DESC LIMIT 10";
+        String sql = "SELECT SUM(quantity) AS quantity, product_id AS product_id FROM cs3250main.sales_orders WHERE DATE(date_)='" + date+ "' GROUP BY product_id ORDER BY quantity DESC LIMIT 10";
          
         connect();
          
@@ -183,7 +181,8 @@ public class OrderDAO {
             int quantity = resultSet.getInt("quantity");
             System.out.println(quantity);
             //String email = resultSet.getString("email");
-           // String date = resultSet.getString("date");
+           // Timestamp date = resultSet.getTimestamp("date_");
+           // System.out.println(date);
            // String supplier_id = resultSet.getString("supplier_id");
            
             SalesOrder order = new SalesOrder(id, quantity);
@@ -204,8 +203,50 @@ public class OrderDAO {
 
     }
 
+    public boolean insertBatch(List<SalesOrder> ordersList, String table) throws SQLException {
+
+        String sql = "INSERT INTO " + table + "(email, shipping_address, product_id, quantity, date_) VALUES (?, ?, ?, ?, ?)";
+        connect();
+        int count = 0;
+        int batchSize = 1000;
+        boolean rowInserted = false;
+        PreparedStatement statement = jdbcConnection.prepareStatement(sql);
+        jdbcConnection.setAutoCommit(false);
+        try{
+            
+            for(int i =1; i < ordersList.size(); i++){
+                statement.setString(1, ordersList.get(i).getEmail());
+                statement.setString(2, ordersList.get(i).getShippingA());
+                statement.setString(3, ordersList.get(i).getId());
+                statement.setInt(4, ordersList.get(i).getquantity());
+                statement.setTimestamp(5, ordersList.get(i).getDate() );
+                statement.addBatch();
+                
+                if(++count % batchSize == 0){
+                    System.out.println("Commit the batch");
+                    int [] result = statement.executeBatch();
+                    System.out.println("Number of rows inserted: "+ result.length);
+                                    jdbcConnection.commit();
+                }
+            }
+            int [] remaining = statement.executeBatch();
+            System.out.println("The number of rows inserted:" + remaining.length);
+            jdbcConnection.commit();
+            rowInserted = true;
+        }catch(SQLException x){
+            x.printStackTrace();
+            jdbcConnection.rollback();
+        }finally{
+            if(statement != null){
+                statement.close();
+            }
+        }
+       
+        disconnect();
+        return rowInserted;
+       
+    }
+
     
-
-
 
 }

@@ -1,6 +1,9 @@
 package com.cs3250p1.project1;
 
+import java.util.*;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 //import java.sql.*;
 
@@ -16,7 +19,13 @@ public class Controller {
         final String jdbcPassword = "cs3250db1";
         final String sharktabkle = "cs3250main.sharktable";
 
-        ProductDAO p1 = new ProductDAO(jdbcURL, jdbcUsername, jdbcPassword);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        Date date = new Date();
+        System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
+        String dates = dateFormat.format(date);
+        System.out.println(dates);
+
+        /*ProductDAO p1 = new ProductDAO(jdbcURL, jdbcUsername, jdbcPassword);
         Product pro1 = createProduct();
 
         try {
@@ -25,7 +34,7 @@ public class Controller {
             
             e.printStackTrace();
         }
-
+        */
 
 
     }

@@ -145,7 +145,7 @@ public class GUI {
         barChartFrame.setLocation(128,128);
 
         //barchartframe setup operations.
-        barChartFrame.add(chart01.getChartPanel());
+       // barChartFrame.add(chart01.getChartPanel());***************************
         barChartFrame.pack();
         barChartFrame.setVisible(false);
 
@@ -170,7 +170,7 @@ public class GUI {
             try {
                 lines = Files.readAllLines(path);
                 for (int i = 0; i < lines.size(); i++) {
-                    System.out.println(lines.get(i));
+                    //System.out.println(lines.get(i));
 
                 }
                 return lines;

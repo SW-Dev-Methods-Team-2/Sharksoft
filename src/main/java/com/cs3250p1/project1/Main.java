@@ -4,9 +4,16 @@ package com.cs3250p1.project1;
 
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -47,9 +54,11 @@ final String simsharktable = "cs3250main.simsharktable";
 
 InventorySimulator simulator01 = new InventorySimulator(); //create the simulator
 Timer timer = new Timer(1000,null); //create the render timer
-    AppFileHandler fHandle = new AppFileHandler();
+AppFileHandler fHandle = new AppFileHandler();
 ProductDAO p1 = new ProductDAO(dbURL, dbUsername, dbPassword);
 Product pro1 = new Product();
+SalesOrder order = new SalesOrder();
+OrderDAO oDao = new OrderDAO(dbURL, dbUsername, dbPassword);
 
 /**
  * Method that runs the display of text in a timed fashion. Once the timer hits every second,
@@ -245,19 +254,36 @@ void appStart(){
             List<String> lines = gui.getStringFromFileDialog(); //lets user choose a file,
             // then loads it's string as a list onto the variable
             //parse that string and store it into a structure
-
-            SalesOrder order = new SalesOrder();
-            OrderDAO oDao = new OrderDAO(dbURL, dbUsername, dbPassword);
-
+            List<SalesOrder> bulkOrder = new ArrayList<SalesOrder>();
+            
             System.out.println("Start sending sales orders");
-            for(int i = 0; i < lines.size(); i++){
+            for(int i = 2; i < lines.size(); i++){
                 String [] data = lines.get(i).split(",");
-                
-                order.setDate(data[0]);
-                order.setemail(data[1]);
-                order.setShippingA(data[2]);
-                order.setId(data[3]);System.out.print(data[4]+"\n");
-                order.setquantity(Integer.parseInt(data[4].trim()));
+                //String [] date = data[0].replaceAll(target, replacement)
+                String date = data[0].replaceAll("/","-");
+                String [] dateArray = date.split("-");
+                if(dateArray[0].length()<2){
+                    dateArray[0]= "0" + dateArray[0];
+                }
+                if(dateArray[1].length()<2){
+                    dateArray[1]= "0" + dateArray[1];
+                }
+                String output = dateArray[2] + "-" + dateArray[0] + "-" + dateArray[1];
+                Timestamp nextTime = Timestamp.valueOf(LocalDate.parse(output).atStartOfDay());
+
+                SalesOrder temp = new SalesOrder();
+                temp.setDate(nextTime);
+                temp.setemail(data[1]);
+                temp.setShippingA(data[2]);
+                temp.setId(data[3]);
+                temp.setquantity(Integer.parseInt(data[4].trim()));
+                bulkOrder.add(temp);
+                //System.out.println(bulkOrder.get(i));
+                System.out.print(nextTime+ " ");
+                System.out.print(data[1] + " ");
+                System.out.print(data[2] + " ");
+                System.out.print(data[3] + " ");
+                System.out.println(data[4]);
 
                 mainOutputStream.push(data[0]);
                 mainOutputStream.push(data[1]);
@@ -265,29 +291,26 @@ void appStart(){
                 mainOutputStream.push(data[3]);
                 mainOutputStream.push(data[4]+"\n");
 
-                System.out.print(data[0]);
-                System.out.print(data[1]);
-                System.out.print(data[2]);
-                System.out.print(data[3]);
-                System.out.print(data[4]);
                 
-                
-                try{
-                    if (simulationMode==false){
-                        oDao.insertOrder(order, "cs3250main.sales_orders");
-                        mainOutputStream.pushLn("Order inserted into cs3250main.sales_orders.");
-                    }
-                    else{
-                        oDao.insertOrder(order,"cs3250main.simsales_orders");
-                        mainOutputStream.pushLn("Order insertd into cs3250main.simsales_orders");
-                    }
-
+            }
+            try{
+                if (simulationMode==false){
+                    oDao.insertBatch( bulkOrder,"cs3250main.sales_orders");
+                    mainOutputStream.pushLn("Order inserted into cs3250main.sales_orders.");
+                    p1.updateQuantity(bulkOrder,"cs3250main.sharktable" );
+                    System.out.println("Operation complete");
                 }
-                catch(SQLException x){
-                    x.printStackTrace();
+                else{
+                    oDao.insertBatch(bulkOrder,"cs3250main.simsales_orders");
+                    mainOutputStream.pushLn("Order insertd into cs3250main.simsales_orders");
                 }
 
             }
+            catch(SQLException x){
+                x.printStackTrace();
+                
+            }
+               
 
         }
     });
