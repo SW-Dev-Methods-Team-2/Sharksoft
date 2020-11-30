@@ -72,7 +72,7 @@ public class InventorySimulator {
     int dayCounter = 0; // day 0 is monday, range from 0-6
 
     // database connection variables
-    CRUDDB simDB = new CRUDDB("simsharktable"); // create the crud object
+    SimulatorSQLCommunicator simDB = new SimulatorSQLCommunicator("simsharktable"); // create the crud object
     Connection simConn; // connection object used to connect with DB
     String dbURL = "jdbc:mysql://cs-3250-database-1testing.ctxpxr8jzoap.us-west-1.rds.amazonaws.com";
     String dbUsername = "admin";

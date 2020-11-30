@@ -8,10 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 
 
 
@@ -55,7 +52,6 @@ String simsales_order = "cs3250main.simsales_orders";
 
 InventorySimulator simulator01 = new InventorySimulator(); //create the simulator
 Timer timer = new Timer(1000,null); //create the render timer
-AppFileHandler fHandle = new AppFileHandler();
 BarChartEx chart01 = new BarChartEx();
 SQLTableAccessor acc1 = new SQLTableAccessor(dbURL, dbUsername, dbPassword);
     JTable mainTable = new JTable();
