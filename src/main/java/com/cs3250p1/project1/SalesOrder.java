@@ -1,7 +1,6 @@
 package com.cs3250p1.project1;
 
 import java.sql.Timestamp;
-import java.util.*;
 
 public class SalesOrder {
     /*protected String id;
