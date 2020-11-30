@@ -5,13 +5,7 @@ require 'logindata.php';
 //$mail->SMTPDebug = 3;                               // Enable verbose debug output
 
 
-
-
 $mail = new PHPMailer(true);
-
-
-
-
 
 
 $mail->isSMTP();                                      // Set mailer to use SMTP
@@ -46,7 +40,7 @@ $mail->Body .= "Item ID#: ";
 $mail->Body .= $_SESSION["itemid"] ;
 $mail->Body .= "<br /> Quantity: ";
 $mail->Body .= $_SESSION["quantity"] ;
-$mail->Body .= "<br /> If you would like to cancel your order please visit the customer portal, navigate to the order history page, and click delete. <br />";
+$mail->Body .= "<br /> If you would like to cancel your order please visit the customer portal, navigate to the past orders page, and click cancel order. <br />";
 $mail->Body .= "Thanks for your order, <br />";
 $mail->Body .= "Sharky <br />";
  
