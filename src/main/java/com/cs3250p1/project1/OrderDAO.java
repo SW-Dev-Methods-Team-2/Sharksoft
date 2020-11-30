@@ -247,6 +247,29 @@ public class OrderDAO {
        
     }
 
+    public int countOrders(String table, String date) throws SQLException{
+        
+         
+        String sql = "select count(*) as total from "+ table+ " where date(date_) = '" +date + "'";
+         
+        connect();
+         
+        Statement statement = jdbcConnection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         int count = 0;
+        while(resultSet.next()){
+            count = resultSet.getInt("total");
+        }
+        
+         
+        resultSet.close();
+        statement.close();
+        
+        disconnect();
+        return count;
+    }
+    
+
     
 
 }
