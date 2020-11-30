@@ -36,18 +36,19 @@ $mail->isHTML(true);                                  // Set email format to HTM
 
 $mail->isHTML(true); // Set email format to HTML
 $mail->Subject = 'Shark Order Cancellation Confirmation';
-$mail->Recipient = $_SESSION["email"];
+//$mail->Recipient = $_SESSION["email"];
 $mail->Header = "Your Shark Order has been Cancelled!! ";
 
-$mail->Body = "Hello, <br />";
-$mail->Body .= "This is a confirmation of your recent shark order Cancellation. <br />";
-$mail->Body .= "You ordered: <br />";
+$mail->Body = "Hello, <br /><br />";
+$mail->Body .= "This is a confirmation of your recent cancellation of sharkorder ";
+$mail->Body .= $_SESSION["ordernumber"];
+$mail->Body .= "<br /> <br />You ordered: <br />";
 $mail->Body .= "Item ID#: ";
 $mail->Body .= $_SESSION["itemid"] ;
 $mail->Body .= "<br /> Quantity: ";
 $mail->Body .= $_SESSION["quantity"] ;
 $mail->Body .= "<br /> If you need to reorder please log back into your account and place a new order. <br />";
-$mail->Body .= "Thanks for your business, <br />";
+$mail->Body .= "<br />Thanks for your business, <br />";
 $mail->Body .= "Sharky <br />";
  
 if(!$mail->send()) {

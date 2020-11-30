@@ -53,7 +53,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <div class="content-wrapper">
        <div class="order-form-wrapper">
             <h1>Your past orders:</h1>
-            <h2>To cancel an order click <a href="deleteorder.php">here</a></h2>
+            <h3>A status of 1 indicates an existing order. A status of 0 indicates a cancelled order</h3>
+            <h3>To cancel an order click <a href="deleteorder.php">here</a></h3>
        </div>
     </div>
 

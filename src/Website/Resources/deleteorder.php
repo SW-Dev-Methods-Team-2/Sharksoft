@@ -14,24 +14,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if ($link->connect_error) {
     die("Connection failed: " . $conn->connect_error);
     }
-    $date = date("mdY");
-    $email = filter_input(INPUT_POST, 'email');
-    $useraddress = filter_input(INPUT_POST, 'address');
-    $user = filter_input(INPUT_POST, 'user_id');
+    $user = $_SESSION["user_id"];
     $ordernumber= filter_input(INPUT_POST, 'ordernumber');
-    $productquantity = filter_input(INPUT_POST, 'itemquant');
-    $orderdate = time();
     $sql = "UPDATE sales_orders set status_ = 0 WHERE order_num like '%$ordernumber%' AND userID like '%$user%'"; 
-    //think we lost the updating of the main inventory at some point during refactoring
     $_SESSION["loggedin"] = true;
-    $_SESSION["itemid"] = $productid;
-    $_SESSION["quantity"] = $productquantity;
-    $_SESSION["email"] = $email;
     $_SESSION["ordernumber"] = $ordernumber;
+    $sql1 = "SELECT product_id, quantity FROM sales_orders WHERE order_num like '%$ordernumber%'AND userID like '%$user%'";
+    $query1 = mysqli_query($link,$sql1);
+    $result1 = mysqli_fetch_assoc($query1);
+    $_SESSION["itemid"] = $result1['product_id'];
+    $_SESSION["quantity"] = $result1['quantity'];
+    
+    //think we lost the updating of the main inventory at some point during refactoring
 
     if ($link->query($sql) === TRUE) {
         require_once "ordercancelemail.php";
-        
+        echo " Your order #$ordernumber has been cancelled";
     }
     else{
         echo "We were unable to cancel your order please try again";
@@ -90,11 +88,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <div class="content-wrapper">
        <div class="order-form-wrapper">
        <form action="deleteorder.php" method="post">
-            <h1>What Order would you like to cancel?</h1>
-                <input type="text" id="Order Number" name="ordernumber" value="enter number" required><br><br>
-                <label for="Order Number">Item ID:</label><br>
+            <h1>Which order would you like to cancel?</h1>
+                <label for="Order Number">Order to be cancelled:</label><br>
+                <input type="text" id="Order Number" name="ordernumber" value="order number" required><br><br>
+                <input type="submit" value="Submit">
                 </form>
             <h1>Your past orders:</h1>
+            <h3>A status of 1 indicates an existing order. A status of 0 indicates a cancelled order</h3>
        </div>
     </div>
 
