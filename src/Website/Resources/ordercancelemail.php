@@ -46,7 +46,7 @@ $mail->Body .= "Item ID#: ";
 $mail->Body .= $_SESSION["itemid"] ;
 $mail->Body .= "<br /> Quantity: ";
 $mail->Body .= $_SESSION["quantity"] ;
-$mail->Body .= "<br /> If you need to reorder please log back into your account and place a new order.. <br />";
+$mail->Body .= "<br /> If you need to reorder please log back into your account and place a new order. <br />";
 $mail->Body .= "Thanks for your business, <br />";
 $mail->Body .= "Sharky <br />";
  

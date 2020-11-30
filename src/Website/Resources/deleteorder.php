@@ -34,8 +34,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         
     }
     else{
-        echo "We where unable to cancel your order please try again";
-        $message = "We where unable to cancel your order please try again";
+        echo "We were unable to cancel your order please try again";
+        $message = "We were unable to cancel your order please try again";
         header("location: deleteorder.php");
     }
   }
