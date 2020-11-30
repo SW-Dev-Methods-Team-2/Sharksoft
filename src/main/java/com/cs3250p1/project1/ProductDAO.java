@@ -224,6 +224,27 @@ public class ProductDAO {
         }
         return rowUpdated;     
     }
+    public double countAssets(String table) throws SQLException{
+        
+         
+        String sql = "select sum(quantity * wholesale_cost) as total from " + table + "";
+         
+        connect();
+         
+        Statement statement = jdbcConnection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        double count = 0;
+        while(resultSet.next()){
+            count = resultSet.getDouble("total");
+        }
+        
+         
+        resultSet.close();
+        statement.close();
+        
+        disconnect();
+        return count;
+    }
 
 
 
