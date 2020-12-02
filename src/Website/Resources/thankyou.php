@@ -8,6 +8,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 require_once "orderconfirmationemail.php";
+//require_once "recommendationemail.php";
 
 ?>
 
